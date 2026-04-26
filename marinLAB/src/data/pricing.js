@@ -1,0 +1,33 @@
+export const plans = [
+  {
+    id: 'startup',
+    label: 'STARTUP',
+    price: 35000,
+    currency: 'BDT',
+    features: ['Single Landing Page', 'SEO Foundation', 'Mobile Optimization'],
+    cta: 'GET STARTED',
+    variant: 'outline',
+  },
+  {
+    id: 'standard',
+    label: 'STANDARD',
+    badge: 'Most Popular',
+    price: 65000,
+    currency: 'BDT',
+    features: ['Up to 5 Pages', 'CMS Integration', 'Custom Animations', '7-Day Delivery'],
+    cta: 'CHOOSE PLAN',
+    variant: 'primary',
+    featured: true,
+  },
+  {
+    id: 'enterprise',
+    label: 'ENTERPRISE',
+    price: 120000,
+    pricePrefix: '',
+    priceSuffix: '+',
+    currency: 'BDT',
+    features: ['Full Custom Web App', 'E-Commerce Engine', 'Dedicated Support'],
+    cta: 'TALK TO US',
+    variant: 'outline',
+  },
+]
