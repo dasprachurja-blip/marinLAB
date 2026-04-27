@@ -1,10 +1,11 @@
 import { useRef, useMemo, useEffect, useState } from 'react'
 import { useFrame } from '@react-three/fiber'
+import { RoundedBox } from '@react-three/drei'
 import { scrollState } from './scrollState'
 import * as THREE from 'three'
 
 /* ─────────────────────────────────────────────────────
-   LaptopModel — Cinematic MacBook with hinge‑pivot lid
+   LaptopModel — Premium Rounded MacBook
    ───────────────────────────────────────────────────── */
 
 function easeInOut(t) {
@@ -18,35 +19,35 @@ export default function LaptopModel(props) {
   const screenGlowRef = useRef()
   const [texture, setTexture] = useState(null)
 
-  /* ── Premium PBR Materials ── */
+  /* ── Ultra-Soft Dark Matte Materials ── */
   const bodyMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: new THREE.Color('#2e3035'),
-    metalness: 0.95,
-    roughness: 0.25,
+    color: new THREE.Color('#1a1a1c'),
+    metalness: 0.1, // low metalness to avoid cheap shiny look
+    roughness: 0.8, // high roughness for soft matte finish
   }), [])
 
   const bezelMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: new THREE.Color('#0a0a0c'),
-    metalness: 0.8,
-    roughness: 0.2,
+    color: new THREE.Color('#050505'),
+    metalness: 0.2,
+    roughness: 0.9,
   }), [])
 
   const keyBedMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: new THREE.Color('#151518'),
-    metalness: 0.6,
-    roughness: 0.5,
+    color: new THREE.Color('#0f0f12'),
+    metalness: 0.1,
+    roughness: 0.9,
   }), [])
 
   const keyCapMat = useMemo(() => new THREE.MeshStandardMaterial({
-    color: new THREE.Color('#101012'),
-    metalness: 0.4,
-    roughness: 0.7, // Matte plastic keys
+    color: new THREE.Color('#0a0a0c'),
+    metalness: 0.1,
+    roughness: 0.8,
   }), [])
 
   const screenMat = useMemo(() => new THREE.MeshStandardMaterial({
     color: new THREE.Color('#000000'),
-    metalness: 0.1,
-    roughness: 0.2,
+    metalness: 0.0,
+    roughness: 0.3,
     emissive: new THREE.Color('#ffffff'),
     emissiveIntensity: 0,
     transparent: true,
@@ -77,7 +78,6 @@ export default function LaptopModel(props) {
 
     for (let r = 0; r < rows; r++) {
       for (let c = 0; c < cols; c++) {
-        // Skip some spaces for spacebar
         if (r === rows - 1 && c >= 4 && c <= 9) {
           if (c === 6) arr.push({ x: startX + 6.5 * (keySizeX + gapX), z: startZ + r * (keySizeZ + gapZ), w: keySizeX * 6 + gapX * 5 })
           continue
@@ -107,8 +107,8 @@ export default function LaptopModel(props) {
     if (group.current) {
       let lry = 0, lrx = 0
       if (p >= 0.5 && p <= 0.7) {
-        lry = Math.sin(t * 0.3) * 0.05 // max ±2.8 deg
-        lrx = Math.sin(t * 0.2) * 0.02 // max ±1.1 deg
+        lry = Math.sin(t * 0.3) * 0.05 
+        lrx = Math.sin(t * 0.2) * 0.02 
       }
       group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, lry, 0.05)
       group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, lrx, 0.05)
@@ -121,9 +121,13 @@ export default function LaptopModel(props) {
         screenMeshRef.current.material.needsUpdate = true
       }
 
+      // Screen turns on EXACTLY when the lid cracks open (p > 0)
       let emissiveInt = 0
-      if (p >= 0.45 && p < 0.55) emissiveInt = ((p - 0.45) / 0.1) * 1.0 // subtle
-      else if (p >= 0.55) emissiveInt = 1.0
+      if (p > 0.01 && p < 0.2) {
+        emissiveInt = ((p - 0.01) / 0.19) * 0.8 // Soft glow
+      } else if (p >= 0.2) {
+        emissiveInt = 0.8
+      }
 
       screenMeshRef.current.material.emissiveIntensity = THREE.MathUtils.lerp(
         screenMeshRef.current.material.emissiveIntensity,
@@ -134,30 +138,30 @@ export default function LaptopModel(props) {
 
     if (screenGlowRef.current) {
       let glow = 0
-      if (p >= 0.45 && p < 0.55) glow = ((p - 0.45) / 0.1) * 0.08
-      else if (p >= 0.55) glow = 0.08
+      if (p > 0.01 && p < 0.2) {
+        glow = ((p - 0.01) / 0.19) * 0.05
+      } else if (p >= 0.2) {
+        glow = 0.05
+      }
       screenGlowRef.current.material.opacity = glow
     }
   })
 
   const BASE_W = 3.4, BASE_D = 2.2, BASE_H = 0.08
-  const LID_W = 3.2, LID_H = 2.1, LID_D = 0.05
-  const SCREEN_W = 3.0, SCREEN_H = 1.9
+  const LID_W = 3.4, LID_H = 2.2, LID_D = 0.05
+  const SCREEN_W = 3.2, SCREEN_H = 2.0
 
   return (
     <group ref={group} {...props}>
       {/* ═══ BASE ═══ */}
-      <mesh material={bodyMat} castShadow receiveShadow>
-        <boxGeometry args={[BASE_W, BASE_H, BASE_D]} />
-      </mesh>
+      {/* Using RoundedBox for premium Apple-style edges */}
+      <RoundedBox args={[BASE_W, BASE_H, BASE_D]} radius={0.06} smoothness={8} material={bodyMat} castShadow receiveShadow position={[0, 0, 0]} />
 
       {/* Keyboard Bed */}
-      <mesh material={keyBedMat} position={[0, BASE_H / 2 + 0.001, 0.15]} receiveShadow>
-        <boxGeometry args={[2.8, 0.002, 1.3]} />
-      </mesh>
+      <RoundedBox args={[2.8, 0.005, 1.3]} radius={0.02} smoothness={4} material={keyBedMat} position={[0, BASE_H / 2 + 0.001, 0.15]} receiveShadow />
 
       {/* 3D Keycaps */}
-      <group position={[0, BASE_H / 2 + 0.002, 0.15]}>
+      <group position={[0, BASE_H / 2 + 0.003, 0.15]}>
         {keys.map((k, i) => (
           <mesh key={i} material={keyCapMat} position={[k.x, 0.003, k.z]} castShadow receiveShadow>
             <boxGeometry args={[k.w, 0.006, 0.18]} />
@@ -166,25 +170,20 @@ export default function LaptopModel(props) {
       </group>
 
       {/* Trackpad */}
-      <mesh material={bodyMat} position={[0, BASE_H / 2 + 0.001, 0.9]} receiveShadow>
-        <boxGeometry args={[1.1, 0.003, 0.65]} />
-      </mesh>
+      <RoundedBox args={[1.1, 0.005, 0.65]} radius={0.02} smoothness={4} material={bodyMat} position={[0, BASE_H / 2 + 0.001, 0.9]} receiveShadow />
 
       {/* ═══ LID ═══ */}
       <group position={[0, BASE_H / 2, -BASE_D / 2]}>
         <group ref={lidPivotRef} rotation={[0, 0, 0]}>
-          <mesh material={bodyMat} position={[0, LID_D / 2, LID_H / 2]} castShadow receiveShadow>
-            <boxGeometry args={[LID_W, LID_D, LID_H]} />
-          </mesh>
+          
+          <RoundedBox args={[LID_W, LID_D, LID_H]} radius={0.06} smoothness={8} material={bodyMat} position={[0, LID_D / 2, LID_H / 2]} castShadow receiveShadow />
 
-          <mesh material={bezelMat} position={[0, LID_D + 0.001, LID_H / 2]}>
-            <boxGeometry args={[SCREEN_W + 0.15, 0.005, SCREEN_H + 0.1]} />
-          </mesh>
+          <RoundedBox args={[SCREEN_W + 0.1, 0.005, SCREEN_H + 0.1]} radius={0.04} smoothness={4} material={bezelMat} position={[0, LID_D + 0.001, LID_H / 2]} />
 
           <mesh
             ref={screenMeshRef}
             material={screenMat}
-            position={[0, LID_D + 0.003, LID_H / 2]}
+            position={[0, LID_D + 0.005, LID_H / 2]}
             rotation={[-Math.PI / 2, 0, 0]}
           >
             <planeGeometry args={[SCREEN_W, SCREEN_H]} />
@@ -195,7 +194,7 @@ export default function LaptopModel(props) {
             position={[0, LID_D - 0.01, LID_H / 2]}
             rotation={[-Math.PI / 2, 0, 0]}
           >
-            <planeGeometry args={[SCREEN_W + 0.8, SCREEN_H + 0.8]} />
+            <planeGeometry args={[SCREEN_W + 0.5, SCREEN_H + 0.5]} />
             <meshBasicMaterial color="#48D9B4" transparent opacity={0} />
           </mesh>
         </group>

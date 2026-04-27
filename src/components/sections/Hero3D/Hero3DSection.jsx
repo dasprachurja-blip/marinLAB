@@ -118,27 +118,25 @@ export default function Hero3DSection() {
             <color attach="background" args={['#080a0f']} />
             <fog attach="fog" args={['#080a0f', 8, 25]} />
 
-            {/* Apple-style Studio Lighting (Refined & Moodier) */}
-            
-            {/* 1. Global Ambient (Reduced by ~60% from 0.4 to 0.15) */}
-            <ambientLight intensity={0.15} />
+            {/* Apple-style Ultra-Soft Studio Lighting */}
+            <ambientLight intensity={0.1} />
 
-            {/* 2. Soft Key Light from front-top-left (Reduced by 50% from 1.2 to 0.6) */}
+            {/* Soft Key Light */}
             <directionalLight 
-              position={[-4, 8, 6]} 
-              intensity={0.6} 
+              position={[-2, 10, 5]} 
+              intensity={0.4} 
               color="#ffffff" 
               castShadow 
               shadow-mapSize={[1024, 1024]}
-              shadow-bias={-0.0001}
+              shadow-bias={-0.0005}
             />
 
-            {/* 3. Subtle rim light from back-right (Reduced dramatically to keep focus clean) */}
+            {/* Extremely subtle rim light */}
             <spotLight 
-              position={[5, 4, -5]} 
-              angle={0.5} 
+              position={[5, 5, -5]} 
+              angle={0.8} 
               penumbra={1} 
-              intensity={0.8} 
+              intensity={0.3} 
               color="#48D9B4" 
             />
 
