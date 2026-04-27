@@ -1,7 +1,7 @@
 import { useRef, useMemo } from 'react'
 import { useFrame, useThree } from '@react-three/fiber'
 import { scrollState } from './scrollState'
-import LaptopModel from './LaptopModel'
+import AbstractShape from './AbstractShape'
 import * as THREE from 'three'
 
 /* ──────────────────────────────────────────────────────
@@ -21,14 +21,34 @@ function Particles() {
       const y = ((i / count) * 2 - 1) * 8
       pos[i * 3]     = Math.cos(theta) * r
       pos[i * 3 + 1] = y
-      pos[i * 3 + 2] = Math.sin(theta) * r
+      pos[i * 3 + 2] = Math.sin(theta) * r - 10 // Start further back
     }
     return pos
   }, [])
 
   useFrame(({ clock }) => {
     if (!ref.current) return
-    ref.current.rotation.y = clock.getElapsedTime() * 0.006
+    const t = clock.getElapsedTime()
+    const p = scrollState.progress
+    
+    // Rotate base
+    ref.current.rotation.y = t * 0.006
+
+    // Accelerate Z speed dramatically based on scroll progress
+    const speedMultiplier = 1 + (p * 50)
+    
+    const positions = ref.current.geometry.attributes.position.array
+    for (let i = 0; i < count; i++) {
+      const i3 = i * 3
+      positions[i3 + 1] += Math.sin(t + positions[i3]) * 0.002 // Y drift
+      positions[i3 + 2] += 0.015 * speedMultiplier             // Z push
+      
+      // Loop particles
+      if (positions[i3 + 2] > 5) {
+        positions[i3 + 2] = -20
+      }
+    }
+    ref.current.geometry.attributes.position.needsUpdate = true
   })
 
   return (
@@ -148,8 +168,8 @@ export default function Scene() {
       <Particles />
       <GlowOrbs />
 
-      <group ref={laptopGroupRef} position={[0, -0.4, 0]}>
-        <LaptopModel />
+      <group position={[0, -0.2, 0]}>
+        <AbstractShape />
       </group>
     </>
   )

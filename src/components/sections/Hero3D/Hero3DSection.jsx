@@ -20,7 +20,6 @@ export default function Hero3DSection() {
   const wrapperRef = useRef(null)
   const pinRef = useRef(null)
   const uiRef = useRef(null)
-  const transitionGlowRef = useRef(null)
 
   useEffect(() => {
     const wrapper = wrapperRef.current
@@ -75,19 +74,14 @@ export default function Hero3DSection() {
 
   const updateUI = useCallback((p) => {
     if (uiRef.current) {
-      const show = p > 0.88
-      uiRef.current.style.opacity = show ? '1' : '0'
-      uiRef.current.style.pointerEvents = show ? 'auto' : 'none'
-    }
-    
-    if (transitionGlowRef.current) {
-      let glow = 0
-      if (p > 0.8 && p <= 0.9) {
-        glow = (p - 0.8) / 0.1 
-      } else if (p > 0.9) {
-        glow = 1 - Math.min((p - 0.9) / 0.1, 1) 
-      }
-      transitionGlowRef.current.style.opacity = glow * 0.5 // slightly reduced transition brightness
+      // Zoom in and fade out as the user scrolls down
+      const fadeProgress = Math.min(p / 0.5, 1) // 0 to 1 over the first 50% of scroll
+      const opacity = 1 - fadeProgress
+      const scale = 1 + (fadeProgress * 0.8) // Scales up to 1.8x
+      
+      uiRef.current.style.opacity = opacity.toString()
+      uiRef.current.style.transform = `scale(${scale})`
+      uiRef.current.style.pointerEvents = opacity > 0.5 ? 'auto' : 'none'
     }
   }, [])
 
@@ -159,23 +153,13 @@ export default function Hero3DSection() {
         />
 
         <div
-          ref={transitionGlowRef}
-          className="absolute inset-0 z-[5] pointer-events-none"
-          style={{
-            background: 'radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(72,217,180,0.4) 50%, rgba(8,10,15,0) 100%)',
-            opacity: 0,
-            transition: 'opacity 0.1s linear',
-            mixBlendMode: 'screen',
-          }}
-        />
-
-        <div
           ref={uiRef}
-          className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#080a0f]"
-          style={{ opacity: 0, pointerEvents: 'none', transition: 'opacity 0.8s ease' }}
+          className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-auto"
+          style={{ transformOrigin: 'center center', willChange: 'transform, opacity' }}
         >
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-[#48D9B4]/10 rounded-full blur-[140px] pointer-events-none" />
-          <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#2B82AD]/10 rounded-full blur-[100px] pointer-events-none" />
+          {/* Subtle glow behind the text to ensure readability over the 3D elements */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#080a0f]/80 rounded-full blur-[80px] pointer-events-none" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#48D9B4]/10 rounded-full blur-[140px] pointer-events-none" />
 
           <div className="relative z-10 text-center space-y-8 px-6 max-w-5xl mx-auto">
             <div className="flex justify-center">
