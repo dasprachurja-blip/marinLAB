@@ -17,7 +17,7 @@ export default function Button({
   const base = 'relative overflow-hidden rounded-full font-semibold transition-all duration-300 inline-flex items-center justify-center gap-2'
 
   const variants = {
-    primary: 'bg-teal text-navy-dark shadow-[0_0_24px_rgba(72,217,180,0.35)] hover:shadow-[0_0_40px_rgba(72,217,180,0.65)]',
+    primary: 'bg-teal text-white shadow-[0_0_24px_rgba(255,42,85,0.4)] hover:shadow-[0_0_40px_rgba(255,42,85,0.7)] hover:bg-white hover:text-navy-dark',
     secondary: 'bg-transparent border border-white/25 text-white hover:border-teal hover:text-teal',
     outline: 'bg-transparent border border-teal/40 text-teal hover:bg-teal/10',
   }
