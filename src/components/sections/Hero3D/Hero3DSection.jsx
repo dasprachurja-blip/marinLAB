@@ -32,7 +32,7 @@ export default function Hero3DSection() {
       st = ScrollTrigger.create({
         trigger: wrapper,
         start: 'top top',
-        end: '+=400%',
+        end: '+=150%',
         pin: pinRef.current,
         pinSpacing: true,
         scrub: 1,
@@ -98,19 +98,19 @@ export default function Hero3DSection() {
       <div
         ref={pinRef}
         className="relative w-full overflow-hidden"
-        style={{ height: '100vh', background: '#080a0f' }} 
+        style={{ height: '100vh', background: '#0A0B10' }} 
       >
         <div className="absolute inset-0 z-0">
           <Canvas
             camera={{ position: [0, 1.2, 4], fov: 45 }}
             dpr={[1, 1.5]}
             gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
-            style={{ background: '#080a0f' }}
-            onCreated={({ gl }) => gl.setClearColor('#080a0f')}
+            style={{ background: '#0A0B10' }}
+            onCreated={({ gl }) => gl.setClearColor('#0A0B10')}
             shadows
           >
-            <color attach="background" args={['#080a0f']} />
-            <fog attach="fog" args={['#080a0f', 8, 25]} />
+            <color attach="background" args={['#0A0B10']} />
+            <fog attach="fog" args={['#0A0B10', 8, 25]} />
 
             {/* Apple-style Ultra-Soft Studio Lighting */}
             <ambientLight intensity={0.1} />
@@ -138,7 +138,7 @@ export default function Hero3DSection() {
 
             <Suspense fallback={null}>
               {/* Keep environment reflections but use lower intensity if supported, otherwise it just relies on materials */}
-              <Environment preset="city" />
+              <Environment preset="studio" />
             </Suspense>
 
             <Scene />
@@ -149,7 +149,7 @@ export default function Hero3DSection() {
         <div
           id="debug-progress"
           className="absolute top-4 left-4 z-50 font-mono text-xs px-3 py-1.5 rounded-lg"
-          style={{ background: 'rgba(0,0,0,0.7)', color: '#48D9B4' }}
+          style={{ background: 'rgba(0,0,0,0.7)', color: '#FF2A55' }}
         />
 
         <div
@@ -158,8 +158,8 @@ export default function Hero3DSection() {
           style={{ transformOrigin: 'center center', willChange: 'transform, opacity' }}
         >
           {/* Subtle glow behind the text to ensure readability over the 3D elements */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#080a0f]/80 rounded-full blur-[80px] pointer-events-none" />
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#48D9B4]/10 rounded-full blur-[140px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#0A0B10]/80 rounded-full blur-[80px] pointer-events-none" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#FF2A55]/10 rounded-full blur-[140px] pointer-events-none" />
 
           <div className="relative z-10 text-center space-y-8 px-6 max-w-5xl mx-auto">
             <div className="flex justify-center">

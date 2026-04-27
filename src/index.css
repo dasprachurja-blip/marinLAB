@@ -4,11 +4,11 @@
 
 :root {
   /* Brand Colors */
-  --color-bg-primary: #081F3D;
-  --color-bg-secondary: #0B2A4A;
-  --color-bg-deep: #050F1E;
-  --color-accent: #48D9B4;
-  --color-glow: #2B82AD;
+  --color-bg-primary: #0A0B10;
+  --color-bg-secondary: #12141D;
+  --color-bg-deep: #050508;
+  --color-accent: #FF2A55;
+  --color-glow: #FF5500;
   --color-text-primary: #FFFFFF;
   --color-text-secondary: #A0B4C8;
 
@@ -23,7 +23,7 @@
   --container-pad: clamp(16px, 5vw, 80px);
 
   /* Typography */
-  --font-primary: 'Inter', -apple-system, sans-serif;
+  --font-primary: 'Space Grotesk', -apple-system, sans-serif;
   --tracking-tight: -0.02em;
   --leading-hero: 1.05;
 
@@ -57,7 +57,7 @@
   }
 
   ::selection {
-    background: rgba(72, 217, 180, 0.3);
+    background: rgba(255, 42, 85, 0.3);
     color: #fff;
   }
 }
@@ -78,7 +78,7 @@
   }
 
   .teal-gradient-text {
-    background: linear-gradient(135deg, #48D9B4, #2B82AD);
+    background: linear-gradient(135deg, #FF2A55, #FF5500);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

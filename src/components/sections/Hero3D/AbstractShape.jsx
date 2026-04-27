@@ -57,7 +57,7 @@ export default function AbstractShape(props) {
       
       {/* Inner glowing core for tech aesthetic */}
       <Icosahedron args={[0.6, 1]} position={[0, 0, 0]}>
-        <meshBasicMaterial color="#48D9B4" wireframe transparent opacity={0.3} />
+        <meshBasicMaterial color="#FF2A55" wireframe transparent opacity={0.3} />
       </Icosahedron>
     </group>
   )

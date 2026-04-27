@@ -1,13 +1,10 @@
-import { useEffect, useRef, Suspense } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { Environment } from '@react-three/drei'
+import { useEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SectionWrapper from '@/components/layout/SectionWrapper'
 import SectionLabel from '@/components/atoms/SectionLabel'
 import { cn } from '@/utils/cn'
 import { useInView } from '@/hooks/useInView'
-import ProcessPhone, { processScrollState } from './ProcessPhone'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -35,8 +32,9 @@ function ProcessStep({ num, title, desc }) {
   return (
     <div
       ref={ref}
+      data-step={num}
       className={cn(
-        'relative pl-20 transition-all duration-700',
+        'process-step relative pl-20 transition-all duration-700',
         inView ? 'opacity-100 translate-x-0' : 'opacity-30 translate-x-4'
       )}
     >
@@ -44,15 +42,15 @@ function ProcessStep({ num, title, desc }) {
       <div 
         className={cn(
           "absolute left-[-1.5rem] top-0 w-12 h-12 rounded-full flex items-center justify-center font-bold z-10 transition-colors duration-500",
-          inView ? "bg-teal text-navy-dark shadow-[0_0_20px_rgba(72,217,180,0.4)]" : "bg-navy-light text-muted border border-white/10"
+          inView ? "bg-teal text-white shadow-[0_0_20px_rgba(255,42,85,0.4)]" : "bg-navy-light text-muted border border-white/10"
         )}
       >
         {num}
       </div>
       
       <div>
-        <h4 className={cn("text-3xl font-bold mb-4 transition-colors duration-500", inView ? "text-white" : "text-white/40")}>{title}</h4>
-        <p className="text-lg text-muted leading-relaxed max-w-md">{desc}</p>
+        <h4 className={cn("text-3xl font-heading font-bold mb-4 transition-colors duration-500 tracking-wide uppercase", inView ? "text-white" : "text-white/40")}>{title}</h4>
+        <p className="text-lg text-muted leading-relaxed max-w-md font-sans">{desc}</p>
       </div>
     </div>
   )
@@ -62,24 +60,14 @@ export default function HowItWorks() {
   const containerRef = useRef(null)
   const rightColRef = useRef(null)
   const progressLineRef = useRef(null)
+  const [activeStep, setActiveStep] = useState('01')
 
   useEffect(() => {
     const container = containerRef.current
     const rightCol = rightColRef.current
     if (!container || !rightCol) return
 
-    // 1. Overall Section Progress for Phone Rotation & Screen Crossfading
-    const stPhone = ScrollTrigger.create({
-      trigger: rightCol,
-      start: 'top center',
-      end: 'bottom center',
-      scrub: 1,
-      onUpdate: (self) => {
-        processScrollState.progress = self.progress
-      }
-    })
-
-    // 2. Timeline Line Fill Animation
+    // 1. Timeline Line Fill Animation
     const stLine = gsap.fromTo(progressLineRef.current, 
       { height: '0%' },
       {
@@ -94,9 +82,23 @@ export default function HowItWorks() {
       }
     )
 
+    // 2. Track which step is in view for the massive number
+    const stepsEls = rightCol.querySelectorAll('.process-step')
+    const stepTriggers = []
+    stepsEls.forEach((el) => {
+      const st = ScrollTrigger.create({
+        trigger: el,
+        start: 'top center',
+        end: 'bottom center',
+        onEnter: () => setActiveStep(el.getAttribute('data-step')),
+        onEnterBack: () => setActiveStep(el.getAttribute('data-step')),
+      })
+      stepTriggers.push(st)
+    })
+
     return () => {
-      stPhone.kill()
       stLine.kill()
+      stepTriggers.forEach(st => st.kill())
     }
   }, [])
 
@@ -106,29 +108,27 @@ export default function HowItWorks() {
       {/* Title Area */}
       <div className="text-center mb-16 relative z-10 pt-10">
         <SectionLabel>THE PROCESS</SectionLabel>
-        <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white mt-4">From Vision to Launch</h2>
+        <h2 className="text-4xl md:text-6xl font-heading font-bold tracking-tight text-white mt-4 uppercase">From Vision to Launch</h2>
       </div>
 
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row relative">
         
-        {/* LEFT SIDE: Sticky 3D Phone Canvas */}
-        <div className="hidden md:block w-1/2 h-screen sticky top-0 z-0">
-          <div className="w-full h-full absolute inset-0 -translate-y-10">
-            <Canvas
-              camera={{ position: [0, 0, 4.5], fov: 45 }}
-              dpr={[1, 1.5]}
-              gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-            >
-              <ambientLight intensity={0.2} />
-              <directionalLight position={[2, 5, 4]} intensity={0.8} color="#ffffff" />
-              <spotLight position={[-5, 5, -5]} angle={0.5} penumbra={1} intensity={1.5} color="#48D9B4" />
-              
-              <Suspense fallback={null}>
-                <Environment preset="city" />
-              </Suspense>
-
-              <ProcessPhone position={[0, -0.2, 0]} />
-            </Canvas>
+        {/* LEFT SIDE: Sticky Massive Number */}
+        <div className="hidden md:flex w-1/2 h-[80vh] sticky top-[10vh] z-0 items-center justify-center">
+          <div className="relative">
+             <span 
+                className="text-[18rem] lg:text-[22rem] font-heading font-bold leading-none tracking-tighter"
+                style={{
+                  background: 'linear-gradient(to bottom, rgba(255, 42, 85, 0.4), rgba(255, 85, 0, 0))',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                }}
+             >
+               {activeStep}
+             </span>
+             {/* Glowing orb behind number */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-teal/20 rounded-full blur-[100px] pointer-events-none -z-10" />
           </div>
         </div>
 
@@ -139,7 +139,7 @@ export default function HowItWorks() {
           <div className="absolute left-[0.5rem] top-[25vh] bottom-[25vh] w-[2px] bg-white/5" />
           
           {/* Timeline Highlight Track */}
-          <div ref={progressLineRef} className="absolute left-[0.5rem] top-[25vh] w-[2px] bg-teal shadow-[0_0_15px_rgba(72,217,180,0.5)] origin-top" />
+          <div ref={progressLineRef} className="absolute left-[0.5rem] top-[25vh] w-[2px] bg-teal shadow-[0_0_15px_rgba(255,42,85,0.5)] origin-top" />
 
           {/* Steps */}
           <div className="space-y-[35vh]">

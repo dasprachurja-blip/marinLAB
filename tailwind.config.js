@@ -4,12 +4,13 @@ export default {
   theme: {
     extend: {
       colors: {
-        navy: { DEFAULT: '#081F3D', dark: '#050F1E', light: '#0B2A4A' },
-        teal: { DEFAULT: '#48D9B4', dark: '#2B82AD' },
+        navy: { DEFAULT: '#0A0B10', dark: '#050508', light: '#12141D' },
+        teal: { DEFAULT: '#FF2A55', dark: '#FF5500' },
         muted: '#A0B4C8',
       },
       fontFamily: {
-        sans: ['Inter', '-apple-system', 'sans-serif'],
+        sans: ['Space Grotesk', '-apple-system', 'sans-serif'],
+        heading: ['Oswald', 'sans-serif'],
       },
       letterSpacing: {
         tighter: '-0.02em',
@@ -23,8 +24,8 @@ export default {
       },
       keyframes: {
         pulseGlow: {
-          '0%,100%': { boxShadow: '0 0 20px rgba(72,217,180,0.2)' },
-          '50%': { boxShadow: '0 0 40px rgba(72,217,180,0.5)' },
+          '0%,100%': { boxShadow: '0 0 20px rgba(255,42,85,0.2)' },
+          '50%': { boxShadow: '0 0 40px rgba(255,42,85,0.5)' },
         },
         float: {
           '0%,100%': { transform: 'translateY(0px)' },

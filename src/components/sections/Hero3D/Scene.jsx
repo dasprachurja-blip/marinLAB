@@ -63,7 +63,7 @@ function Particles() {
       </bufferGeometry>
       <pointsMaterial
         size={0.025}
-        color="#48D9B4"
+        color="#FF2A55"
         transparent
         opacity={0.3}
         sizeAttenuation
@@ -76,9 +76,9 @@ function Particles() {
 function GlowOrbs() {
   const ref = useRef()
   const orbs = useMemo(() => [
-    { x: -5, y: 3, z: -8, color: '#48D9B4', scale: 2.0 },
-    { x: 6, y: -2, z: -10, color: '#2B82AD', scale: 2.5 },
-    { x: 0, y: 4, z: -12, color: '#1a5276', scale: 3.0 },
+    { x: -5, y: 3, z: -8, color: '#FF2A55', scale: 2.0 }, // Crimson
+    { x: 6, y: -2, z: -10, color: '#FF5500', scale: 2.5 }, // Orange
+    { x: 0, y: 4, z: -12, color: '#FF1100', scale: 3.0 }, // Deep Red
   ], [])
 
   useFrame(({ clock }) => {
