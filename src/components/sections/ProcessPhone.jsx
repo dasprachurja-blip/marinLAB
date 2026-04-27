@@ -117,25 +117,15 @@ export default function ProcessPhone(props) {
     group.current.scale.setScalar(THREE.MathUtils.lerp(group.current.scale.x, targetScale, 0.15))
 
     /* ── 2. Rotation Logic ── */
-    // Step 0 text (left): look slightly left (+15 deg)
-    // Step 1 text (right): look slightly right (-15 deg)
-    // Step 2 text (left): look slightly left (+15 deg)
+    // Since it's on the left side now, it should look slightly to the right towards the text
+    // We can just add a subtle scroll-based drift instead of alternating
+    const targetRy = THREE.MathUtils.lerp(-10 * DEG, -25 * DEG, p)
+    const targetRx = THREE.MathUtils.lerp(5 * DEG, -5 * DEG, p)
     
-    // We map p from 0.1 to 0.9 into 3 distinct zones, but since we scrub, we can just use a sine wave or explicit lerps.
-    let targetRy = 0
-    if (p < 0.3) {
-      targetRy = 15 * DEG // Look left for Step 1
-    } else if (p >= 0.3 && p < 0.6) {
-      targetRy = -15 * DEG // Look right for Step 2
-    } else if (p >= 0.6) {
-      targetRy = 15 * DEG // Look left for Step 3
-    }
+    const floatRx = Math.sin(t * 0.5) * (2 * DEG)
     
-    const floatRx = Math.sin(t * 0.5) * (3 * DEG)
-    
-    // We use a slow lerp for the Y rotation so it turns beautifully
-    group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, targetRy, 0.03)
-    group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, floatRx, 0.05)
+    group.current.rotation.y = THREE.MathUtils.lerp(group.current.rotation.y, targetRy, 0.05)
+    group.current.rotation.x = THREE.MathUtils.lerp(group.current.rotation.x, targetRx + floatRx, 0.05)
     group.current.position.y = Math.sin(t * 0.8) * 0.04 
 
     /* ── 3. Screen Crossfade Logic ── */

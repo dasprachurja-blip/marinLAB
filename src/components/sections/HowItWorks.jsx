@@ -29,30 +29,30 @@ const steps = [
   },
 ]
 
-function ProcessStep({ num, title, desc, index }) {
-  const [ref, inView] = useInView({ threshold: 0.4 })
-  const isEven = index % 2 === 1
+function ProcessStep({ num, title, desc }) {
+  const [ref, inView] = useInView({ threshold: 0.5 })
 
   return (
     <div
       ref={ref}
       className={cn(
-        'flex w-full relative transition-all duration-700',
-        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
-        isEven ? 'justify-end' : 'justify-start'
+        'relative pl-20 transition-all duration-700',
+        inView ? 'opacity-100 translate-x-0' : 'opacity-30 translate-x-4'
       )}
     >
-      <div className={cn(
-        "flex flex-col md:flex-row items-start gap-6 max-w-md w-full",
-        isEven && "md:flex-row-reverse text-right"
-      )}>
-        <div className="w-12 h-12 rounded-full bg-teal text-navy-dark flex items-center justify-center font-bold shrink-0 shadow-[0_0_20px_rgba(72,217,180,0.3)] z-10">
-          {num}
-        </div>
-        <div className={cn("flex-1", isEven && "md:text-right")}>
-          <h4 className="text-3xl font-bold text-teal mb-4">{title}</h4>
-          <p className="text-lg text-muted leading-relaxed">{desc}</p>
-        </div>
+      {/* Icon overlapping the timeline line */}
+      <div 
+        className={cn(
+          "absolute left-[-1.5rem] top-0 w-12 h-12 rounded-full flex items-center justify-center font-bold z-10 transition-colors duration-500",
+          inView ? "bg-teal text-navy-dark shadow-[0_0_20px_rgba(72,217,180,0.4)]" : "bg-navy-light text-muted border border-white/10"
+        )}
+      >
+        {num}
+      </div>
+      
+      <div>
+        <h4 className={cn("text-3xl font-bold mb-4 transition-colors duration-500", inView ? "text-white" : "text-white/40")}>{title}</h4>
+        <p className="text-lg text-muted leading-relaxed max-w-md">{desc}</p>
       </div>
     </div>
   )
@@ -60,14 +60,17 @@ function ProcessStep({ num, title, desc, index }) {
 
 export default function HowItWorks() {
   const containerRef = useRef(null)
+  const rightColRef = useRef(null)
+  const progressLineRef = useRef(null)
 
   useEffect(() => {
     const container = containerRef.current
-    if (!container) return
+    const rightCol = rightColRef.current
+    if (!container || !rightCol) return
 
-    // ScrollTrigger to track the overall progress of the section to drive the 3D Phone
-    const st = ScrollTrigger.create({
-      trigger: container,
+    // 1. Overall Section Progress for Phone Rotation & Screen Crossfading
+    const stPhone = ScrollTrigger.create({
+      trigger: rightCol,
       start: 'top center',
       end: 'bottom center',
       scrub: 1,
@@ -76,49 +79,75 @@ export default function HowItWorks() {
       }
     })
 
-    return () => st.kill()
+    // 2. Timeline Line Fill Animation
+    const stLine = gsap.fromTo(progressLineRef.current, 
+      { height: '0%' },
+      {
+        height: 'calc(100% - 50vh)',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: rightCol,
+          start: 'top center',
+          end: 'bottom center',
+          scrub: true,
+        }
+      }
+    )
+
+    return () => {
+      stPhone.kill()
+      stLine.kill()
+    }
   }, [])
 
   return (
-    <SectionWrapper id="process" className="bg-navy-light/10 relative" ref={containerRef}>
+    <SectionWrapper id="process" className="bg-navy-light/10 relative overflow-hidden" ref={containerRef}>
       
       {/* Title Area */}
-      <div className="text-center mb-12 relative z-10 pt-20">
+      <div className="text-center mb-16 relative z-10 pt-10">
         <SectionLabel>THE PROCESS</SectionLabel>
         <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-white mt-4">From Vision to Launch</h2>
       </div>
 
-      <div className="relative max-w-6xl mx-auto mt-20">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row relative">
         
-        {/* Sticky 3D Canvas fixed in the absolute center of this section */}
-        <div className="absolute inset-0 pointer-events-none z-0">
-          <div className="sticky top-0 h-screen w-full flex items-center justify-center -translate-y-10">
-            <div className="w-full h-full max-w-3xl">
-              <Canvas
-                camera={{ position: [0, 0, 4.5], fov: 45 }}
-                dpr={[1, 1.5]}
-                gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-              >
-                <ambientLight intensity={0.2} />
-                <directionalLight position={[2, 5, 4]} intensity={0.8} color="#ffffff" />
-                <spotLight position={[-5, 5, -5]} angle={0.5} penumbra={1} intensity={1.5} color="#48D9B4" />
-                
-                <Suspense fallback={null}>
-                  <Environment preset="city" />
-                </Suspense>
+        {/* LEFT SIDE: Sticky 3D Phone Canvas */}
+        <div className="hidden md:block w-1/2 h-screen sticky top-0 z-0">
+          <div className="w-full h-full absolute inset-0 -translate-y-10">
+            <Canvas
+              camera={{ position: [0, 0, 4.5], fov: 45 }}
+              dpr={[1, 1.5]}
+              gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+            >
+              <ambientLight intensity={0.2} />
+              <directionalLight position={[2, 5, 4]} intensity={0.8} color="#ffffff" />
+              <spotLight position={[-5, 5, -5]} angle={0.5} penumbra={1} intensity={1.5} color="#48D9B4" />
+              
+              <Suspense fallback={null}>
+                <Environment preset="city" />
+              </Suspense>
 
-                {/* The Process Phone */}
-                <ProcessPhone position={[0, -0.2, 0]} />
-              </Canvas>
-            </div>
+              <ProcessPhone position={[0, -0.2, 0]} />
+            </Canvas>
           </div>
         </div>
 
-        {/* Scrollable Text Steps */}
-        <div className="relative z-10 py-[30vh] space-y-[40vh]">
-          {steps.map((step, i) => (
-            <ProcessStep key={step.num} {...step} index={i} />
-          ))}
+        {/* RIGHT SIDE: Scrolling Steps with Timeline */}
+        <div ref={rightColRef} className="w-full md:w-1/2 relative py-[25vh] pl-10 md:pl-0">
+          
+          {/* Timeline Background Track */}
+          <div className="absolute left-[0.5rem] top-[25vh] bottom-[25vh] w-[2px] bg-white/5" />
+          
+          {/* Timeline Highlight Track */}
+          <div ref={progressLineRef} className="absolute left-[0.5rem] top-[25vh] w-[2px] bg-teal shadow-[0_0_15px_rgba(72,217,180,0.5)] origin-top" />
+
+          {/* Steps */}
+          <div className="space-y-[35vh]">
+            {steps.map((step) => (
+              <ProcessStep key={step.num} {...step} />
+            ))}
+          </div>
+
         </div>
 
       </div>

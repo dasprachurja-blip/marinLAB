@@ -148,7 +148,7 @@ export default function Scene() {
       <Particles />
       <GlowOrbs />
 
-      <group ref={laptopGroupRef} position={[0, 0, 0]}>
+      <group ref={laptopGroupRef} position={[0, -0.4, 0]}>
         <LaptopModel />
       </group>
     </>
