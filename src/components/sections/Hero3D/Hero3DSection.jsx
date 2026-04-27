@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { Canvas } from '@react-three/fiber'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -12,63 +12,91 @@ import { getLenis } from '@/hooks/useLenis'
 gsap.registerPlugin(ScrollTrigger)
 
 /* ──────────────────────────────────────────────────
-   Hero3DSection — GSAP-pinned cinematic sequence
-   Uses ScrollTrigger pin instead of CSS sticky
+   Hero3DSection — GSAP‑pinned + native scroll fallback
+   Scroll progress drives all 3D animation via scrollState
+   
+   SCENE 7 (p 0.7→1.0): Camera zooms directly into screen,
+   transitioning seamlessly into real HTML hero section.
    ────────────────────────────────────────────────── */
 
 export default function Hero3DSection() {
   const wrapperRef = useRef(null)
   const pinRef = useRef(null)
   const uiRef = useRef(null)
-  const overlayRef = useRef(null)
+  const transitionGlowRef = useRef(null)
 
+  /* ── Scroll‑progress integration ── */
   useEffect(() => {
     const wrapper = wrapperRef.current
-    const pinEl = pinRef.current
-    if (!wrapper || !pinEl) return
+    if (!wrapper) return
 
-    // Small delay to let Lenis init first
-    const initTimer = setTimeout(() => {
-      const st = ScrollTrigger.create({
+    let st = null
+
+    const setup = () => {
+      if (st) st.kill()
+
+      st = ScrollTrigger.create({
         trigger: wrapper,
         start: 'top top',
-        end: '+=400%',    // 4 extra viewports of scroll
-        pin: pinEl,        // Pin the viewport div
+        end: '+=400%',
+        pin: pinRef.current,
         pinSpacing: true,
         scrub: 1,
         anticipatePin: 1,
         onUpdate: (self) => {
-          const p = self.progress
-          scrollState.progress = p
-
-          // UI overlay
-          if (uiRef.current) {
-            const show = p > 0.82
-            uiRef.current.style.opacity = show ? '1' : '0'
-            uiRef.current.style.pointerEvents = show ? 'auto' : 'none'
-          }
-
-          // Dark overlay
-          if (overlayRef.current) {
-            const oVal = p > 0.75 ? Math.min((p - 0.75) / 0.12, 1) : 0
-            overlayRef.current.style.opacity = oVal
-          }
+          scrollState.progress = self.progress
+          updateUI(self.progress)
         },
       })
+    }
 
-      // Force refresh
+    const timer = setTimeout(() => {
+      setup()
       ScrollTrigger.refresh()
+    }, 400)
 
-      // Cleanup
-      wrapper._st = st
-    }, 300)
+    const nativeFallback = () => {
+      if (st && st.isActive) return 
+      const rect = wrapper.getBoundingClientRect()
+      const vh = window.innerHeight
+      const totalH = wrapper.offsetHeight
+      const scrolled = -rect.top
+      const total = totalH - vh
+      if (total > 0) {
+        const p = Math.max(0, Math.min(1, scrolled / total))
+        scrollState.progress = p
+        updateUI(p)
+      }
+    }
+
+    window.addEventListener('scroll', nativeFallback, { passive: true })
 
     return () => {
-      clearTimeout(initTimer)
-      if (wrapper._st) {
-        wrapper._st.kill()
-        delete wrapper._st
+      clearTimeout(timer)
+      window.removeEventListener('scroll', nativeFallback)
+      if (st) st.kill()
+    }
+  }, [])
+
+  /* ── Update HTML overlays ── */
+  const updateUI = useCallback((p) => {
+    // UI fade in (Scene 7 end)
+    if (uiRef.current) {
+      const show = p > 0.88
+      uiRef.current.style.opacity = show ? '1' : '0'
+      uiRef.current.style.pointerEvents = show ? 'auto' : 'none'
+    }
+    
+    // Transition glow (simulates entering the bright screen)
+    if (transitionGlowRef.current) {
+      // Glow peaks exactly at the transition point to mask the handoff
+      let glow = 0
+      if (p > 0.8 && p <= 0.9) {
+        glow = (p - 0.8) / 0.1 // ramp up 0->1
+      } else if (p > 0.9) {
+        glow = 1 - Math.min((p - 0.9) / 0.1, 1) // ramp down 1->0
       }
+      transitionGlowRef.current.style.opacity = glow * 0.8
     }
   }, [])
 
@@ -82,29 +110,30 @@ export default function Hero3DSection() {
 
   return (
     <div ref={wrapperRef} id="hero" className="relative">
-      {/* This div gets pinned by ScrollTrigger */}
       <div
         ref={pinRef}
-        className="relative w-full h-screen"
-        style={{ background: '#081F3D' }}
+        className="relative w-full overflow-hidden"
+        style={{ height: '100vh', background: '#0a0b10' }} // Deep navy background
       >
-        {/* Three.js Canvas */}
+        {/* ── WebGL Canvas ── */}
         <div className="absolute inset-0 z-0">
           <Canvas
-            camera={{ position: [0, 0.6, 5.5], fov: 45 }}
+            camera={{ position: [0, 1.2, 4], fov: 45 }}
             dpr={[1, 1.5]}
             gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
-            style={{ background: '#081F3D' }}
-            onCreated={({ gl }) => gl.setClearColor('#081F3D')}
+            style={{ background: '#0a0b10' }}
+            onCreated={({ gl }) => gl.setClearColor('#0a0b10')}
           >
-            <color attach="background" args={['#081F3D']} />
-            <fog attach="fog" args={['#081F3D', 8, 25]} />
+            <color attach="background" args={['#0a0b10']} />
+            <fog attach="fog" args={['#0a0b10', 10, 30]} />
 
-            <ambientLight intensity={0.5} />
-            <directionalLight position={[8, 8, 4]} intensity={1.5} color="#48D9B4" castShadow />
-            <pointLight position={[-6, -4, -8]} intensity={1.0} color="#2B82AD" />
-            <spotLight position={[0, 10, 0]} angle={0.35} penumbra={1} intensity={0.8} color="#ffffff" />
-            <hemisphereLight args={['#48D9B4', '#081F3D', 0.3]} />
+            {/* Premium lighting rig */}
+            <ambientLight intensity={0.4} />
+            <directionalLight position={[5, 8, 4]} intensity={1.2} color="#48D9B4" castShadow />
+            <directionalLight position={[-5, 3, -2]} intensity={0.6} color="#2B82AD" />
+            <pointLight position={[0, -3, 5]} intensity={0.5} color="#ffffff" />
+            <spotLight position={[0, 10, 2]} angle={0.3} penumbra={1} intensity={0.6} color="#ffffff" />
+            <hemisphereLight args={['#48D9B4', '#0a0b10', 0.25]} />
 
             <Scene />
           </Canvas>
@@ -113,27 +142,29 @@ export default function Hero3DSection() {
         {/* Debug progress — remove after testing */}
         <div
           id="debug-progress"
-          className="absolute top-20 left-4 z-50 text-teal font-mono text-sm bg-black/70 px-4 py-2 rounded-lg backdrop-blur"
+          className="absolute top-4 left-4 z-50 font-mono text-xs px-3 py-1.5 rounded-lg"
+          style={{ background: 'rgba(0,0,0,0.7)', color: '#48D9B4' }}
         />
 
-        {/* Dark radial overlay */}
+        {/* White/teal glow to simulate physically entering the emissive screen */}
         <div
-          ref={overlayRef}
+          ref={transitionGlowRef}
           className="absolute inset-0 z-[5] pointer-events-none"
           style={{
-            background: 'radial-gradient(ellipse at center, rgba(8,31,61,0.0) 0%, rgba(8,31,61,0.97) 65%)',
+            background: 'radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(72,217,180,0.4) 50%, rgba(10,11,16,0) 100%)',
             opacity: 0,
-            transition: 'opacity 0.3s ease',
+            transition: 'opacity 0.1s linear',
+            mixBlendMode: 'screen',
           }}
         />
 
-        {/* Scene 5 — Final Hero UI */}
+        {/* ── Scene 7 — Final Hero UI ── */}
         <div
           ref={uiRef}
-          className="absolute inset-0 z-10 flex flex-col items-center justify-center"
-          style={{ opacity: 0, pointerEvents: 'none', transition: 'opacity 0.5s ease' }}
+          className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#0a0b10]"
+          style={{ opacity: 0, pointerEvents: 'none', transition: 'opacity 0.8s ease' }}
         >
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-teal/8 rounded-full blur-[140px] pointer-events-none" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-[#48D9B4]/10 rounded-full blur-[140px] pointer-events-none" />
           <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#2B82AD]/10 rounded-full blur-[100px] pointer-events-none" />
 
           <div className="relative z-10 text-center space-y-8 px-6 max-w-5xl mx-auto">
