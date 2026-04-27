@@ -1,7 +1,7 @@
 import { Suspense, lazy } from 'react'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
-import HeroSection from '@/components/sections/HeroSection'
+import Hero3DSection from '@/components/sections/Hero3D/Hero3DSection'
 import StatsStrip from '@/components/sections/StatsStrip'
 import { ServicesSkeleton } from '@/components/sections/skeletons/ServicesSkeleton'
 import { PricingSkeleton } from '@/components/sections/skeletons/PricingSkeleton'
@@ -21,7 +21,7 @@ export default function Home() {
       <Navbar />
 
       {/* Critical path — no lazy loading */}
-      <HeroSection />
+      <Hero3DSection />
       <StatsStrip />
 
       {/* Deferred sections with skeleton fallbacks */}
