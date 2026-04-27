@@ -1,5 +1,6 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useRef, useCallback, Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
+import { Environment } from '@react-three/drei'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { scrollState } from './scrollState'
@@ -13,10 +14,6 @@ gsap.registerPlugin(ScrollTrigger)
 
 /* ──────────────────────────────────────────────────
    Hero3DSection — GSAP‑pinned + native scroll fallback
-   Scroll progress drives all 3D animation via scrollState
-   
-   SCENE 7 (p 0.7→1.0): Camera zooms directly into screen,
-   transitioning seamlessly into real HTML hero section.
    ────────────────────────────────────────────────── */
 
 export default function Hero3DSection() {
@@ -25,7 +22,6 @@ export default function Hero3DSection() {
   const uiRef = useRef(null)
   const transitionGlowRef = useRef(null)
 
-  /* ── Scroll‑progress integration ── */
   useEffect(() => {
     const wrapper = wrapperRef.current
     if (!wrapper) return
@@ -34,7 +30,6 @@ export default function Hero3DSection() {
 
     const setup = () => {
       if (st) st.kill()
-
       st = ScrollTrigger.create({
         trigger: wrapper,
         start: 'top top',
@@ -78,23 +73,19 @@ export default function Hero3DSection() {
     }
   }, [])
 
-  /* ── Update HTML overlays ── */
   const updateUI = useCallback((p) => {
-    // UI fade in (Scene 7 end)
     if (uiRef.current) {
       const show = p > 0.88
       uiRef.current.style.opacity = show ? '1' : '0'
       uiRef.current.style.pointerEvents = show ? 'auto' : 'none'
     }
     
-    // Transition glow (simulates entering the bright screen)
     if (transitionGlowRef.current) {
-      // Glow peaks exactly at the transition point to mask the handoff
       let glow = 0
       if (p > 0.8 && p <= 0.9) {
-        glow = (p - 0.8) / 0.1 // ramp up 0->1
+        glow = (p - 0.8) / 0.1 
       } else if (p > 0.9) {
-        glow = 1 - Math.min((p - 0.9) / 0.1, 1) // ramp down 1->0
+        glow = 1 - Math.min((p - 0.9) / 0.1, 1) 
       }
       transitionGlowRef.current.style.opacity = glow * 0.8
     }
@@ -113,27 +104,46 @@ export default function Hero3DSection() {
       <div
         ref={pinRef}
         className="relative w-full overflow-hidden"
-        style={{ height: '100vh', background: '#0a0b10' }} // Deep navy background
+        style={{ height: '100vh', background: '#080a0f' }} // Dark, clean navy
       >
-        {/* ── WebGL Canvas ── */}
         <div className="absolute inset-0 z-0">
           <Canvas
             camera={{ position: [0, 1.2, 4], fov: 45 }}
             dpr={[1, 1.5]}
             gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
-            style={{ background: '#0a0b10' }}
-            onCreated={({ gl }) => gl.setClearColor('#0a0b10')}
+            style={{ background: '#080a0f' }}
+            onCreated={({ gl }) => gl.setClearColor('#080a0f')}
+            shadows
           >
-            <color attach="background" args={['#0a0b10']} />
-            <fog attach="fog" args={['#0a0b10', 10, 30]} />
+            <color attach="background" args={['#080a0f']} />
+            <fog attach="fog" args={['#080a0f', 8, 25]} />
 
-            {/* Premium lighting rig */}
+            {/* Apple-style Studio Lighting */}
             <ambientLight intensity={0.4} />
-            <directionalLight position={[5, 8, 4]} intensity={1.2} color="#48D9B4" castShadow />
-            <directionalLight position={[-5, 3, -2]} intensity={0.6} color="#2B82AD" />
-            <pointLight position={[0, -3, 5]} intensity={0.5} color="#ffffff" />
-            <spotLight position={[0, 10, 2]} angle={0.3} penumbra={1} intensity={0.6} color="#ffffff" />
-            <hemisphereLight args={['#48D9B4', '#0a0b10', 0.25]} />
+            {/* Soft key light from front-top-left */}
+            <directionalLight 
+              position={[-4, 8, 6]} 
+              intensity={1.2} 
+              color="#ffffff" 
+              castShadow 
+              shadow-mapSize={[1024, 1024]}
+              shadow-bias={-0.0001}
+            />
+            {/* Subtle rim light from back-right (teal) */}
+            <spotLight 
+              position={[5, 4, -5]} 
+              angle={0.5} 
+              penumbra={1} 
+              intensity={2.5} 
+              color="#48D9B4" 
+            />
+            {/* Soft fill light */}
+            <hemisphereLight args={['#ffffff', '#080a0f', 0.3]} />
+
+            {/* Environment map for realistic PBR metal reflections */}
+            <Suspense fallback={null}>
+              <Environment preset="city" />
+            </Suspense>
 
             <Scene />
           </Canvas>
@@ -146,22 +156,20 @@ export default function Hero3DSection() {
           style={{ background: 'rgba(0,0,0,0.7)', color: '#48D9B4' }}
         />
 
-        {/* White/teal glow to simulate physically entering the emissive screen */}
         <div
           ref={transitionGlowRef}
           className="absolute inset-0 z-[5] pointer-events-none"
           style={{
-            background: 'radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(72,217,180,0.4) 50%, rgba(10,11,16,0) 100%)',
+            background: 'radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(72,217,180,0.4) 50%, rgba(8,10,15,0) 100%)',
             opacity: 0,
             transition: 'opacity 0.1s linear',
             mixBlendMode: 'screen',
           }}
         />
 
-        {/* ── Scene 7 — Final Hero UI ── */}
         <div
           ref={uiRef}
-          className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#0a0b10]"
+          className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-[#080a0f]"
           style={{ opacity: 0, pointerEvents: 'none', transition: 'opacity 0.8s ease' }}
         >
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-[#48D9B4]/10 rounded-full blur-[140px] pointer-events-none" />

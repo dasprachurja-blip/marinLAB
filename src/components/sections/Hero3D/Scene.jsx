@@ -6,14 +6,9 @@ import PhoneModel from './PhoneModel'
 import * as THREE from 'three'
 
 /* ──────────────────────────────────────────────────────
-   Scene — Camera‑driven cinematic experience
-   
-   GLOBAL: Camera drives the experience, not the objects
-   NO Math.random — deterministic golden‑angle particles
-   All motion tied to scrollState.progress (0 → 1)
+   Scene — Premium Camera‑driven cinematic experience
    ────────────────────────────────────────────────────── */
 
-/* Deterministic particle field — golden angle distribution */
 function Particles() {
   const ref = useRef()
   const count = 160
@@ -34,9 +29,7 @@ function Particles() {
 
   useFrame(({ clock }) => {
     if (!ref.current) return
-    const t = clock.getElapsedTime()
-    // Very subtle predictable rotation
-    ref.current.rotation.y = t * 0.006
+    ref.current.rotation.y = clock.getElapsedTime() * 0.006
   })
 
   return (
@@ -61,7 +54,6 @@ function Particles() {
   )
 }
 
-/* Soft ambient glow orbs — deterministic positions */
 function GlowOrbs() {
   const ref = useRef()
   const orbs = useMemo(() => [
@@ -74,7 +66,6 @@ function GlowOrbs() {
     if (!ref.current) return
     const t = clock.getElapsedTime()
     ref.current.children.forEach((child, i) => {
-      // Deterministic sine motion
       child.position.y = orbs[i].y + Math.sin(t * 0.15 + i * 2.1) * 0.4
       child.position.x = orbs[i].x + Math.cos(t * 0.1 + i * 1.7) * 0.3
     })
@@ -92,7 +83,6 @@ function GlowOrbs() {
   )
 }
 
-/* Smooth easing function */
 function easeInOut(t) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
 }
@@ -101,52 +91,47 @@ export default function Scene() {
   const laptopGroupRef = useRef()
   const { camera } = useThree()
 
-  /* Camera keyframes — strict product‑film feel */
+  /* Premium Camera Composition 
+     - Lower Y values for a better "product table" perspective
+     - Slow forward push on Z
+     - Very subtle orbit on X */
   const CAM = {
-    start:  { x: 0,    y: 1.2, z: 4.0 },   // Scene 1 (0%): slightly above and in front
-    open:   { x: 0,    y: 1.1, z: 3.8 },   // Scene 2 (30%): slight forward as lid opens
-    phone:  { x: 0.1,  y: 1.0, z: 3.5 },   // Scene 3 (50%): slight orbit as phone enters
-    float:  { x: 0.15, y: 0.9, z: 3.2 },   // Scene 4 (70%): continue orbit
-    zoom:   { x: 0,    y: 0.9, z: 0.2 },   // Scene 7 (100%): direct move to screen (laptop screen is at z=0 approx)
+    start:  { x: 0,    y: 0.9, z: 4.2 },   // Scene 1 (0%): lower, looking at closed laptop
+    open:   { x: 0.05, y: 0.85, z: 4.0 },   // Scene 2 (30%): slight orbit & push in as lid opens
+    phone:  { x: 0.15, y: 0.8, z: 3.7 },   // Scene 3 (50%): frame shifts slightly to include phone
+    float:  { x: 0.2,  y: 0.75, z: 3.4 },   // Scene 4 (70%): continue orbit & slow push
+    zoom:   { x: 0,    y: 0.9, z: 0.2 },   // Scene 7 (100%): direct move to screen center
   }
 
   useFrame(({ clock }) => {
     const p = scrollState.progress
     const t = clock.getElapsedTime()
 
-    /* ══════════════════════════════════════════
-       SCENE 6 & 7: Camera‑driven cinema
-       ══════════════════════════════════════════ */
     let cx, cy, cz
 
     if (p <= 0.3) {
-      // SCENE 1 → 2: Start → open
       const t2 = easeInOut(p / 0.3)
       cx = THREE.MathUtils.lerp(CAM.start.x, CAM.open.x, t2)
       cy = THREE.MathUtils.lerp(CAM.start.y, CAM.open.y, t2)
       cz = THREE.MathUtils.lerp(CAM.start.z, CAM.open.z, t2)
     } else if (p <= 0.5) {
-      // SCENE 3: Phone entry
       const t3 = easeInOut((p - 0.3) / 0.2)
       cx = THREE.MathUtils.lerp(CAM.open.x, CAM.phone.x, t3)
       cy = THREE.MathUtils.lerp(CAM.open.y, CAM.phone.y, t3)
       cz = THREE.MathUtils.lerp(CAM.open.z, CAM.phone.z, t3)
     } else if (p <= 0.7) {
-      // SCENE 4: Floating + subtle parallax
       const t4 = easeInOut((p - 0.5) / 0.2)
       cx = THREE.MathUtils.lerp(CAM.phone.x, CAM.float.x, t4)
       cy = THREE.MathUtils.lerp(CAM.phone.y, CAM.float.y, t4)
       cz = THREE.MathUtils.lerp(CAM.phone.z, CAM.float.z, t4)
     } else {
-      // SCENE 7: Zoom directly into screen
       const t7 = easeInOut((p - 0.7) / 0.3)
       cx = THREE.MathUtils.lerp(CAM.float.x, CAM.zoom.x, t7)
       cy = THREE.MathUtils.lerp(CAM.float.y, CAM.zoom.y, t7)
       cz = THREE.MathUtils.lerp(CAM.float.z, CAM.zoom.z, t7)
     }
 
-    // Add very subtle sine parallax on top (product‑video feel)
-    // Decreases as we zoom in so it doesn't wobble at the end
+    // Subtle parallax (product-video feel) that fades out during final zoom
     const parallaxFactor = 1 - Math.min(1, Math.max(0, (p - 0.7) / 0.3))
     const parallaxX = Math.sin(t * 0.12) * 0.02 * parallaxFactor
     const parallaxY = Math.cos(t * 0.08) * 0.015 * parallaxFactor
@@ -155,21 +140,19 @@ export default function Scene() {
     camera.position.y = THREE.MathUtils.lerp(camera.position.y, cy + parallaxY, 0.08)
     camera.position.z = THREE.MathUtils.lerp(camera.position.z, cz, 0.08)
 
-    // Camera look target shifts slightly as we scroll, but stays centered for the zoom
-    let lookTargetX = THREE.MathUtils.lerp(0, -0.05, p <= 0.7 ? p / 0.7 : 1)
+    // Camera targets slightly right of laptop to frame both laptop and phone perfectly
+    let lookTargetX = THREE.MathUtils.lerp(0, 0.3, p <= 0.7 ? p / 0.7 : 1)
+    
+    // During final zoom, shift gaze exactly to center of laptop screen
     if (p > 0.7) {
-      lookTargetX = THREE.MathUtils.lerp(-0.05, 0, (p - 0.7) / 0.3) // Center up for zoom
+      lookTargetX = THREE.MathUtils.lerp(0.3, 0, (p - 0.7) / 0.3) 
     }
     
-    // Look exactly at the screen center for the final zoom
-    // Laptop base is at origin (0,0,0). Screen is open. 
-    // The screen center is approx at y=1.0, z=-1.1.
-    const lookY = THREE.MathUtils.lerp(0.3, 0.9, p)
+    const lookY = THREE.MathUtils.lerp(0.2, 0.9, p)
     const lookZ = THREE.MathUtils.lerp(-0.5, -1.0, p)
     
     camera.lookAt(lookTargetX, lookY, lookZ)
 
-    // Debug output
     const dbg = document.getElementById('debug-progress')
     if (dbg) dbg.textContent = `scroll: ${(p * 100).toFixed(1)}% | scene: ${p<=0.3?2:p<=0.5?3:p<=0.7?4:7}`
   })
@@ -179,12 +162,10 @@ export default function Scene() {
       <Particles />
       <GlowOrbs />
 
-      {/* SCENE 1: Laptop — strictly centered at world origin */}
       <group ref={laptopGroupRef} position={[0, 0, 0]}>
         <LaptopModel />
       </group>
 
-      {/* Phone — manages its own position deterministically */}
       <PhoneModel />
     </>
   )
