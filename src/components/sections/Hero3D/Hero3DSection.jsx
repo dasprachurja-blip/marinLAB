@@ -13,7 +13,7 @@ import { getLenis } from '@/hooks/useLenis'
 gsap.registerPlugin(ScrollTrigger)
 
 /* ──────────────────────────────────────────────────
-   Hero3DSection — GSAP‑pinned + native scroll fallback
+   Hero3DSection — Moody, Minimalist Apple-Style Hero
    ────────────────────────────────────────────────── */
 
 export default function Hero3DSection() {
@@ -87,7 +87,7 @@ export default function Hero3DSection() {
       } else if (p > 0.9) {
         glow = 1 - Math.min((p - 0.9) / 0.1, 1) 
       }
-      transitionGlowRef.current.style.opacity = glow * 0.8
+      transitionGlowRef.current.style.opacity = glow * 0.5 // slightly reduced transition brightness
     }
   }, [])
 
@@ -104,7 +104,7 @@ export default function Hero3DSection() {
       <div
         ref={pinRef}
         className="relative w-full overflow-hidden"
-        style={{ height: '100vh', background: '#080a0f' }} // Dark, clean navy
+        style={{ height: '100vh', background: '#080a0f' }} 
       >
         <div className="absolute inset-0 z-0">
           <Canvas
@@ -118,30 +118,34 @@ export default function Hero3DSection() {
             <color attach="background" args={['#080a0f']} />
             <fog attach="fog" args={['#080a0f', 8, 25]} />
 
-            {/* Apple-style Studio Lighting */}
-            <ambientLight intensity={0.4} />
-            {/* Soft key light from front-top-left */}
+            {/* Apple-style Studio Lighting (Refined & Moodier) */}
+            
+            {/* 1. Global Ambient (Reduced by ~60% from 0.4 to 0.15) */}
+            <ambientLight intensity={0.15} />
+
+            {/* 2. Soft Key Light from front-top-left (Reduced by 50% from 1.2 to 0.6) */}
             <directionalLight 
               position={[-4, 8, 6]} 
-              intensity={1.2} 
+              intensity={0.6} 
               color="#ffffff" 
               castShadow 
               shadow-mapSize={[1024, 1024]}
               shadow-bias={-0.0001}
             />
-            {/* Subtle rim light from back-right (teal) */}
+
+            {/* 3. Subtle rim light from back-right (Reduced dramatically to keep focus clean) */}
             <spotLight 
               position={[5, 4, -5]} 
               angle={0.5} 
               penumbra={1} 
-              intensity={2.5} 
+              intensity={0.8} 
               color="#48D9B4" 
             />
-            {/* Soft fill light */}
-            <hemisphereLight args={['#ffffff', '#080a0f', 0.3]} />
 
-            {/* Environment map for realistic PBR metal reflections */}
+            {/* Removed hemisphereLight completely to avoid over-filling the shadows */}
+
             <Suspense fallback={null}>
+              {/* Keep environment reflections but use lower intensity if supported, otherwise it just relies on materials */}
               <Environment preset="city" />
             </Suspense>
 

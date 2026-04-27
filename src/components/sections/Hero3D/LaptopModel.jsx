@@ -122,8 +122,8 @@ export default function LaptopModel(props) {
       }
 
       let emissiveInt = 0
-      if (p >= 0.45 && p < 0.55) emissiveInt = ((p - 0.45) / 0.1) * 1.5 // brighter!
-      else if (p >= 0.55) emissiveInt = 1.5
+      if (p >= 0.45 && p < 0.55) emissiveInt = ((p - 0.45) / 0.1) * 1.0 // subtle
+      else if (p >= 0.55) emissiveInt = 1.0
 
       screenMeshRef.current.material.emissiveIntensity = THREE.MathUtils.lerp(
         screenMeshRef.current.material.emissiveIntensity,
@@ -134,8 +134,8 @@ export default function LaptopModel(props) {
 
     if (screenGlowRef.current) {
       let glow = 0
-      if (p >= 0.45 && p < 0.55) glow = ((p - 0.45) / 0.1) * 0.15
-      else if (p >= 0.55) glow = 0.15
+      if (p >= 0.45 && p < 0.55) glow = ((p - 0.45) / 0.1) * 0.08
+      else if (p >= 0.55) glow = 0.08
       screenGlowRef.current.material.opacity = glow
     }
   })
