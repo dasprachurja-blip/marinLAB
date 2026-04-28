@@ -49,7 +49,7 @@ export default function Navbar() {
       <div className="section-container flex justify-between items-center h-20">
         {/* Logo */}
         <a href="#" onClick={(e) => handleNavClick(e, '#')} className="flex items-center gap-2 group">
-          <Waves className="w-6 h-6 text-teal group-hover:rotate-12 transition-transform duration-300" />
+          <Waves className="w-6 h-6 text-primary group-hover:rotate-12 transition-transform duration-300" />
           <span className="text-xl font-black tracking-tighter text-white uppercase">marinLab</span>
         </a>
 
@@ -60,7 +60,7 @@ export default function Navbar() {
               key={link.label}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className="text-muted text-xs font-semibold uppercase tracking-widest hover:text-teal transition-colors duration-300"
+              className="text-muted text-xs font-semibold uppercase tracking-widest hover:text-primary transition-colors duration-300"
             >
               {link.label}
             </a>
@@ -99,7 +99,7 @@ export default function Navbar() {
               key={link.label}
               href={link.href}
               onClick={(e) => handleNavClick(e, link.href)}
-              className="block text-muted text-sm font-semibold uppercase tracking-widest hover:text-teal transition-colors py-2"
+              className="block text-muted text-sm font-semibold uppercase tracking-widest hover:text-primary transition-colors py-2"
             >
               {link.label}
             </a>

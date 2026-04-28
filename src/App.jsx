@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useLenis } from '@/hooks/useLenis'
-import { initCursorSystem } from '@/animations/cursorSystem'
 import { initGSAP } from '@/animations/gsap.config'
 import PageWrapper from '@/components/layout/PageWrapper'
 import Home from '@/pages/Home'
@@ -12,7 +11,6 @@ export default function App() {
 
   useEffect(() => {
     initGSAP()
-    initCursorSystem()
   }, [])
 
   return (

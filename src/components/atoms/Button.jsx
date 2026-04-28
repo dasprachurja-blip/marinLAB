@@ -17,9 +17,9 @@ export default function Button({
   const base = 'relative overflow-hidden rounded-full font-semibold transition-all duration-300 inline-flex items-center justify-center gap-2'
 
   const variants = {
-    primary: 'bg-teal text-white shadow-[0_0_24px_rgba(255,42,85,0.4)] hover:shadow-[0_0_40px_rgba(255,42,85,0.7)] hover:bg-white hover:text-navy-dark',
-    secondary: 'bg-transparent border border-white/25 text-white hover:border-teal hover:text-teal',
-    outline: 'bg-transparent border border-teal/40 text-teal hover:bg-teal/10',
+    primary: 'bg-gradient-to-r from-primary to-[#4F46E5] text-white shadow-[0_0_24px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.7)] hover:-translate-y-1',
+    secondary: 'bg-white/5 border border-white/10 text-white backdrop-blur-md hover:bg-white/10 hover:border-primary/50 hover:text-primary',
+    outline: 'bg-transparent border border-primary/40 text-primary hover:bg-primary/10',
   }
 
   const sizes = {

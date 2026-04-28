@@ -25,14 +25,14 @@ export default function PortfolioSection() {
         <div className="flex gap-4">
           <button
             onClick={() => scroll('prev')}
-            className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:border-teal hover:text-teal transition-colors duration-300"
+            className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:border-primary hover:text-primary transition-colors duration-300"
             aria-label="Previous project"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => scroll('next')}
-            className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:border-teal hover:text-teal transition-colors duration-300"
+            className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center hover:border-primary hover:text-primary transition-colors duration-300"
             aria-label="Next project"
           >
             <ArrowRight className="w-5 h-5" />
@@ -59,7 +59,7 @@ export default function PortfolioSection() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-navy via-navy/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
             <div className="absolute bottom-0 left-0 right-0 p-8 md:p-10">
-              <p className="text-teal text-xs font-semibold tracking-widest uppercase mb-2">{project.tag}</p>
+              <p className="text-primary text-xs font-semibold tracking-widest uppercase mb-2">{project.tag}</p>
               <h3 className="text-2xl md:text-3xl font-bold text-white">{project.title}</h3>
             </div>
           </div>

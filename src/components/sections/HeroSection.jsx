@@ -32,7 +32,7 @@ export default function HeroSection() {
   return (
     <header className="relative min-h-screen flex items-center pt-20 overflow-hidden bg-gradient-to-b from-navy via-navy to-navy-light">
       {/* Ambient blobs */}
-      <GlowBlob color="teal" size={600} className="-top-40 -left-20" />
+      <GlowBlob color="primary" size={600} className="-top-40 -left-20" />
       <GlowBlob color="blue" size={500} className="bottom-0 -right-40" />
 
       <div className="section-container grid lg:grid-cols-2 gap-16 items-center relative z-10 w-full">
@@ -46,7 +46,7 @@ export default function HeroSection() {
             <span {...anim(350)} className={`block ${anim(350).className}`} style={anim(350).style}>
               We Build Websites
             </span>
-            <span {...anim(500)} className={`block teal-gradient-text ${anim(500).className}`} style={anim(500).style}>
+            <span {...anim(500)} className={`block primary-gradient-text ${anim(500).className}`} style={anim(500).style}>
               That Bring You Customers
             </span>
           </h1>
@@ -67,13 +67,13 @@ export default function HeroSection() {
 
           <div {...anim(950)} className={`flex flex-wrap gap-6 pt-6 border-t border-white/5 ${anim(950).className}`} style={anim(950).style}>
             <div className="flex items-center gap-2 text-sm text-muted">
-              <span className="text-teal">⭐</span> 50+ Projects
+              <span className="text-primary">⭐</span> 50+ Projects
             </div>
             <div className="flex items-center gap-2 text-sm text-muted">
-              <span className="text-teal">⚡</span> 3-7 Day Delivery
+              <span className="text-primary">⚡</span> 3-7 Day Delivery
             </div>
             <div className="flex items-center gap-2 text-sm text-muted">
-              <span className="text-teal">🌍</span> International Quality
+              <span className="text-primary">🌍</span> International Quality
             </div>
           </div>
         </div>
@@ -84,7 +84,7 @@ export default function HeroSection() {
           style={{ transitionDelay: '600ms' }}
         >
           {/* Background glow */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-teal/10 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] pointer-events-none" />
 
           <div className="relative w-full max-w-[580px] animate-float">
             {/* Laptop */}
@@ -102,9 +102,9 @@ export default function HeroSection() {
                 </div>
                 {/* Mock UI */}
                 <div className="p-6 space-y-4">
-                  <div className="h-3 w-28 bg-teal/20 rounded-full" />
+                  <div className="h-3 w-28 bg-primary/20 rounded-full" />
                   <div className="text-lg font-bold text-white leading-tight">We Build Websites</div>
-                  <div className="h-7 w-20 bg-teal rounded-full" />
+                  <div className="h-7 w-20 bg-primary rounded-full" />
                   <div className="flex gap-2">
                     <GlassCard hover={false} className="flex-1 h-14 !rounded-lg" />
                     <GlassCard hover={false} className="flex-1 h-14 !rounded-lg" />
@@ -133,12 +133,12 @@ export default function HeroSection() {
               <div className="w-full h-full bg-navy rounded-[1.5rem] overflow-hidden relative border border-white/5">
                 <div className="absolute top-2 left-1/2 -translate-x-1/2 w-14 h-4 bg-black rounded-full" />
                 <div className="p-5 pt-10 space-y-4">
-                  <div className="w-7 h-7 rounded-lg bg-teal/20" />
+                  <div className="w-7 h-7 rounded-lg bg-primary/20" />
                   <div className="space-y-2">
                     <div className="h-2 w-full bg-white/10 rounded-full" />
                     <div className="h-2 w-2/3 bg-white/10 rounded-full" />
                   </div>
-                  <div className="h-8 w-full bg-teal rounded-xl" />
+                  <div className="h-8 w-full bg-primary rounded-xl" />
                   <GlassCard hover={false} className="h-20 !rounded-xl" />
                 </div>
               </div>

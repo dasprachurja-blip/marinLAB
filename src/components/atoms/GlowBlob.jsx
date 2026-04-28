@@ -1,8 +1,8 @@
 import { cn } from '@/utils/cn'
 
-export default function GlowBlob({ color = 'teal', size = 500, className, ...props }) {
+export default function GlowBlob({ color = 'primary', size = 500, className, ...props }) {
   const colors = {
-    teal: 'rgba(72,217,180,0.08)',
+    primary: 'rgba(37,99,235,0.08)',
     blue: 'rgba(43,130,173,0.12)',
     mixed: 'rgba(72,217,180,0.06)',
   }

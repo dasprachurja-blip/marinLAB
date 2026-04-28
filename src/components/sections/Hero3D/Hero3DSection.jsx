@@ -1,10 +1,8 @@
-import { useEffect, useRef, useCallback, Suspense } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { Environment } from '@react-three/drei'
+import { useEffect, useRef, useCallback } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { scrollState } from './scrollState'
-import Scene from './Scene'
+import MagicRings from './MagicRings'
 import { ArrowRight } from 'lucide-react'
 import Button from '@/components/atoms/Button'
 import Badge from '@/components/atoms/Badge'
@@ -20,6 +18,7 @@ export default function Hero3DSection() {
   const wrapperRef = useRef(null)
   const pinRef = useRef(null)
   const uiRef = useRef(null)
+  const contentRef = useRef(null)
 
   useEffect(() => {
     const wrapper = wrapperRef.current
@@ -32,7 +31,7 @@ export default function Hero3DSection() {
       st = ScrollTrigger.create({
         trigger: wrapper,
         start: 'top top',
-        end: '+=150%',
+        end: '+=80%',
         pin: pinRef.current,
         pinSpacing: true,
         scrub: 1,
@@ -75,13 +74,17 @@ export default function Hero3DSection() {
   const updateUI = useCallback((p) => {
     if (uiRef.current) {
       // Zoom in and fade out as the user scrolls down
-      const fadeProgress = Math.min(p / 0.5, 1) // 0 to 1 over the first 50% of scroll
+      // Start fading later so it stays visible longer
+      const fadeProgress = Math.max(0, (p - 0.4) / 0.6) // Starts fading at 40% scroll, fully faded at 100%
       const opacity = 1 - fadeProgress
       const scale = 1 + (fadeProgress * 0.8) // Scales up to 1.8x
       
       uiRef.current.style.opacity = opacity.toString()
       uiRef.current.style.transform = `scale(${scale})`
-      uiRef.current.style.pointerEvents = opacity > 0.5 ? 'auto' : 'none'
+      
+      if (contentRef.current) {
+        contentRef.current.style.pointerEvents = opacity > 0.5 ? 'auto' : 'none'
+      }
     }
   }, [])
 
@@ -100,75 +103,43 @@ export default function Hero3DSection() {
         className="relative w-full overflow-hidden"
         style={{ height: '100vh', background: '#0A0B10' }} 
       >
-        <div className="absolute inset-0 z-0">
-          <Canvas
-            camera={{ position: [0, 1.2, 4], fov: 45 }}
-            dpr={[1, 1.5]}
-            gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
-            style={{ background: '#0A0B10' }}
-            onCreated={({ gl }) => gl.setClearColor('#0A0B10')}
-            shadows
-          >
-            <color attach="background" args={['#0A0B10']} />
-            <fog attach="fog" args={['#0A0B10', 8, 25]} />
-
-            {/* Apple-style Ultra-Soft Studio Lighting */}
-            <ambientLight intensity={0.1} />
-
-            {/* Soft Key Light */}
-            <directionalLight 
-              position={[-2, 10, 5]} 
-              intensity={0.4} 
-              color="#ffffff" 
-              castShadow 
-              shadow-mapSize={[1024, 1024]}
-              shadow-bias={-0.0005}
-            />
-
-            {/* Extremely subtle rim light */}
-            <spotLight 
-              position={[5, 5, -5]} 
-              angle={0.8} 
-              penumbra={1} 
-              intensity={0.3} 
-              color="#48D9B4" 
-            />
-
-            {/* Removed hemisphereLight completely to avoid over-filling the shadows */}
-
-            <Suspense fallback={null}>
-              {/* Keep environment reflections but use lower intensity if supported, otherwise it just relies on materials */}
-              <Environment preset="studio" />
-            </Suspense>
-
-            <Scene />
-          </Canvas>
+        <div className="absolute inset-0 z-0 pointer-events-auto">
+          <MagicRings
+            color="#2563EB"
+            colorTwo="#8B5CF6"
+            ringCount={6}
+            speed={1}
+            opacity={0.8}
+            followMouse={true}
+            mouseInfluence={0.15}
+            clickBurst={true}
+          />
         </div>
 
         {/* Debug progress — remove after testing */}
         <div
           id="debug-progress"
           className="absolute top-4 left-4 z-50 font-mono text-xs px-3 py-1.5 rounded-lg"
-          style={{ background: 'rgba(0,0,0,0.7)', color: '#FF2A55' }}
+          style={{ background: 'rgba(0,0,0,0.7)', color: '#2563EB' }}
         />
 
         <div
           ref={uiRef}
-          className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-auto"
+          className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none"
           style={{ transformOrigin: 'center center', willChange: 'transform, opacity' }}
         >
           {/* Subtle glow behind the text to ensure readability over the 3D elements */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#0A0B10]/80 rounded-full blur-[80px] pointer-events-none" />
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#FF2A55]/10 rounded-full blur-[140px] pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-navy-dark/80 rounded-full blur-[80px] pointer-events-none" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
 
-          <div className="relative z-10 text-center space-y-8 px-6 max-w-5xl mx-auto">
+          <div className="relative z-10 text-center space-y-8 px-6 max-w-5xl mx-auto pointer-events-none">
             <div className="flex justify-center">
               <Badge>Web Agency · Dhaka, Bangladesh</Badge>
             </div>
 
             <h1 className="text-5xl md:text-7xl lg:text-[80px] font-bold leading-[1.06] tracking-tighter text-white">
               <span className="block">We Build Websites</span>
-              <span className="block teal-gradient-text pb-2">That Bring You Customers</span>
+              <span className="block primary-gradient-text pb-2">That Bring You Customers</span>
             </h1>
 
             <p className="text-lg md:text-xl text-muted max-w-2xl mx-auto leading-relaxed">
@@ -176,7 +147,7 @@ export default function Hero3DSection() {
               premium experiences that turn browsers into believers within 3‑7 days.
             </p>
 
-            <div className="flex flex-wrap justify-center gap-5 pt-4">
+            <div ref={contentRef} className="flex flex-wrap justify-center gap-5 pt-4 pointer-events-auto">
               <Button variant="primary" size="lg" onClick={() => scrollTo('#contact')}>
                 GET YOUR WEBSITE <ArrowRight className="w-5 h-5" />
               </Button>
@@ -192,7 +163,7 @@ export default function Hero3DSection() {
                 ['🌍', 'International Quality'],
               ].map(([icon, label]) => (
                 <div key={label} className="flex items-center gap-2 text-sm text-muted pt-4">
-                  <span className="text-teal">{icon}</span> {label}
+                  <span className="text-primary">{icon}</span> {label}
                 </div>
               ))}
             </div>

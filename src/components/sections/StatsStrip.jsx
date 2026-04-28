@@ -10,7 +10,7 @@ function AnimatedStat({ value, suffix, label, delay }) {
     <div ref={ref} className="text-center">
       <div
         className={cn(
-          'stat-value text-4xl md:text-5xl font-bold text-teal mb-2 transition-all duration-700',
+          'stat-value text-4xl md:text-5xl font-bold text-primary mb-2 transition-all duration-700',
           inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
         )}
         style={{ transitionDelay: `${delay}ms` }}

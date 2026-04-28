@@ -4,17 +4,17 @@
 
 :root {
   /* Brand Colors */
-  --color-bg-primary: #0A0B10;
-  --color-bg-secondary: #12141D;
-  --color-bg-deep: #050508;
-  --color-accent: #FF2A55;
-  --color-glow: #FF5500;
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #A0B4C8;
+  --color-bg-primary: #040714;
+  --color-bg-secondary: #0B1225;
+  --color-bg-deep: #040714;
+  --color-accent: #2563EB;
+  --color-glow: rgba(37, 99, 235, 0.25);
+  --color-text-primary: #F8FAFC;
+  --color-text-secondary: #94A3B8;
 
   /* Glass surfaces */
-  --glass-bg: rgba(11, 42, 74, 0.6);
-  --glass-border: rgba(255, 255, 255, 0.07);
+  --glass-bg: rgba(15, 23, 42, 0.4);
+  --glass-border: rgba(248, 250, 252, 0.05);
   --glass-blur: blur(12px);
 
   /* Spacing */
@@ -23,7 +23,7 @@
   --container-pad: clamp(16px, 5vw, 80px);
 
   /* Typography */
-  --font-primary: 'Space Grotesk', -apple-system, sans-serif;
+  --font-primary: 'Inter', -apple-system, sans-serif;
   --tracking-tight: -0.02em;
   --leading-hero: 1.05;
 
@@ -57,8 +57,8 @@
   }
 
   ::selection {
-    background: rgba(255, 42, 85, 0.3);
-    color: #fff;
+    background: rgba(37, 99, 235, 0.3);
+    color: #F8FAFC;
   }
 }
 
@@ -77,8 +77,8 @@
     padding: 0 var(--container-pad);
   }
 
-  .teal-gradient-text {
-    background: linear-gradient(135deg, #FF2A55, #FF5500);
+  .primary-gradient-text {
+    background: linear-gradient(135deg, #2563EB, #8B5CF6);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

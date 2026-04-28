@@ -21,7 +21,7 @@ function FAQItem({ question, answer, index }) {
     >
       <GlassCard
         hover={false}
-        className={cn('overflow-hidden transition-all duration-300', open && 'border-teal/30')}
+        className={cn('overflow-hidden transition-all duration-300', open && 'border-primary/30')}
       >
         <button
           onClick={() => setOpen(!open)}
@@ -30,7 +30,7 @@ function FAQItem({ question, answer, index }) {
           <span className="text-lg md:text-xl font-bold pr-4">{question}</span>
           <ChevronDown
             className={cn(
-              'w-5 h-5 text-teal shrink-0 transition-transform duration-300',
+              'w-5 h-5 text-primary shrink-0 transition-transform duration-300',
               open && 'rotate-180'
             )}
           />

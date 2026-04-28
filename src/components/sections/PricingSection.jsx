@@ -33,11 +33,11 @@ function PricingCard({ plan, delay }) {
       <GlassCard
         className={cn(
           'p-10 flex flex-col h-full relative',
-          plan.featured && 'border-teal/40 !bg-navy-light md:scale-105 z-10 shadow-[0_0_40px_rgba(72,217,180,0.1)]'
+          plan.featured && 'border-primary/40 !bg-navy-light md:scale-105 z-10 shadow-[0_0_40px_rgba(72,217,180,0.1)]'
         )}
       >
         {plan.badge && (
-          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-teal text-navy-dark text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-wider">
+          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-navy-dark text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-wider">
             {plan.badge}
           </div>
         )}
@@ -50,7 +50,7 @@ function PricingCard({ plan, delay }) {
         <ul className="space-y-4 mb-10 flex-grow">
           {plan.features.map((feature) => (
             <li key={feature} className="flex items-center gap-3 text-muted">
-              <CheckCircle className="w-5 h-5 text-teal shrink-0" />
+              <CheckCircle className="w-5 h-5 text-primary shrink-0" />
               <span>{feature}</span>
             </li>
           ))}

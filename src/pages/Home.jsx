@@ -1,57 +1,36 @@
-import { Suspense, lazy } from 'react'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Hero3DSection from '@/components/sections/Hero3D/Hero3DSection'
 import StatsStrip from '@/components/sections/StatsStrip'
-import { ServicesSkeleton } from '@/components/sections/skeletons/ServicesSkeleton'
-import { PricingSkeleton } from '@/components/sections/skeletons/PricingSkeleton'
-import { PortfolioSkeleton, GenericSkeleton } from '@/components/sections/skeletons/PortfolioSkeleton'
-
-const ServicesSection = lazy(() => import('@/components/sections/ServicesSection'))
-const HowItWorks = lazy(() => import('@/components/sections/HowItWorks'))
-const PortfolioSection = lazy(() => import('@/components/sections/PortfolioSection'))
-const PricingSection = lazy(() => import('@/components/sections/PricingSection'))
-const AboutSection = lazy(() => import('@/components/sections/AboutSection'))
-const ContactSection = lazy(() => import('@/components/sections/ContactSection'))
-const FAQSection = lazy(() => import('@/components/sections/FAQSection'))
+import ServicesSection from '@/components/sections/ServicesSection'
+import HowItWorks from '@/components/sections/HowItWorks'
+import PortfolioSection from '@/components/sections/PortfolioSection'
+import PricingSection from '@/components/sections/PricingSection'
+import AboutSection from '@/components/sections/AboutSection'
+import ContactSection from '@/components/sections/ContactSection'
+import FAQSection from '@/components/sections/FAQSection'
+import TargetCursor from '@/components/ui/TargetCursor'
 
 export default function Home() {
   return (
     <main className="bg-navy overflow-x-hidden">
+      <TargetCursor 
+        targetSelector="button, a, .cursor-target, .magic-bento-card"
+        spinDuration={2}
+        hideDefaultCursor={true}
+        parallaxOn={true}
+      />
       <Navbar />
 
-      {/* Critical path — no lazy loading */}
       <Hero3DSection />
       <StatsStrip />
-
-      {/* Deferred sections with skeleton fallbacks */}
-      <Suspense fallback={<ServicesSkeleton />}>
-        <ServicesSection />
-      </Suspense>
-
-      <Suspense fallback={<GenericSkeleton />}>
-        <HowItWorks />
-      </Suspense>
-
-      <Suspense fallback={<PortfolioSkeleton />}>
-        <PortfolioSection />
-      </Suspense>
-
-      <Suspense fallback={<PricingSkeleton />}>
-        <PricingSection />
-      </Suspense>
-
-      <Suspense fallback={<GenericSkeleton />}>
-        <AboutSection />
-      </Suspense>
-
-      <Suspense fallback={<GenericSkeleton />}>
-        <ContactSection />
-      </Suspense>
-
-      <Suspense fallback={<GenericSkeleton />}>
-        <FAQSection />
-      </Suspense>
+      <ServicesSection />
+      <HowItWorks />
+      <PortfolioSection />
+      <PricingSection />
+      <AboutSection />
+      <ContactSection />
+      <FAQSection />
 
       <Footer />
     </main>

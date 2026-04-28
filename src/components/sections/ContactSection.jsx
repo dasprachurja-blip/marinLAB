@@ -72,7 +72,7 @@ export default function ContactSection() {
           {/* Contact info cards */}
           {contactItems.map((item) => (
             <GlassCard key={item.label} hover={false} className="px-6 py-4 flex items-center gap-4">
-              <item.icon className="w-5 h-5 text-teal" />
+              <item.icon className="w-5 h-5 text-primary" />
               <div>
                 <p className="text-xs uppercase tracking-wider text-muted">{item.label}</p>
                 <p className="text-white font-medium">{item.value}</p>
@@ -92,7 +92,7 @@ export default function ContactSection() {
                 onChange={handleChange}
                 required
                 placeholder="John Doe"
-                className="w-full bg-navy border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-muted/40 focus:border-teal/50 focus:outline-none transition-colors duration-300"
+                className="w-full bg-navy border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-muted/40 focus:border-primary/50 focus:outline-none transition-colors duration-300"
               />
             </div>
 
@@ -105,7 +105,7 @@ export default function ContactSection() {
                 onChange={handleChange}
                 required
                 placeholder="john@example.com"
-                className="w-full bg-navy border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-muted/40 focus:border-teal/50 focus:outline-none transition-colors duration-300"
+                className="w-full bg-navy border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-muted/40 focus:border-primary/50 focus:outline-none transition-colors duration-300"
               />
             </div>
 
@@ -116,7 +116,7 @@ export default function ContactSection() {
                   name="businessType"
                   value={form.businessType}
                   onChange={handleChange}
-                  className="w-full bg-navy border border-white/10 rounded-xl px-5 py-4 text-white focus:border-teal/50 focus:outline-none transition-colors duration-300 appearance-none"
+                  className="w-full bg-navy border border-white/10 rounded-xl px-5 py-4 text-white focus:border-primary/50 focus:outline-none transition-colors duration-300 appearance-none"
                 >
                   <option value="">Select type</option>
                   {['Restaurant', 'Clinic', 'Shop', 'E-Commerce', 'Agency', 'Other'].map((t) => (
@@ -130,7 +130,7 @@ export default function ContactSection() {
                   name="budget"
                   value={form.budget}
                   onChange={handleChange}
-                  className="w-full bg-navy border border-white/10 rounded-xl px-5 py-4 text-white focus:border-teal/50 focus:outline-none transition-colors duration-300 appearance-none"
+                  className="w-full bg-navy border border-white/10 rounded-xl px-5 py-4 text-white focus:border-primary/50 focus:outline-none transition-colors duration-300 appearance-none"
                 >
                   <option value="">Select budget</option>
                   {['Under ৳35K', '৳35K–৳65K', '৳65K–৳120K', '৳120K+', 'Custom'].map((b) => (
@@ -149,7 +149,7 @@ export default function ContactSection() {
                 required
                 rows={4}
                 placeholder="Tell us about your project..."
-                className="w-full bg-navy border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-muted/40 focus:border-teal/50 focus:outline-none transition-colors duration-300 resize-none"
+                className="w-full bg-navy border border-white/10 rounded-xl px-5 py-4 text-white placeholder:text-muted/40 focus:border-primary/50 focus:outline-none transition-colors duration-300 resize-none"
               />
             </div>
 
@@ -164,7 +164,7 @@ export default function ContactSection() {
             </Button>
 
             {submitted && (
-              <p className="text-teal text-sm text-center animate-pulse">
+              <p className="text-primary text-sm text-center animate-pulse">
                 ✓ Message sent! We&apos;ll reply within 1 hour.
               </p>
             )}
