@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <main className="bg-navy overflow-x-hidden">
       <TargetCursor 
-        targetSelector="button, a, .cursor-target, .magic-bento-card"
+        targetSelector="button, a, .cursor-target"
         spinDuration={2}
         hideDefaultCursor={true}
         parallaxOn={true}

@@ -31,11 +31,8 @@ export default function Hero3DSection() {
       st = ScrollTrigger.create({
         trigger: wrapper,
         start: 'top top',
-        end: '+=80%',
-        pin: pinRef.current,
-        pinSpacing: true,
-        scrub: 1,
-        anticipatePin: 1,
+        end: 'bottom top',
+        scrub: true,
         onUpdate: (self) => {
           scrollState.progress = self.progress
           updateUI(self.progress)
@@ -116,56 +113,84 @@ export default function Hero3DSection() {
           />
         </div>
 
+        {/* Minimalist Framing Accents */}
+        <div className="absolute top-8 left-8 w-12 h-12 border-t border-l border-white/10 rounded-tl-2xl pointer-events-none z-10 hidden md:block" />
+        <div className="absolute top-8 right-8 w-12 h-12 border-t border-r border-white/10 rounded-tr-2xl pointer-events-none z-10 hidden md:block" />
+        
+        {/* Faint vertical structural lines */}
+        <div className="absolute top-0 bottom-0 left-1/4 w-px bg-white/[0.02] pointer-events-none z-0 hidden lg:block" />
+        <div className="absolute top-0 bottom-0 right-1/4 w-px bg-white/[0.02] pointer-events-none z-0 hidden lg:block" />
+
         {/* Debug progress — remove after testing */}
         <div
           id="debug-progress"
-          className="absolute top-4 left-4 z-50 font-mono text-xs px-3 py-1.5 rounded-lg"
+          className="absolute top-4 left-4 z-50 font-mono text-xs px-3 py-1.5 rounded-lg hidden"
           style={{ background: 'rgba(0,0,0,0.7)', color: '#2563EB' }}
         />
 
         <div
           ref={uiRef}
-          className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none"
+          className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none pb-16"
           style={{ transformOrigin: 'center center', willChange: 'transform, opacity' }}
         >
           {/* Subtle glow behind the text to ensure readability over the 3D elements */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-navy-dark/80 rounded-full blur-[80px] pointer-events-none" />
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
 
-          <div className="relative z-10 text-center space-y-8 px-6 max-w-5xl mx-auto pointer-events-none">
+          <div className="relative z-10 text-center space-y-6 px-6 max-w-5xl mx-auto pointer-events-none">
             <div className="flex justify-center">
-              <Badge>Web Agency · Dhaka, Bangladesh</Badge>
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-white text-[10px] font-bold tracking-[0.2em] uppercase">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+                </span>
+                Design & Development company
+              </div>
             </div>
 
             <h1 className="text-5xl md:text-7xl lg:text-[80px] font-bold leading-[1.06] tracking-tighter text-white">
-              <span className="block">We Build Websites</span>
-              <span className="block primary-gradient-text pb-2">That Bring You Customers</span>
+              <span className="block">Websites designed</span>
+              <span className="block primary-gradient-text pb-2">to help you grow.</span>
             </h1>
 
             <p className="text-lg md:text-xl text-muted max-w-2xl mx-auto leading-relaxed">
-              High-performance digital engineering for ambitious brands. We ship
-              premium experiences that turn browsers into believers within 3‑7 days.
+              We are a design and development team that builds simple, beautiful, and highly effective websites.
             </p>
 
             <div ref={contentRef} className="flex flex-wrap justify-center gap-5 pt-4 pointer-events-auto">
               <Button variant="primary" size="lg" onClick={() => scrollTo('#contact')}>
-                GET YOUR WEBSITE <ArrowRight className="w-5 h-5" />
+                Start Your Project <ArrowRight className="w-5 h-5" />
               </Button>
               <Button variant="secondary" size="lg" onClick={() => scrollTo('#portfolio')}>
-                VIEW OUR WORK
+                See Our Work
               </Button>
             </div>
+          </div>
+        </div>
 
-            <div className="flex flex-wrap justify-center gap-8 pt-8 border-t border-white/5">
+        {/* Bottom Bar (Stats & Scroll Indicator) */}
+        <div className="absolute bottom-0 left-0 w-full border-t border-white/5 bg-black/10 backdrop-blur-sm pointer-events-none z-20">
+          <div className="max-w-[90rem] mx-auto px-6 h-16 flex items-center justify-between">
+            {/* Desktop Stats */}
+            <div className="hidden md:flex items-center gap-10">
               {[
-                ['⭐', '50+ Projects'],
-                ['⚡', '3-7 Day Delivery'],
+                ['⭐', '50+ Projects Delivered'],
+                ['⚡', '3-7 Day Turnaround'],
                 ['🌍', 'International Quality'],
               ].map(([icon, label]) => (
-                <div key={label} className="flex items-center gap-2 text-sm text-muted pt-4">
+                <div key={label} className="flex items-center gap-2.5 text-[13px] text-white/50 font-medium tracking-wide">
                   <span className="text-primary">{icon}</span> {label}
                 </div>
               ))}
+            </div>
+            
+            {/* Scroll Indicator */}
+            <div className="flex items-center justify-center md:justify-end w-full md:w-auto gap-3 text-[11px] text-white/40 uppercase tracking-[0.25em] font-bold">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping-slow absolute inline-flex h-full w-full rounded-full bg-white opacity-40" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-white/60" />
+              </span>
+              Scroll to explore
             </div>
           </div>
         </div>
