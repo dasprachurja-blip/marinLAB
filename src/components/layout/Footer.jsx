@@ -26,7 +26,7 @@ export default function Footer() {
           {/* Logo */}
           <div className="flex flex-col items-center md:items-start gap-2">
             <div className="flex items-center gap-2">
-              <Waves className="w-5 h-5 text-primary" />
+              <img src="/logo.png" alt="ArctiqFlow Logo" className="w-14 h-14 object-contain translate-y-0.5" />
               <span className="text-lg font-black uppercase tracking-tighter">ArctiqFlow</span>
             </div>
             <p className="text-muted text-sm">Made with love in Dhaka</p>

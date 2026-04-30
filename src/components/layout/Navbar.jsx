@@ -49,7 +49,7 @@ export default function Navbar() {
       <div className="section-container flex justify-between items-center h-20">
         {/* Logo */}
         <a href="#" onClick={(e) => handleNavClick(e, '#')} className="flex items-center gap-2 group">
-          <Waves className="w-6 h-6 text-primary group-hover:rotate-12 transition-transform duration-300" />
+          <img src="/logo.png" alt="ArctiqFlow Logo" className="w-20 h-20 object-contain translate-y-1 group-hover:scale-110 transition-transform duration-300" />
           <span className="text-xl font-black tracking-tighter text-white uppercase">ArctiqFlow</span>
         </a>
 
