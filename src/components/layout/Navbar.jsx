@@ -50,7 +50,7 @@ export default function Navbar() {
         {/* Logo */}
         <a href="#" onClick={(e) => handleNavClick(e, '#')} className="flex items-center gap-2 group">
           <Waves className="w-6 h-6 text-primary group-hover:rotate-12 transition-transform duration-300" />
-          <span className="text-xl font-black tracking-tighter text-white uppercase">marinLab</span>
+          <span className="text-xl font-black tracking-tighter text-white uppercase">ArctiqFlow</span>
         </a>
 
         {/* Desktop Nav */}

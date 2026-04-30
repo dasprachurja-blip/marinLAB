@@ -12,7 +12,7 @@ import { openWhatsApp } from '@/lib/whatsapp'
 const INITIAL = { name: '', email: '', businessType: '', budget: '', message: '' }
 
 const contactItems = [
-  { icon: Mail, label: 'Email', value: 'hello@marinlab.com' },
+  { icon: Mail, label: 'Email', value: 'hello@arctiqflow.com' },
   { icon: MapPin, label: 'Location', value: 'Dhaka, Bangladesh' },
   { icon: Clock, label: 'Response Time', value: 'Within 1 hour' },
 ]

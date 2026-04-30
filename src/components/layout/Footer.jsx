@@ -27,7 +27,7 @@ export default function Footer() {
           <div className="flex flex-col items-center md:items-start gap-2">
             <div className="flex items-center gap-2">
               <Waves className="w-5 h-5 text-primary" />
-              <span className="text-lg font-black uppercase tracking-tighter">marinLab</span>
+              <span className="text-lg font-black uppercase tracking-tighter">ArctiqFlow</span>
             </div>
             <p className="text-muted text-sm">Made with love in Dhaka</p>
           </div>
@@ -48,7 +48,7 @@ export default function Footer() {
 
           {/* Copyright */}
           <p className="text-muted text-sm text-center md:text-right">
-            © {new Date().getFullYear()} marinLab. Engineered for the deep tech era.
+            © {new Date().getFullYear()} ArctiqFlow. Engineered for the deep tech era.
           </p>
         </div>
       </div>
