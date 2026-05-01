@@ -25,6 +25,7 @@ export default function GlassCard({ children, className, style, ...props }) {
       transition={{ type: 'spring', stiffness: 300, damping: 25 }}
       {...props}
     >
+      <div className="hz-noise opacity-[0.04] pointer-events-none absolute inset-0 z-0"></div>
       {children}
     </motion.div>
   )

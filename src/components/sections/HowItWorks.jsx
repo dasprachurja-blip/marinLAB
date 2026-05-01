@@ -62,7 +62,7 @@ export default function HowItWorks() {
           start: 'top top',
           end: '+=200%', // 2 full screens of scrolling while pinned
           pin: true,
-          scrub: 1,
+          scrub: true,
         }
       })
       // The timeline duration will be 3 units (1 for each step transition roughly)

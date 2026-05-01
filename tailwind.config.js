@@ -4,10 +4,10 @@ export default {
   theme: {
     extend: {
       colors: {
-        navy: { DEFAULT: '#040714', dark: '#040714', light: '#0B1225' },
-        primary: { DEFAULT: '#2563EB', hover: '#3B82F6', active: '#1D4ED8' },
+        navy: { DEFAULT: '#0B0C10', dark: '#040405', light: '#16181D' },
+        primary: { DEFAULT: '#8BA3C6', hover: '#A5BBE0', active: '#728BB1' },
         accent: { purple: '#8B5CF6', emerald: '#10B981' },
-        muted: '#64748B',
+        muted: '#A1A1AA',
       },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'sans-serif'],

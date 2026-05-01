@@ -4,18 +4,18 @@
 
 :root {
   /* Brand Colors */
-  --color-bg-primary: #040714;
-  --color-bg-secondary: #0B1225;
-  --color-bg-deep: #040714;
-  --color-accent: #2563EB;
-  --color-glow: rgba(37, 99, 235, 0.25);
-  --color-text-primary: #F8FAFC;
-  --color-text-secondary: #94A3B8;
+  --color-bg-primary: #0B0C10;
+  --color-bg-secondary: #121318;
+  --color-bg-deep: #07080A;
+  --color-accent: #8BA3C6;
+  --color-glow: rgba(139, 163, 198, 0.1);
+  --color-text-primary: #FAFAFA;
+  --color-text-secondary: #A1A1AA;
 
   /* Glass surfaces */
-  --glass-bg: rgba(15, 23, 42, 0.4);
-  --glass-border: rgba(248, 250, 252, 0.05);
-  --glass-blur: blur(12px);
+  --glass-bg: rgba(15, 17, 21, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.04);
+  --glass-blur: blur(16px);
 
   /* Spacing */
   --section-gap: 120px;
@@ -78,7 +78,7 @@
   }
 
   .primary-gradient-text {
-    background: linear-gradient(135deg, #2563EB, #8B5CF6);
+    background: linear-gradient(135deg, #FFFFFF, #94A3B8);
     background-size: 200% auto;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;

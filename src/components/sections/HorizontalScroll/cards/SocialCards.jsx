@@ -82,10 +82,10 @@ export default function SocialCards() {
           {/* Top — Availability card */}
           <GlassCard className="p-6 md:p-8 flex flex-col justify-center flex-[1.2]">
             <div className="flex items-center gap-3 mb-4">
-              <span className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(16,185,129,0.5)]" />
-              <span className="text-sm font-medium text-white/70">Open to projects</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-[#2563EB] shadow-[0_0_12px_rgba(37,99,235,0.6)]" />
+              <span className="text-sm font-medium text-white/70 tracking-wide">Open to projects</span>
             </div>
-            <p className="text-xs text-white/30 leading-relaxed">
+            <p className="text-xs text-white/40 leading-relaxed font-light">
               Currently accepting new projects for Q3 2025. Let's discuss your vision.
             </p>
           </GlassCard>

@@ -55,7 +55,7 @@ export default function HorizontalScroll() {
             start: 'top top',
             end: () => `+=${totalScroll}`,
             pin: true,
-            scrub: 1.2,
+            scrub: true,
             invalidateOnRefresh: true,
             anticipatePin: 1,
             onUpdate: (self) => {
@@ -91,10 +91,31 @@ export default function HorizontalScroll() {
                 containerAnimation: scrollTween,
                 start: 'left 90%',
                 end: 'left 60%',
-                scrub: 1,
+                scrub: true,
               },
             }
           )
+
+          // Premium Parallax Effect inside cards
+          const parallaxEls = card.querySelectorAll('.parallax-element')
+          parallaxEls.forEach((el) => {
+            const speed = el.dataset.parallaxSpeed === 'fast' ? 80 : 30
+            gsap.fromTo(
+              el,
+              { x: speed },
+              {
+                x: -speed,
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: card,
+                  containerAnimation: scrollTween,
+                  start: 'left right',
+                  end: 'right left',
+                  scrub: true,
+                },
+              }
+            )
+          })
         })
 
         ScrollTrigger.refresh()
