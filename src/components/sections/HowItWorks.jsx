@@ -51,9 +51,10 @@ export default function HowItWorks() {
 
     let tl;
     
-    // We wrap the GSAP initialization in a timeout so it waits for the Hero section
-    // (which has a 400ms delay) to finish setting up its ScrollTrigger first.
-    // Otherwise, GSAP calculates the page heights out of order and everything collapses.
+    // We wrap the GSAP initialization in a timeout so it waits for BOTH the Hero section
+    // (400ms) and the Horizontal Scroll section (600ms) to finish setting up their
+    // ScrollTriggers first. Otherwise, GSAP calculates the pin spacer heights
+    // out of order and sections overlap.
     const timer = setTimeout(() => {
       tl = gsap.timeline({
         scrollTrigger: {
@@ -93,7 +94,7 @@ export default function HowItWorks() {
       tl.to('.flare', { opacity: 0, scale: 0, duration: 0.2 }, 1.8)
 
       ScrollTrigger.refresh()
-    }, 500)
+    }, 1200)
 
     return () => {
       clearTimeout(timer)
@@ -102,7 +103,7 @@ export default function HowItWorks() {
   }, [])
 
   return (
-    <section id="process" ref={containerRef} className="bg-navy-light/10 relative h-screen w-full overflow-hidden flex flex-col">
+    <section id="process" ref={containerRef} className="bg-navy-light/10 relative h-screen w-full overflow-hidden flex flex-col" style={{ zIndex: 2 }}>
       {/* Title Area - Fixed at top of the section */}
       <div className="text-center relative z-10 pt-16 md:pt-24 flex-none">
         <SectionLabel>THE PROCESS</SectionLabel>

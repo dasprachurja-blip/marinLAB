@@ -2,7 +2,7 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Hero3DSection from '@/components/sections/Hero3D/Hero3DSection'
 import StatsStrip from '@/components/sections/StatsStrip'
-import ServicesSection from '@/components/sections/ServicesSection'
+import HorizontalScroll from '@/components/sections/HorizontalScroll'
 import HowItWorks from '@/components/sections/HowItWorks'
 import PortfolioSection from '@/components/sections/PortfolioSection'
 import PricingSection from '@/components/sections/PricingSection'
@@ -24,7 +24,7 @@ export default function Home() {
 
       <Hero3DSection />
       <StatsStrip />
-      <ServicesSection />
+      <HorizontalScroll />
       <HowItWorks />
       <PortfolioSection />
       <PricingSection />
