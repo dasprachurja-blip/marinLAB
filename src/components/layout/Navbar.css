@@ -1,0 +1,291 @@
+/* Cinematic Liquid Glass Navbar */
+
+.card-nav-container {
+  position: fixed;
+  top: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  width: 92%;
+  max-width: 1200px;
+  z-index: 99;
+  box-sizing: border-box;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.card-nav-container.nav-hidden {
+  transform: translateX(-50%) translateY(-150%);
+}
+
+/* Base Nav styling with Liquid Glass Material */
+.card-nav {
+  display: block;
+  height: 64px;
+  padding: 0;
+  
+  /* Complex Liquid Glass Gradient */
+  background: linear-gradient(
+    135deg, 
+    rgba(20, 20, 22, 0.65) 0%, 
+    rgba(10, 10, 12, 0.8) 100%
+  );
+  
+  /* Noise overlay for tactile frosted feel */
+  background-image: 
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"),
+    linear-gradient(135deg, rgba(20, 20, 22, 0.65) 0%, rgba(10, 10, 12, 0.8) 100%);
+  
+  /* Top-lit delicate inner border */
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-left: 1px solid rgba(255, 255, 255, 0.04);
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.01);
+  
+  border-radius: 1.25rem;
+  
+  /* Ambient occlusion shadows */
+  box-shadow: 
+    0 8px 32px -4px rgba(0, 0, 0, 0.6),
+    0 0 1px rgba(255, 255, 255, 0.1);
+    
+  position: relative;
+  overflow: hidden;
+  will-change: height;
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+}
+
+.card-nav-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem 0.5rem 1.25rem;
+  z-index: 2;
+}
+
+.hamburger-menu {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap: 6px;
+  color: white;
+  padding: 0 0.5rem;
+}
+
+.hamburger-menu:hover .hamburger-line {
+  background-color: #8BA3C6; /* Primary color */
+}
+
+.hamburger-line {
+  width: 20px;
+  height: 1.5px;
+  background-color: currentColor;
+  transition:
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s ease,
+    margin 0.3s ease;
+  transform-origin: 50% 50%;
+}
+
+.hamburger-menu.open .hamburger-line:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+
+.hamburger-menu.open .hamburger-line:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo {
+  height: 44px; /* Increased for stronger authority */
+  object-fit: contain;
+}
+
+/* Premium CTA Button - Larger & More Eye-catching */
+.card-nav-cta-button {
+  background: linear-gradient(180deg, #ffffff 0%, #eef2f6 100%);
+  color: #040405;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 999px; /* Pill shape */
+  padding: 0 2rem; /* Wider padding for premium feel */
+  height: calc(100% - 12px); /* Taller button (52px in a 64px bar) */
+  margin-top: 6px;
+  margin-bottom: 6px;
+  font-weight: 700; /* Bolder text */
+  font-size: 0.95rem; /* Larger text */
+  letter-spacing: 0.02em; /* Sleek tracking */
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  box-shadow: 
+    0 4px 16px rgba(255, 255, 255, 0.15), /* Subtle white ambient glow */
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.card-nav-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 24px rgba(255, 255, 255, 0.25), /* Stronger glow on hover */
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  background: linear-gradient(180deg, #ffffff 0%, #ffffff 100%);
+}
+
+.card-nav-cta-button:active {
+  transform: translateY(0);
+}
+
+.card-nav-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 64px;
+  bottom: 0;
+  padding: 0.75rem;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  visibility: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.card-nav.open .card-nav-content {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Solid/Darker Dropdown Cards */
+.nav-card {
+  height: 100%;
+  flex: 1 1 0;
+  min-width: 0;
+  border-radius: 1rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 8px;
+  user-select: none;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  /* The inline style sets the specific solid dark background */
+  box-shadow: inset 0 1px 1px rgba(255,255,255,0.02);
+}
+
+.nav-card-label {
+  font-weight: 500;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #8BA3C6; /* primary */
+  opacity: 0.8;
+  margin-bottom: 4px;
+}
+
+.nav-card-links {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-card-link {
+  font-size: 1.25rem;
+  font-weight: 400;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: -0.02em;
+}
+
+.nav-card-link:hover {
+  transform: translateX(4px);
+  color: #ffffff;
+}
+
+.nav-card-link-icon {
+  width: 18px;
+  height: 18px;
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-card-link:hover .nav-card-link-icon {
+  opacity: 0.8;
+  transform: translate(0, 0);
+  color: #8BA3C6;
+}
+
+@media (max-width: 768px) {
+  .card-nav-container {
+    width: 95%;
+    top: 1rem;
+  }
+
+  .card-nav-top {
+    padding: 0.5rem 1rem;
+    justify-content: space-between;
+  }
+
+  .hamburger-menu {
+    order: 2;
+  }
+
+  .logo-container {
+    position: static;
+    transform: none;
+    order: 1;
+  }
+
+  .card-nav-cta-button {
+    display: none;
+  }
+
+  .card-nav-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 0.5rem;
+    bottom: 0;
+    justify-content: flex-start;
+  }
+
+  .nav-card {
+    height: auto;
+    min-height: 80px;
+    flex: 1 1 auto;
+    max-height: none;
+    padding: 16px;
+  }
+
+  .nav-card-label {
+    font-size: 0.75rem;
+  }
+
+  .nav-card-link {
+    font-size: 1.125rem;
+  }
+}
+
