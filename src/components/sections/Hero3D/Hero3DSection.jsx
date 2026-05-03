@@ -137,7 +137,7 @@ export default function Hero3DSection() {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-navy-dark/80 rounded-full blur-[80px] pointer-events-none" />
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
 
-          <div className="relative z-10 text-center space-y-6 px-6 max-w-5xl mx-auto pointer-events-none">
+          <div className="relative z-10 text-center space-y-6 px-6 max-w-7xl mx-auto pointer-events-none">
             <div className="flex justify-center">
               <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full border border-white/20 bg-white/5 text-white text-[10px] font-bold tracking-[0.2em] uppercase">
                 <span className="relative flex h-2 w-2">
@@ -148,16 +148,15 @@ export default function Hero3DSection() {
               </div>
             </div>
 
-            <h1 className="text-5xl md:text-7xl lg:text-[80px] font-bold leading-[1.06] tracking-tighter text-white">
-              <span className="block">Websites designed</span>
-              <span className="block primary-gradient-text pb-2">to help you grow.</span>
+            <h1 className="text-6xl md:text-8xl lg:text-[120px] font-bold leading-ultra-tight tracking-ultra-tight text-white mb-8">
+              Websites designed <span className="primary-gradient-text">to help you grow.</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-muted max-w-2xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-2xl text-muted max-w-3xl mx-auto leading-relaxed font-medium tracking-tight">
               We are a design and development team that builds simple, beautiful, and highly effective websites.
             </p>
 
-            <div ref={contentRef} className="flex flex-wrap justify-center gap-5 pt-4 pointer-events-auto">
+            <div ref={contentRef} className="flex flex-wrap justify-center gap-6 pt-6 pointer-events-auto">
               <Button variant="primary" size="lg" onClick={() => scrollTo('#contact')}>
                 Start Your Project <ArrowRight className="w-5 h-5" />
               </Button>

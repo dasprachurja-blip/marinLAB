@@ -11,9 +11,15 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', '-apple-system', 'sans-serif'],
-        heading: ['Inter', '-apple-system', 'sans-serif'],
+        heading: ['"Space Grotesk"', '-apple-system', 'sans-serif'],
+      },
+      lineHeight: {
+        'ultra-tight': '0.85',
+        'super-tight': '0.9',
       },
       letterSpacing: {
+        'ultra-tight': '-0.04em',
+        'super-tight': '-0.03em',
         tighter: '-0.02em',
         widest: '0.15em',
       },
