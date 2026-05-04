@@ -1,5 +1,4 @@
 import { useRef, useCallback } from 'react'
-import { motion } from 'motion/react'
 import { cn } from '@/utils/cn'
 
 export default function GlassCard({ children, className, style, ...props }) {
@@ -16,17 +15,15 @@ export default function GlassCard({ children, className, style, ...props }) {
   }, [])
 
   return (
-    <motion.div
+    <div
       ref={cardRef}
       className={cn('glass-hz', className)}
       style={style}
       onMouseMove={handleMouseMove}
-      whileHover={{ scale: 1.015, y: -4 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 25 }}
       {...props}
     >
-      <div className="hz-noise opacity-[0.04] pointer-events-none absolute inset-0 z-0"></div>
+      <div className="hz-noise opacity-[0.03] pointer-events-none absolute inset-0 z-0" />
       {children}
-    </motion.div>
+    </div>
   )
 }

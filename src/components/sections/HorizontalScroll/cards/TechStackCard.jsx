@@ -78,10 +78,10 @@ export default function TechStackCard() {
           <span className="text-xs font-semibold uppercase tracking-widest text-[#2563EB]">
             Our Stack
           </span>
-          <h3 className="text-2xl md:text-3xl font-bold text-white mt-2 tracking-tight">
+          <h3 className="text-4xl md:text-5xl lg:text-[56px] font-bold text-white mt-4 tracking-ultra-tight leading-ultra-tight">
             Built with Modern Tech
           </h3>
-          <p className="text-sm text-white/40 mt-2 max-w-md">
+          <p className="text-base md:text-lg text-white/50 mt-4 max-w-md tracking-tight">
             We leverage cutting-edge tools to deliver fast, scalable, and beautiful digital products.
           </p>
         </div>

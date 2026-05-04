@@ -5,7 +5,7 @@ export default function GlassCard({ children, className, hover = true, ...props 
     <div
       className={cn(
         'glass-card relative overflow-hidden',
-        hover && 'transition-all duration-500 hover:border-primary/40 hover:-translate-y-1',
+        hover && 'transition-all duration-500 hover:border-white/10 hover:-translate-y-0.5',
         className
       )}
       {...props}

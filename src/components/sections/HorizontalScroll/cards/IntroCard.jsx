@@ -1,53 +1,57 @@
 import GlassCard from '../atoms/GlassCard'
 
+const SERVICES = ['Web Design', 'Development', 'Brand Identity', 'Motion Design', 'SEO', 'Performance']
+
 export default function IntroCard() {
   return (
     <div className="hz-card-intro flex items-center" data-card="1">
-      <GlassCard className="w-full h-full flex flex-col p-10 md:p-12 relative overflow-hidden">
-        {/* Top Content Group */}
-        <div className="flex flex-col gap-6 relative z-10">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <img src="/logo.png" alt="ArctiqFlow" className="w-10 h-10 object-contain" />
-              <span className="text-white/60 text-[11px] font-semibold uppercase tracking-widest">ArctiqFlow</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
-              <span className="text-[11px] text-white/40 font-medium tracking-wide">Available</span>
-            </div>
+      <GlassCard className="w-full h-full flex flex-col p-10 md:p-14 relative overflow-hidden">
+        {/* Top bar */}
+        <div className="flex items-center justify-between relative z-10">
+          <div className="flex items-center gap-3">
+            <img src="/logo.png" alt="ArctiqFlow" className="w-8 h-8 object-contain" />
+            <span className="text-white/30 text-[10px] font-semibold uppercase tracking-[0.2em]">ArctiqFlow</span>
           </div>
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
+            <span className="text-[10px] text-white/25 font-medium tracking-wide">Available for projects</span>
+          </div>
+        </div>
 
-          <div>
-            <h2 className="text-3xl md:text-4xl lg:text-[42px] font-bold tracking-tight leading-[1.1] text-white mb-5">
-              Built for growth.<br />
-              <span className="bg-gradient-to-r from-white to-white/50 bg-clip-text text-transparent">
-                Designed for impact.
+        {/* Main content */}
+        <div className="flex-1 flex flex-col justify-center relative z-10 py-8">
+          <h2
+            className="font-heading font-bold tracking-ultra-tight leading-ultra-tight text-white mb-8"
+            style={{ fontSize: 'clamp(44px, 4.5vw, 80px)' }}
+          >
+            Built for growth.
+            <br />
+            <span className="text-white/25">
+              Designed for impact.
+            </span>
+          </h2>
+          <p className="text-base md:text-lg text-white/35 leading-relaxed max-w-[460px] font-medium tracking-tight">
+            ArctiqFlow is a creative studio crafting modern, high-performance digital experiences for ambitious brands.
+          </p>
+        </div>
+
+        {/* Bottom — Marquee strip */}
+        <div className="relative z-10 pt-6 border-t border-white/[0.04] overflow-hidden">
+          <div className="flex gap-12 marquee-track">
+            {[...SERVICES, ...SERVICES].map((s, i) => (
+              <span key={i} className="text-[11px] text-white/15 font-semibold uppercase tracking-[0.2em] whitespace-nowrap flex items-center gap-3">
+                {s}
+                <span className="w-1 h-1 rounded-full bg-white/10" />
               </span>
-            </h2>
-            <p className="text-[15px] md:text-base text-white/50 leading-relaxed max-w-[340px] font-light">
-              ArctiqFlow is a creative web design and development studio crafting
-              modern, high-performance digital experiences for ambitious brands.
-            </p>
+            ))}
           </div>
         </div>
 
-        {/* Bottom — Subtle Info */}
-        <div className="mt-auto flex items-end justify-between relative z-10 pt-8 border-t border-white/5">
-          <div>
-            <p className="text-[10px] text-white/25 uppercase tracking-widest mb-1.5 font-semibold">Based in</p>
-            <p className="text-[13px] text-white/50">Dhaka, Bangladesh</p>
-          </div>
-          <div className="text-right">
-            <p className="text-[10px] text-white/25 uppercase tracking-widest mb-1.5 font-semibold">Focus</p>
-            <p className="text-[13px] text-white/50">Web · Brand · Motion</p>
-          </div>
-        </div>
-
-        {/* Decorative Light Beam */}
+        {/* Decorative corner light */}
         <div
-          className="absolute top-0 left-0 w-[400px] h-[400px] pointer-events-none"
+          className="absolute top-0 left-0 w-[350px] h-[350px] pointer-events-none"
           style={{
-            background: 'radial-gradient(circle at 0% 0%, rgba(255,255,255,0.03), transparent 60%)',
+            background: 'radial-gradient(circle at 0% 0%, rgba(255,255,255,0.02), transparent 60%)',
           }}
         />
       </GlassCard>

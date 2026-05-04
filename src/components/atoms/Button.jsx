@@ -14,18 +14,19 @@ export default function Button({
   const ref = useRef(null)
   useMagneticHover(ref)
 
-  const base = 'relative overflow-hidden rounded-full font-semibold transition-all duration-300 inline-flex items-center justify-center gap-2'
+  const base = 'relative overflow-hidden rounded-full font-semibold inline-flex items-center justify-center gap-2 transition-all duration-300 ease-expo-out'
 
   const variants = {
-    primary: 'bg-gradient-to-r from-primary to-[#4F46E5] text-white shadow-[0_0_24px_rgba(37,99,235,0.4)] hover:shadow-[0_0_40px_rgba(37,99,235,0.7)] hover:-translate-y-1',
-    secondary: 'bg-white/5 border border-white/10 text-white backdrop-blur-md hover:bg-white/10 hover:border-primary/50 hover:text-primary',
-    outline: 'bg-transparent border border-primary/40 text-primary hover:bg-primary/10',
+    primary: 'bg-white text-[#0A0B0F] hover:bg-white/90 hover:-translate-y-0.5 shadow-[0_0_0_1px_rgba(255,255,255,0.1)]',
+    secondary: 'bg-transparent border border-white/12 text-white/80 backdrop-blur-sm hover:bg-white/5 hover:border-white/25 hover:text-white',
+    ghost: 'bg-transparent text-white/60 hover:text-white underline-offset-4 hover:underline',
+    outline: 'bg-transparent border border-white/20 text-white hover:bg-white/5 hover:border-white/40',
   }
 
   const sizes = {
-    sm: 'px-5 py-2.5 text-sm',
-    md: 'px-7 py-3.5 text-base',
-    lg: 'px-9 py-4 text-lg',
+    sm: 'px-5 py-2.5 text-[13px] tracking-wide',
+    md: 'px-7 py-3.5 text-sm tracking-wide',
+    lg: 'px-9 py-4 text-[15px] tracking-wide',
   }
 
   const classes = cn(base, variants[variant], sizes[size], className)
@@ -33,9 +34,6 @@ export default function Button({
   if (href) {
     return (
       <a ref={ref} href={href} className={classes} {...props}>
-        {variant === 'primary' && (
-          <span className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 -translate-x-full animate-shimmer pointer-events-none" />
-        )}
         <span className="relative z-10 flex items-center gap-2">{children}</span>
       </a>
     )
@@ -43,9 +41,6 @@ export default function Button({
 
   return (
     <button ref={ref} className={classes} onClick={onClick} {...props}>
-      {variant === 'primary' && (
-        <span className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent skew-x-12 -translate-x-full animate-shimmer pointer-events-none" />
-      )}
       <span className="relative z-10 flex items-center gap-2">{children}</span>
     </button>
   )

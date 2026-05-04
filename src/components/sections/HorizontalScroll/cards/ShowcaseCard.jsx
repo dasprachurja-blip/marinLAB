@@ -1,73 +1,78 @@
 import GlassCard from '../atoms/GlassCard'
 
+const projectTags = ['Restaurant Site', 'E-Commerce', 'Portfolio', 'Landing Page']
+
 export default function ShowcaseCard() {
   return (
     <div className="hz-card-showcase flex items-center" data-card="3">
-      <GlassCard className="w-full h-full flex flex-col p-8 md:p-12">
-        {/* Label */}
-        <div className="mb-6">
-          <span className="text-xs font-semibold uppercase tracking-widest text-white/60">
-            Featured Work
-          </span>
-          <h3 className="text-2xl md:text-3xl font-bold text-white mt-2 tracking-tight">
-            Responsive by Default
-          </h3>
-          <p className="text-sm text-white/40 mt-2 max-w-sm">
-            Every project is crafted to perform flawlessly across all devices and screen sizes.
-          </p>
+      <GlassCard className="w-full h-full flex flex-col md:flex-row overflow-hidden">
+        {/* Left — Content */}
+        <div className="flex-1 flex flex-col p-10 md:p-14 justify-between">
+          <div>
+            <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-white/25">
+              Featured Work
+            </span>
+            <h3
+              className="font-heading font-bold text-white mt-5 tracking-super-tight leading-super-tight"
+              style={{ fontSize: 'clamp(36px, 3.5vw, 60px)' }}
+            >
+              Responsive
+              <br />
+              <span className="text-white/25">by default.</span>
+            </h3>
+            <p className="text-sm md:text-base text-white/30 mt-5 max-w-sm tracking-tight leading-relaxed">
+              Every project is crafted to perform flawlessly across all devices and screen sizes.
+            </p>
+          </div>
+
+          {/* Project tags */}
+          <div className="flex flex-wrap gap-2 mt-8">
+            {projectTags.map((tag) => (
+              <span
+                key={tag}
+                className="px-4 py-2 rounded-full text-[11px] font-medium text-white/30 border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05] hover:text-white/50 transition-all duration-300"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
         </div>
 
-        {/* Mockup Container */}
-        <div className="flex-1 relative flex items-center justify-center">
-          {/* Desktop Browser Mockup */}
-          <div className="mockup-browser w-full max-w-lg relative parallax-element" data-parallax-speed="slow">
-            {/* Browser Bar */}
-            <div className="mockup-browser-bar">
-              <div className="mockup-dot" />
-              <div className="mockup-dot" />
-              <div className="mockup-dot" />
-              <div className="flex-1 mx-4">
-                <div className="h-5 bg-white/5 rounded-full flex items-center px-3">
-                  <span className="text-[10px] text-white/20">arctiqflow.com</span>
+        {/* Right — CSS Wavy Visual Panel */}
+        <div className="flex-1 min-h-[300px] relative">
+          <div className="wave-panel">
+            <div className="wave-ridges" />
+            
+            {/* Browser mockup floating on top */}
+            <div className="absolute inset-0 flex items-center justify-center z-10 p-8">
+              <div className="mockup-browser w-full max-w-sm parallax-element" data-parallax-speed="slow">
+                <div className="mockup-browser-bar">
+                  <div className="mockup-dot" />
+                  <div className="mockup-dot" />
+                  <div className="mockup-dot" />
+                  <div className="flex-1 mx-4">
+                    <div className="h-4 bg-white/[0.04] rounded-full flex items-center px-3">
+                      <span className="text-[9px] text-white/15">arctiqflow.com</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="relative overflow-hidden" style={{ aspectRatio: '16/10' }}>
+                  <img
+                    src="/previews/restaurant.png"
+                    alt="Website showcase — desktop view"
+                    className="w-full h-full object-cover object-top"
+                    loading="lazy"
+                  />
+                  <div
+                    className="absolute inset-0 pointer-events-none"
+                    style={{
+                      background: 'linear-gradient(180deg, transparent 50%, rgba(12,13,17,0.9) 100%)',
+                    }}
+                  />
                 </div>
               </div>
             </div>
-            {/* Screen Content */}
-            <div className="relative overflow-hidden" style={{ aspectRatio: '16/10' }}>
-              <img
-                src="/previews/restaurant.png"
-                alt="Website showcase — desktop view"
-                className="w-full h-full object-cover object-top"
-              />
-              {/* Ambient shadow overlay */}
-              <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                  background: 'linear-gradient(180deg, transparent 60%, rgba(15,17,21,0.9) 100%)',
-                }}
-              />
-            </div>
-
-            {/* Mobile Mockup Overlay */}
-            <div className="mockup-phone parallax-element" data-parallax-speed="fast">
-              <div className="mockup-phone-notch" />
-              <div className="overflow-hidden" style={{ aspectRatio: '9/19' }}>
-                <img
-                  src="/previews/restaurant.png"
-                  alt="Website showcase — mobile view"
-                  className="w-full h-full object-cover object-top scale-150"
-                />
-              </div>
-            </div>
           </div>
-
-          {/* Soft highlight behind mockup */}
-          <div
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle at 50% 60%, rgba(255,255,255,0.03), transparent 60%)',
-            }}
-          />
         </div>
       </GlassCard>
     </div>

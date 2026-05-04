@@ -7,13 +7,9 @@ import './HorizontalScroll.css'
 import BackgroundAtmosphere from './atmosphere/BackgroundAtmosphere'
 import ProgressBar from './atoms/ProgressBar'
 import IntroCard from './cards/IntroCard'
-import SocialCards from './cards/SocialCards'
+import BentoSocialCard from './cards/BentoSocialCard'
 import ShowcaseCard from './cards/ShowcaseCard'
-import TechStackCard from './cards/TechStackCard'
-import FacebookCard from './cards/FacebookCard'
-import InstagramCard from './cards/InstagramCard'
 import CTACard from './cards/CTACard'
-import PhilosophyCard from './cards/PhilosophyCard'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -41,12 +37,10 @@ export default function HorizontalScroll() {
     const track = trackRef.current
     let ctx
 
-    // Allow other ScrollTriggers (Hero, HowItWorks) to settle first
     const timer = setTimeout(() => {
       ctx = gsap.context(() => {
         const totalScroll = track.scrollWidth - window.innerWidth
 
-        // Main horizontal scroll tween
         const scrollTween = gsap.to(track, {
           x: () => -totalScroll,
           ease: 'none',
@@ -59,7 +53,6 @@ export default function HorizontalScroll() {
             invalidateOnRefresh: true,
             anticipatePin: 1,
             onUpdate: (self) => {
-              // Update progress bar directly via ref for performance
               if (progressRef.current) {
                 progressRef.current.style.transform = `scaleX(${self.progress})`
               }
@@ -67,19 +60,14 @@ export default function HorizontalScroll() {
           },
         })
 
-        // Staggered card reveal using containerAnimation
+        // Card reveal animations
         const cards = track.querySelectorAll('[data-card]')
-        cards.forEach((card, i) => {
-          // Get the first child (the GlassCard wrapper)
+        cards.forEach((card) => {
           const inner = card.querySelector('.glass-hz') || card
 
           gsap.fromTo(
             inner,
-            {
-              opacity: 0,
-              y: 40,
-              scale: 0.96,
-            },
+            { opacity: 0, y: 40, scale: 0.97 },
             {
               opacity: 1,
               y: 0,
@@ -96,7 +84,7 @@ export default function HorizontalScroll() {
             }
           )
 
-          // Premium Parallax Effect inside cards
+          // Parallax
           const parallaxEls = card.querySelectorAll('.parallax-element')
           parallaxEls.forEach((el) => {
             const speed = el.dataset.parallaxSpeed === 'fast' ? 80 : 30
@@ -128,7 +116,7 @@ export default function HorizontalScroll() {
     }
   }, [isMobile])
 
-  // Mobile: native horizontal scroll with progress
+  // Mobile scroll progress
   const handleMobileScroll = useCallback((e) => {
     const el = e.currentTarget
     const max = el.scrollWidth - el.clientWidth
@@ -139,7 +127,7 @@ export default function HorizontalScroll() {
 
   if (isMobile) {
     return (
-      <section id="services" className="relative bg-[#040714]">
+      <section id="services" className="relative bg-[#07080A]">
         <div className="relative">
           <div ref={progressRef} className="hz-progress" />
           <div className="hz-pinned-label">WHAT WE DO</div>
@@ -150,13 +138,9 @@ export default function HorizontalScroll() {
           >
             <BackgroundAtmosphere trackRef={trackRef} />
             <IntroCard />
-            <SocialCards />
+            <BentoSocialCard />
             <ShowcaseCard />
-            <TechStackCard />
-            <FacebookCard />
-            <InstagramCard />
             <CTACard />
-            <PhilosophyCard />
           </div>
         </div>
       </section>
@@ -168,19 +152,13 @@ export default function HorizontalScroll() {
       <BackgroundAtmosphere trackRef={trackRef} />
       <div ref={progressRef} className="hz-progress" />
 
-      {/* Pinned label */}
       <div className="hz-pinned-label">WHAT WE DO</div>
 
-      {/* Horizontal track */}
       <div ref={trackRef} className="hz-track">
         <IntroCard />
-        <SocialCards />
+        <BentoSocialCard />
         <ShowcaseCard />
-        <TechStackCard />
-        <FacebookCard />
-        <InstagramCard />
         <CTACard />
-        <PhilosophyCard />
       </div>
     </section>
   )

@@ -21,13 +21,13 @@ export default function PhilosophyCard() {
             </p>
           </div>
 
-          <blockquote className="text-xl md:text-2xl font-light text-white/70 leading-relaxed tracking-tight italic mb-8">
+          <blockquote className="text-3xl md:text-4xl lg:text-[44px] font-light text-white/80 leading-super-tight tracking-tight italic mb-10">
             "Good design is not what it looks like — it's how it makes people feel."
           </blockquote>
 
-          <div className="w-8 h-px bg-white/10 mx-auto mb-6" />
+          <div className="w-8 h-px bg-white/10 mx-auto mb-8" />
 
-          <p className="text-sm text-white/30 leading-relaxed">
+          <p className="text-base md:text-lg text-white/40 leading-relaxed tracking-tight">
             We believe in the quiet power of intentional design. Every interaction,
             every transition, every pixel serves a purpose.
           </p>

@@ -1,13 +1,13 @@
 import { cn } from '@/utils/cn'
 
-export default function SectionWrapper({ children, className, id, ...props }) {
+export default function SectionWrapper({ children, id, className }) {
   return (
     <section
       id={id}
-      className={cn('relative py-24 md:py-32', className)}
-      {...props}
+      data-section={id}
+      className={cn('py-32 md:py-40 relative', className)}
     >
-      <div className="section-container relative z-10">
+      <div className="section-container">
         {children}
       </div>
     </section>

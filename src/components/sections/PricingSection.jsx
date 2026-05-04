@@ -1,7 +1,5 @@
 import { CheckCircle } from 'lucide-react'
 import SectionWrapper from '@/components/layout/SectionWrapper'
-import SectionLabel from '@/components/atoms/SectionLabel'
-import GlassCard from '@/components/atoms/GlassCard'
 import Button from '@/components/atoms/Button'
 import { plans } from '@/data/pricing'
 import { formatPrice } from '@/utils/formatPrice'
@@ -30,53 +28,63 @@ function PricingCard({ plan, delay }) {
       )}
       style={{ transitionDelay: `${delay}ms` }}
     >
-      <GlassCard
+      <div
         className={cn(
-          'p-10 flex flex-col h-full relative',
-          plan.featured && 'border-primary/40 !bg-navy-light md:scale-105 z-10 shadow-[0_0_40px_rgba(72,217,180,0.1)]'
+          'glass-card p-10 flex flex-col h-full relative',
+          plan.featured && 'border-white/15'
         )}
       >
+        {/* Featured accent line */}
+        {plan.featured && (
+          <div className="absolute top-0 left-8 right-8 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+        )}
+
         {plan.badge && (
-          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-navy-dark text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-wider">
+          <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-[#0A0B0F] text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-wider">
             {plan.badge}
           </div>
         )}
 
-        <h4 className="text-lg font-bold uppercase tracking-wider mb-2">{plan.label}</h4>
-        <div className="text-3xl md:text-4xl font-bold mb-8">
+        <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40 mb-4">{plan.label}</h4>
+        <div className="text-4xl md:text-5xl font-heading font-bold text-white mb-10 tracking-tight">
           {plan.pricePrefix || ''}{formatPrice(plan.price)}{plan.priceSuffix || ''}
         </div>
 
         <ul className="space-y-4 mb-10 flex-grow">
           {plan.features.map((feature) => (
-            <li key={feature} className="flex items-center gap-3 text-muted">
-              <CheckCircle className="w-5 h-5 text-primary shrink-0" />
+            <li key={feature} className="flex items-center gap-3 text-white/40 text-sm">
+              <CheckCircle className="w-4 h-4 text-white/30 shrink-0" />
               <span>{feature}</span>
             </li>
           ))}
         </ul>
 
         <Button
-          variant={plan.variant}
+          variant={plan.featured ? 'primary' : 'secondary'}
           className="w-full"
           onClick={scrollToContact}
         >
           {plan.cta}
         </Button>
-      </GlassCard>
+      </div>
     </div>
   )
 }
 
 export default function PricingSection() {
   return (
-    <SectionWrapper id="pricing" className="bg-navy-dark/50">
-      <div className="text-center mb-16 reveal-up">
-        <SectionLabel>PRICING</SectionLabel>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Transparent Investment</h2>
+    <SectionWrapper id="pricing" className="bg-[#08090D]">
+      <div className="text-center mb-20">
+        <span className="section-label mb-4 block mx-auto justify-center">PRICING</span>
+        <h2
+          className="font-heading font-bold tracking-super-tight text-white"
+          style={{ fontSize: 'clamp(36px, 5vw, 72px)' }}
+        >
+          Transparent Investment
+        </h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
         {plans.map((plan, i) => (
           <PricingCard key={plan.id} plan={plan} delay={i * 100} />
         ))}
