@@ -86,7 +86,7 @@ export default function SocialCards() {
               <span className="text-sm font-medium text-white/70 tracking-wide">Open to projects</span>
             </div>
             <p className="text-xs text-white/40 leading-relaxed font-light">
-              Currently accepting new projects for Q3 2025. Let's discuss your vision.
+              Currently accepting new projects for Q2 2026. Let's discuss your vision.
             </p>
           </GlassCard>
 

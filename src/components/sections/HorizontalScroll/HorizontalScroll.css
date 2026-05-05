@@ -223,7 +223,7 @@
   height: 100%;
   overflow: hidden;
   border-radius: 16px;
-  background: #0a0a10;
+  background: linear-gradient(145deg, #0a0b12 0%, #0d0e18 50%, #090a10 100%);
 }
 
 .wave-panel::before {
@@ -234,9 +234,9 @@
     repeating-radial-gradient(
       circle at 50% 50%,
       transparent 0px,
-      transparent 20px,
-      rgba(255,255,255,0.012) 20px,
-      rgba(255,255,255,0.012) 21px
+      transparent 18px,
+      rgba(37,99,235,0.025) 18px,
+      rgba(37,99,235,0.025) 19px
     );
   animation: waveRotate 30s linear infinite;
 }
@@ -246,8 +246,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 30% 50%, rgba(20,20,40,0.8), transparent 70%),
-    radial-gradient(ellipse at 70% 50%, rgba(15,15,30,0.6), transparent 70%);
+    radial-gradient(ellipse at 30% 40%, rgba(37,99,235,0.08), transparent 60%),
+    radial-gradient(ellipse at 80% 70%, rgba(37,99,235,0.04), transparent 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(8,8,16,0.9), transparent 70%);
 }
 
 @keyframes waveRotate {
@@ -263,11 +264,11 @@
     repeating-linear-gradient(
       90deg,
       transparent 0px,
-      transparent 40px,
-      rgba(255,255,255,0.008) 40px,
-      rgba(255,255,255,0.008) 41px
+      transparent 36px,
+      rgba(255,255,255,0.03) 36px,
+      rgba(255,255,255,0.03) 37px
     );
-  mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 85%);
   -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
 }
 

@@ -118,7 +118,7 @@ export default function BentoSocialCard() {
                   <p className="text-sm text-white/40 font-medium">Open to new projects</p>
                   <div className="flex items-center gap-2 mt-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-white/30" />
-                    <span className="text-[11px] text-white/20">Q3 2025</span>
+                    <span className="text-[11px] text-white/20">Q2 2026</span>
                   </div>
                 </div>
               </div>
