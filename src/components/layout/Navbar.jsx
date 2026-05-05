@@ -1,6 +1,7 @@
 import { useLayoutEffect, useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ArrowUpRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { getLenis } from '@/hooks/useLenis';
 import { cn } from '@/utils/cn';
 import './Navbar.css';
@@ -11,8 +12,8 @@ const navItems = [
     bgColor: "#0B0C10",
     textColor: "#ffffff",
     links: [
-      { label: "Home", href: "#" },
-      { label: "About", href: "#about" }
+      { label: "Home", href: "/" },
+      { label: "About", href: "/about" }
     ]
   },
   {
@@ -20,8 +21,8 @@ const navItems = [
     bgColor: "#16181D",
     textColor: "#ffffff",
     links: [
-      { label: "Services", href: "#services" },
-      { label: "Pricing", href: "#pricing" }
+      { label: "Services", href: "/#services" },
+      { label: "Pricing", href: "/#pricing" }
     ]
   },
   {
@@ -29,13 +30,14 @@ const navItems = [
     bgColor: "#040405", 
     textColor: "#ffffff",
     links: [
-      { label: "Work", href: "#portfolio" },
-      { label: "Contact", href: "#contact" }
+      { label: "Work", href: "/#portfolio" },
+      { label: "Contact", href: "/#contact" }
     ]
   }
 ];
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -74,7 +76,27 @@ export default function Navbar() {
   // Smooth scroll logic
   const handleNavClick = (e, href) => {
     e.preventDefault();
-    if (href === '#') {
+    if (isExpanded) toggleMenu();
+
+    if (href.startsWith('/')) {
+      navigate(href);
+      if (href.includes('#')) {
+        setTimeout(() => {
+          const id = href.split('#')[1];
+          const el = document.getElementById(id);
+          if (el) {
+            const lenis = getLenis();
+            if (lenis) {
+              lenis.scrollTo(el, { offset: -80 });
+            } else {
+              el.scrollIntoView({ behavior: 'smooth' });
+            }
+          }
+        }, 100);
+      } else {
+        window.scrollTo(0, 0);
+      }
+    } else if (href === '#') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       const el = document.querySelector(href);
@@ -86,9 +108,6 @@ export default function Navbar() {
           el.scrollIntoView({ behavior: 'smooth' });
         }
       }
-    }
-    if (isExpanded) {
-      toggleMenu();
     }
   };
 
@@ -220,7 +239,7 @@ export default function Navbar() {
             <div className="hamburger-line" />
           </div>
 
-          <a href="#" onClick={(e) => handleNavClick(e, '#')} className="logo-container group">
+          <a href="/" onClick={(e) => handleNavClick(e, '/')} className="logo-container group">
             <img src="/logo.png" alt="ArctiqFlow Logo" className="logo transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105" />
             <span className="text-2xl font-bold tracking-tight text-white uppercase group-hover:text-primary transition-colors duration-300">ArctiqFlow</span>
           </a>
@@ -228,7 +247,7 @@ export default function Navbar() {
           <button
             type="button"
             className="card-nav-cta-button"
-            onClick={(e) => handleNavClick(e, '#contact')}
+            onClick={(e) => handleNavClick(e, '/#contact')}
           >
             Start Project
           </button>

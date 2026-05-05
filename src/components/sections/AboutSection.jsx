@@ -1,79 +1,224 @@
-import SectionWrapper from '@/components/layout/SectionWrapper'
-import { useInView } from '@/hooks/useInView'
-import { cn } from '@/utils/cn'
+import { useRef, useEffect, useCallback } from 'react'
+import { Layers, Zap, Search, Sparkles, Palette, Settings2 } from 'lucide-react'
+import './AboutSection.css'
 
-const microStats = ['50+ Projects', 'Dhaka HQ', 'Global Clients']
+/* ──────────────────────────────────────────────────
+   Capabilities Data
+   ────────────────────────────────────────────────── */
+const capabilities = [
+  {
+    id: 1,
+    icon: Layers,
+    title: 'Cinematic UI/UX',
+    desc: 'Interfaces that feel physical, layered, and immersive.',
+  },
+  {
+    id: 2,
+    icon: Zap,
+    title: 'Performance-First',
+    desc: 'Sub-second loads. 60fps motion. Zero compromise.',
+  },
+  {
+    id: 3,
+    icon: Search,
+    title: 'SEO Architecture',
+    desc: 'Built for discovery from the first line of code.',
+  },
+  {
+    id: 4,
+    icon: Sparkles,
+    title: 'Motion Systems',
+    desc: 'Scroll-driven choreography that guides attention.',
+  },
+  {
+    id: 5,
+    icon: Palette,
+    title: 'Brand Experiences',
+    desc: 'Visual identity translated into living digital form.',
+  },
+  {
+    id: 6,
+    icon: Settings2,
+    title: 'Precision Engineering',
+    desc: 'Clean code. Scalable systems. Long-term value.',
+  },
+]
 
+const stats = [
+  { value: '50+', label: 'Projects' },
+  { value: '100%', label: 'Custom Built' },
+  { value: '< 2s', label: 'Avg. Load' },
+]
+
+/* ──────────────────────────────────────────────────
+   Intersection Observer Hook (lightweight)
+   ────────────────────────────────────────────────── */
+function useRevealOnScroll(selector, options = {}) {
+  const containerRef = useRef(null)
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const elements = container.querySelectorAll(selector)
+    if (!elements.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      {
+        threshold: options.threshold ?? 0.15,
+        rootMargin: options.rootMargin ?? '0px 0px -40px 0px',
+      }
+    )
+
+    elements.forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [selector])
+
+  return containerRef
+}
+
+/* ──────────────────────────────────────────────────
+   AboutSection Component
+   ────────────────────────────────────────────────── */
 export default function AboutSection() {
-  const [ref, inView] = useInView({ threshold: 0.3 })
+  const sectionRef = useRevealOnScroll('.about-reveal, .about-card-reveal')
 
   return (
-    <SectionWrapper id="about" className="overflow-hidden">
-      <div ref={ref} className={cn('transition-all duration-1000', inView ? 'opacity-100' : 'opacity-0')}>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          {/* LEFT — Editorial content */}
-          <div>
-            <span className="section-label mb-6 block">ABOUT</span>
-            
-            {/* Year as giant decorative element */}
-            <div className="relative mb-8">
-              <span className="text-[120px] md:text-[180px] font-heading font-bold text-white/[0.03] leading-none select-none block" aria-hidden="true">
-                '24
-              </span>
-              <div className="absolute top-1/2 -translate-y-1/2 left-0">
-                <h2
-                  className="font-heading font-bold text-white tracking-super-tight leading-editorial"
-                  style={{ fontSize: 'clamp(32px, 4vw, 56px)' }}
-                >
-                  Built different,
-                  <br />
-                  <span className="text-white/25">by design.</span>
-                </h2>
-              </div>
-            </div>
+    <section
+      ref={sectionRef}
+      id="about"
+      className="about-section"
+      style={{ padding: 'clamp(100px, 14vh, 180px) 0' }}
+      aria-label="About ArctiqFlow"
+    >
+      {/* Atmospheric Background */}
+      <div className="about-atmosphere" aria-hidden="true">
+        <div className="about-atmosphere__orb-1" />
+        <div className="about-atmosphere__orb-2" />
+        <div className="about-atmosphere__line" />
+        <div className="noise-overlay" />
+      </div>
 
-            <p className="text-base text-white/35 leading-relaxed max-w-lg tracking-tight mb-10">
-              ArctiqFlow is a design and development studio that doesn't just build websites — we engineer digital experiences that drive measurable growth. Every pixel is intentional. Every interaction is optimized.
+      <div className="section-container">
+        {/* ─── TOP: Headline + Divider ─── */}
+        <div className="mb-16 md:mb-24">
+          <div className="about-reveal">
+            <div className="about-eyebrow">
+              <span className="about-eyebrow__line" />
+              <span className="about-eyebrow__text">About</span>
+            </div>
+          </div>
+
+          <h2
+            className="about-headline about-reveal about-reveal--delay-1"
+            style={{ fontSize: 'clamp(38px, 5.5vw, 80px)' }}
+          >
+            Building digital experiences
+            <span className="about-headline__accent">
+              {' '}that feel as powerful as they perform.
+            </span>
+          </h2>
+        </div>
+
+        <div className="about-divider about-reveal about-reveal--delay-2 mb-16 md:mb-24" />
+
+        {/* ─── MIDDLE: Split — Body Left / Philosophy Right ─── */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 mb-20 md:mb-32">
+          {/* LEFT — Body Copy + Stats */}
+          <div className="about-body">
+            <p className="about-body__text about-reveal about-reveal--delay-2">
+              We combine <strong>cinematic design</strong>, modern frontend engineering,
+              and performance-first architecture to build experiences that don't
+              just look beautiful — they convert, rank, and scale.
+            </p>
+            <p className="about-body__text about-reveal about-reveal--delay-3 mt-6">
+              Every project begins with intent. Every interaction is choreographed.
+              Every pixel exists because it earned its place.
             </p>
 
-            {/* Micro stats */}
-            <div className="flex flex-wrap gap-6">
-              {microStats.map((stat) => (
-                <span
-                  key={stat}
-                  className="px-5 py-2.5 rounded-full border border-white/[0.06] text-[11px] font-medium text-white/25 tracking-wide"
-                >
-                  {stat}
-                </span>
+            <div className="about-stats about-reveal about-reveal--delay-4">
+              {stats.map((s) => (
+                <div key={s.label} className="about-stat-pill">
+                  <span className="about-stat-pill__value">{s.value}</span>
+                  <span className="about-stat-pill__label">{s.label}</span>
+                </div>
               ))}
             </div>
           </div>
 
-          {/* RIGHT — Light panel (luxury contrast moment) */}
-          <div className="relative rounded-2xl overflow-hidden">
-            <div className="bg-cream p-12 md:p-16 rounded-2xl relative">
-              <div className="noise-overlay !opacity-[0.04]" />
-              <div className="relative z-10">
-                <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[#0A0B0F]/30 mb-6">Philosophy</p>
-                <blockquote className="text-2xl md:text-3xl font-heading font-bold text-[#0A0B0F] leading-tight tracking-tight mb-8">
-                  "Simple is harder than complex. But it's worth it."
+          {/* RIGHT — Philosophy Panel */}
+          <div className="about-reveal about-reveal--delay-3">
+            <div className="about-philosophy">
+              <div className="about-philosophy__noise" />
+              <div className="about-philosophy__glow" />
+
+              <div>
+                <p className="about-philosophy__label">Philosophy</p>
+                <blockquote className="about-philosophy__quote">
+                  "We don't decorate screens.
+                  <br />
+                  We engineer <em>how things feel.</em>"
                 </blockquote>
-                <div className="h-px bg-[#0A0B0F]/10 mb-6" />
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 rounded-full bg-[#0A0B0F] flex items-center justify-center">
-                    <img src="/logo.png" alt="" className="w-6 h-6 object-contain invert" />
+              </div>
+
+              <div>
+                <div className="about-philosophy__divider" />
+                <div className="about-philosophy__signature">
+                  <div className="about-philosophy__avatar">
+                    <img
+                      src="/logo.png"
+                      alt=""
+                      className="w-5 h-5 object-contain"
+                      loading="lazy"
+                    />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-[#0A0B0F]">ArctiqFlow Studio</p>
-                    <p className="text-xs text-[#0A0B0F]/40">Design & Development</p>
+                    <p className="about-philosophy__name">ArctiqFlow Studio</p>
+                    <p className="about-philosophy__role">Design & Engineering</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        {/* ─── BOTTOM: Capabilities Grid ─── */}
+        <div className="about-capabilities">
+          <p className="about-capabilities__heading about-reveal about-reveal--delay-2">
+            What we do
+          </p>
+
+          <div className="about-grid">
+            {capabilities.map((cap, i) => {
+              const Icon = cap.icon
+              return (
+                <div
+                  key={cap.id}
+                  className="about-card about-card-reveal"
+                  style={{ transitionDelay: `${0.1 + i * 0.08}s` }}
+                >
+                  <span className="about-card__number">
+                    {String(cap.id).padStart(2, '0')}
+                  </span>
+                  <div className="about-card__icon">
+                    <Icon size={16} strokeWidth={1.8} />
+                  </div>
+                  <h3 className="about-card__title">{cap.title}</h3>
+                  <p className="about-card__desc">{cap.desc}</p>
+                </div>
+              )
+            })}
+          </div>
+        </div>
       </div>
-    </SectionWrapper>
+    </section>
   )
 }

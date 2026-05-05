@@ -6,7 +6,6 @@ import HorizontalScroll from '@/components/sections/HorizontalScroll'
 import HowItWorks from '@/components/sections/HowItWorks'
 import PortfolioSection from '@/components/sections/PortfolioSection'
 import PricingSection from '@/components/sections/PricingSection'
-import AboutSection from '@/components/sections/AboutSection'
 import ContactSection from '@/components/sections/ContactSection'
 import FAQSection from '@/components/sections/FAQSection'
 import TargetCursor from '@/components/ui/TargetCursor'
@@ -28,7 +27,6 @@ export default function Home() {
       <HowItWorks />
       <PortfolioSection />
       <PricingSection />
-      <AboutSection />
       <ContactSection />
       <FAQSection />
 
@@ -36,3 +34,4 @@ export default function Home() {
     </main>
   )
 }
+

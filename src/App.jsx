@@ -4,6 +4,7 @@ import { useLenis } from '@/hooks/useLenis'
 import { initGSAP } from '@/animations/gsap.config'
 import PageWrapper from '@/components/layout/PageWrapper'
 import Home from '@/pages/Home'
+import About from '@/pages/About'
 import NotFound from '@/pages/NotFound'
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
     <PageWrapper>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </PageWrapper>
