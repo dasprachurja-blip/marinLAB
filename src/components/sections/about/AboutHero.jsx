@@ -1,16 +1,10 @@
 import { useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft } from 'lucide-react'
-
-const rightCards = [
-  { label: 'Design Approach', value: 'Cinematic First', sub: 'Every pixel earns its place' },
-  { label: 'Engineering Standard', value: 'Performance', sub: 'Sub-2s load · 60fps motion' },
-  { label: 'Studio Location', value: 'Dhaka, BD', sub: 'Working globally' },
-]
+import CodeWindow from './CodeWindow'
 
 export default function AboutHero() {
   const contentRef = useRef(null)
-  const rightRef = useRef(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -33,21 +27,7 @@ export default function AboutHero() {
     )
     observer.observe(container)
 
-    // Right panel cards stagger
-    const right = rightRef.current
-    if (right) {
-      const rightCards = right.querySelectorAll('.ah-rcard')
-      const rightObs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) {
-            rightCards.forEach((c, i) => setTimeout(() => c.classList.add('is-in'), 400 + i * 140))
-            rightObs.disconnect()
-          }
-        },
-        { threshold: 0.05 }
-      )
-      rightObs.observe(right)
-    }
+
 
     return () => observer.disconnect()
   }, [])
@@ -134,36 +114,9 @@ export default function AboutHero() {
           </div>
         </div>
 
-        {/* ══ RIGHT COLUMN ══ */}
-        <div className="ah-right" ref={rightRef} aria-hidden="true">
-
-          {/* Main architectural glass panel */}
-          <div className="ah-panel ah-panel--main">
-            {/* Inner grid lines */}
-            <div className="ah-panel__grid" />
-            {/* Fog diffusion */}
-            <div className="ah-panel__fog" />
-            {/* Top-edge light reflection */}
-            <div className="ah-panel__edge" />
-            {/* Decorative architectural sub-panel */}
-            <div className="ah-panel__sub ah-panel__sub--1" />
-            <div className="ah-panel__sub ah-panel__sub--2" />
-            {/* Large ghost number */}
-            <span className="ah-panel__ghost-num">01</span>
-          </div>
-
-          {/* Floating feature cards */}
-          {rightCards.map((card, i) => (
-            <div key={card.label} className={`ah-rcard ah-rcard--${i + 1}`}>
-              <span className="ah-rcard__label">{card.label}</span>
-              <span className="ah-rcard__value">{card.value}</span>
-              <span className="ah-rcard__sub">{card.sub}</span>
-            </div>
-          ))}
-
-          {/* Subtle geometric accent */}
-          <div className="ah-geo ah-geo--ring" />
-          <div className="ah-geo ah-geo--line-v" />
+        {/* ══ RIGHT COLUMN — Animated Code Editor ══ */}
+        <div className="ah-right">
+          <CodeWindow />
         </div>
       </div>
 
