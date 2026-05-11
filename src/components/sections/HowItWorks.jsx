@@ -38,14 +38,14 @@ export default function HowItWorks() {
     gsap.set('.step-number-0', { opacity: 1, y: 0 })
     gsap.set('.step-number-1, .step-number-2', { opacity: 0, y: 100 })
     
-    gsap.set('.step-title', { color: 'rgba(255,255,255,0.2)' })
-    gsap.set('.step-desc', { color: 'rgba(113,113,122,0.4)' })
-    gsap.set('.step-icon', { backgroundColor: '#111218', color: '#71717A', scale: 1, boxShadow: 'none' })
+    gsap.set('.step-title', { color: 'rgba(240,242,245,0.2)' })
+    gsap.set('.step-desc', { color: 'rgba(139,144,160,0.4)' })
+    gsap.set('.step-icon', { backgroundColor: '#0F1117', color: '#4A4F60', scale: 1, boxShadow: 'none' })
     
     // First step highlighted
-    gsap.set('.step-title-0', { color: '#ffffff' })
-    gsap.set('.step-desc-0', { color: '#A1A1AA' })
-    gsap.set('.step-icon-0', { backgroundColor: 'rgba(255,255,255,0.08)', color: '#ffffff', scale: 1.1, boxShadow: '0 0 16px rgba(255,255,255,0.1)' })
+    gsap.set('.step-title-0', { color: '#F0F2F5' })
+    gsap.set('.step-desc-0', { color: '#8B90A0' })
+    gsap.set('.step-icon-0', { backgroundColor: 'rgba(77,158,255,0.08)', color: '#4D9EFF', scale: 1.1, boxShadow: '0 0 16px rgba(77,158,255,0.15)' })
 
     let tl;
     
@@ -67,16 +67,16 @@ export default function HowItWorks() {
       // Step 1 → 2
       tl.to('.step-number-0', { opacity: 0, y: -100, duration: 0.5 }, 0.5)
       tl.to('.step-number-1', { opacity: 1, y: 0, duration: 0.5 }, 0.5)
-      tl.to('.step-icon-1', { backgroundColor: 'rgba(255,255,255,0.08)', color: '#ffffff', scale: 1.1, boxShadow: '0 0 16px rgba(255,255,255,0.1)', duration: 0.3 }, 0.5)
-      tl.to('.step-title-1', { color: '#ffffff', duration: 0.3 }, 0.5)
-      tl.to('.step-desc-1', { color: '#e2e8f0', duration: 0.3 }, 0.5)
+      tl.to('.step-icon-1', { backgroundColor: 'rgba(77,158,255,0.08)', color: '#4D9EFF', scale: 1.1, boxShadow: '0 0 16px rgba(77,158,255,0.15)', duration: 0.3 }, 0.5)
+      tl.to('.step-title-1', { color: '#F0F2F5', duration: 0.3 }, 0.5)
+      tl.to('.step-desc-1', { color: '#8B90A0', duration: 0.3 }, 0.5)
 
       // Step 2 → 3
       tl.to('.step-number-1', { opacity: 0, y: -100, duration: 0.5 }, 1.5)
       tl.to('.step-number-2', { opacity: 1, y: 0, duration: 0.5 }, 1.5)
-      tl.to('.step-icon-2', { backgroundColor: 'rgba(255,255,255,0.08)', color: '#ffffff', scale: 1.1, boxShadow: '0 0 16px rgba(255,255,255,0.1)', duration: 0.3 }, 1.5)
-      tl.to('.step-title-2', { color: '#ffffff', duration: 0.3 }, 1.5)
-      tl.to('.step-desc-2', { color: '#e2e8f0', duration: 0.3 }, 1.5)
+      tl.to('.step-icon-2', { backgroundColor: 'rgba(77,158,255,0.08)', color: '#4D9EFF', scale: 1.1, boxShadow: '0 0 16px rgba(77,158,255,0.15)', duration: 0.3 }, 1.5)
+      tl.to('.step-title-2', { color: '#F0F2F5', duration: 0.3 }, 1.5)
+      tl.to('.step-desc-2', { color: '#8B90A0', duration: 0.3 }, 1.5)
 
       tl.to('.flare', { opacity: 0, scale: 0, duration: 0.2 }, 1.8)
 
@@ -90,7 +90,7 @@ export default function HowItWorks() {
   }, [])
 
   return (
-    <section id="process" ref={containerRef} className="relative h-screen w-full overflow-hidden flex flex-col bg-[#08090D]" style={{ zIndex: 2 }}>
+    <section id="process" ref={containerRef} className="relative h-screen w-full overflow-hidden flex flex-col bg-surface" style={{ zIndex: 2 }}>
       {/* Noise */}
       <div className="noise-overlay" />
       
@@ -98,7 +98,7 @@ export default function HowItWorks() {
       <div className="text-center relative z-10 pt-16 md:pt-24 flex-none">
         <span className="section-label">THE PROCESS</span>
         <h2
-          className="font-heading font-bold tracking-super-tight text-white mt-5 uppercase"
+          className="font-display font-semibold tracking-super-tight text-text-primary mt-5 uppercase"
           style={{ fontSize: 'clamp(32px, 4vw, 56px)' }}
         >
           From Vision to Launch
@@ -112,9 +112,9 @@ export default function HowItWorks() {
           {steps.map((step, idx) => (
             <span 
               key={step.num}
-              className={`step-number-${idx} absolute text-[18rem] lg:text-[22rem] font-heading font-bold leading-none tracking-tighter`}
+              className={`step-number-${idx} absolute text-[18rem] lg:text-[22rem] font-display font-semibold leading-none tracking-tighter`}
               style={{
-                color: 'rgba(255,255,255,0.04)',
+                color: 'rgba(77,158,255,0.04)',
                 opacity: 0,
                 transform: 'translateY(100px)'
               }}
@@ -132,23 +132,23 @@ export default function HowItWorks() {
           
           {/* Progress line */}
           <div 
-            className="progress-line absolute left-[0.5rem] top-6 bottom-[106px] w-[1px] bg-white/60 shadow-[0_0_20px_rgba(255,255,255,0.3)] origin-top z-10" 
+            className="progress-line absolute left-[0.5rem] top-6 bottom-[106px] w-[1px] bg-accent/60 shadow-[0_0_20px_rgba(77,158,255,0.3)] origin-top z-10" 
             style={{ transform: 'scaleY(0)' }} 
           >
-            <div className="flare absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_16px_4px_rgba(255,255,255,0.5),0_0_32px_8px_rgba(255,255,255,0.2)] opacity-0 scale-0" />
+            <div className="flare absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-accent rounded-full shadow-[0_0_16px_4px_rgba(77,158,255,0.5),0_0_32px_8px_rgba(77,158,255,0.2)] opacity-0 scale-0" />
           </div>
 
           {steps.map((step, idx) => {
             const Icon = step.icon
             return (
               <div key={step.num} className="relative pl-16 md:pl-20">
-                <div className={`step-icon step-icon-${idx} absolute left-[-1.5rem] top-0 w-11 h-11 rounded-full flex items-center justify-center z-10 border border-white/8 bg-obsidian-surface text-muted`}>
+                <div className={`step-icon step-icon-${idx} absolute left-[-1.5rem] top-0 w-11 h-11 rounded-full flex items-center justify-center z-10 border border-white/8 bg-surface text-text-tertiary`}>
                   <Icon className="w-4.5 h-4.5" />
                 </div>
                 
                 <div>
-                  <h4 className={`step-title step-title-${idx} text-2xl md:text-3xl font-heading font-bold mb-2 tracking-wide uppercase text-white/20`}>{step.title}</h4>
-                  <p className={`step-desc step-desc-${idx} text-base leading-relaxed max-w-md font-sans text-muted/40`}>{step.desc}</p>
+                  <h4 className={`step-title step-title-${idx} text-2xl md:text-3xl font-display font-semibold mb-2 tracking-wide uppercase text-text-primary/20`}>{step.title}</h4>
+                  <p className={`step-desc step-desc-${idx} text-base leading-relaxed max-w-md font-sans text-text-secondary/40`}>{step.desc}</p>
                 </div>
               </div>
             )

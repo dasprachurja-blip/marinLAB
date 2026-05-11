@@ -14,13 +14,13 @@ export default function Button({
   const ref = useRef(null)
   useMagneticHover(ref)
 
-  const base = 'relative overflow-hidden rounded-full font-semibold inline-flex items-center justify-center gap-2 transition-all duration-300 ease-expo-out'
+  const base = 'relative overflow-hidden rounded-full font-medium inline-flex items-center justify-center gap-2 transition-all duration-300 ease-expo cursor-pointer'
 
   const variants = {
-    primary: 'bg-white text-[#0A0B0F] hover:bg-white/90 hover:-translate-y-0.5 shadow-[0_0_0_1px_rgba(255,255,255,0.1)]',
-    secondary: 'bg-transparent border border-white/12 text-white/80 backdrop-blur-sm hover:bg-white/5 hover:border-white/25 hover:text-white',
-    ghost: 'bg-transparent text-white/60 hover:text-white underline-offset-4 hover:underline',
-    outline: 'bg-transparent border border-white/20 text-white hover:bg-white/5 hover:border-white/40',
+    primary: 'bg-accent text-void hover:shadow-[0_8px_32px_rgba(77,158,255,0.25)] hover:-translate-y-0.5 active:translate-y-0',
+    secondary: 'bg-transparent border border-white/12 text-text-secondary backdrop-blur-sm hover:bg-white/5 hover:border-accent/30 hover:text-text-primary',
+    ghost: 'bg-transparent text-text-secondary hover:text-text-primary',
+    outline: 'bg-transparent border border-arctic-border text-text-primary hover:bg-accent-subtle hover:border-accent/30',
   }
 
   const sizes = {

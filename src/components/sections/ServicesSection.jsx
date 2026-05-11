@@ -10,8 +10,6 @@ import { cn } from '@/utils/cn'
 export default function ServicesSection() {
   const [ref, inView] = useInView({ threshold: 0.1 })
 
-  // Map our services data into the format expected by MagicBento
-  // We apply the col-span classes to match our original 6-column grid layout
   const bentoItems = services.map(s => ({
     title: s.title,
     description: s.desc,
@@ -26,13 +24,15 @@ export default function ServicesSection() {
     <SectionWrapper id="services">
       <div className="text-center mb-16">
         <SectionLabel>WHAT WE DO</SectionLabel>
-        <h2 className="text-4xl md:text-5xl font-bold tracking-tight">Precision Services</h2>
+        <h2 className="text-4xl md:text-5xl font-display font-semibold tracking-super-tight text-text-primary mt-4">
+          Precision Services
+        </h2>
       </div>
 
       <div 
         ref={ref}
         className={cn(
-          "transition-all duration-1000",
+          "transition-all duration-700 ease-expo",
           inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
         )}
       >
@@ -48,7 +48,7 @@ export default function ServicesSection() {
           clickEffect={true}
           spotlightRadius={800}
           particleCount={12}
-          glowColor="37, 99, 235"
+          glowColor="77, 158, 255"
         />
       </div>
     </SectionWrapper>

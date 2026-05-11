@@ -9,8 +9,6 @@ import './Navbar.css';
 const navItems = [
   {
     label: "Studio",
-    bgColor: "#0B0C10",
-    textColor: "#ffffff",
     links: [
       { label: "Home", href: "/" },
       { label: "About", href: "/about" }
@@ -18,20 +16,16 @@ const navItems = [
   },
   {
     label: "Expertise", 
-    bgColor: "#16181D",
-    textColor: "#ffffff",
     links: [
-      { label: "Services", href: "/#services" },
-      { label: "Pricing", href: "/#pricing" }
+      { label: "Services", href: "/services" },
+      { label: "Pricing", href: "/pricing" }
     ]
   },
   {
     label: "Connect",
-    bgColor: "#040405", 
-    textColor: "#ffffff",
     links: [
-      { label: "Work", href: "/#portfolio" },
-      { label: "Contact", href: "/#contact" }
+      { label: "Work", href: "/work" },
+      { label: "Contact", href: "/contact" }
     ]
   }
 ];
@@ -47,21 +41,18 @@ export default function Navbar() {
   const tlRef = useRef(null);
   const lastScrollY = useRef(0);
 
-  // Cinematic Scroll Behavior (Harder swipe up)
+  // Cinematic Scroll Behavior
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       
-      // Always show at the very top
       if (currentScrollY < 50) {
         setIsVisible(true);
       } 
-      // Scrolling DOWN - Hide
       else if (currentScrollY > lastScrollY.current) {
         setIsVisible(false);
-        if (isExpanded) toggleMenu(); // Close menu if open while scrolling down
+        if (isExpanded) toggleMenu();
       } 
-      // Scrolling UP - Harder swipe check (needs at least 15px delta)
       else if (lastScrollY.current - currentScrollY > 15) {
         setIsVisible(true);
       }
@@ -158,7 +149,7 @@ export default function Navbar() {
     tl.to(navEl, {
       height: calculateHeight,
       duration: 0.5,
-      ease: 'expo.inOut' // More cinematic easing
+      ease: 'expo.inOut'
     });
 
     tl.to(cardsRef.current, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out', stagger: 0.05 }, '-=0.2');
@@ -240,8 +231,8 @@ export default function Navbar() {
           </div>
 
           <a href="/" onClick={(e) => handleNavClick(e, '/')} className="logo-container group">
-            <img src="/logo.png" alt="ArctiqFlow Logo" className="logo transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-105" />
-            <span className="text-2xl font-bold tracking-tight text-white uppercase group-hover:text-primary transition-colors duration-300">ArctiqFlow</span>
+            <img src="/logo.png" alt="ArcticFlow Logo" className="logo transition-transform duration-500 ease-expo group-hover:scale-105" />
+            <span className="logo-text">ArcticFlow</span>
           </a>
 
           <button
@@ -259,14 +250,13 @@ export default function Navbar() {
               key={`${item.label}-${idx}`}
               className="nav-card"
               ref={setCardRef(idx)}
-              style={{ backgroundColor: item.bgColor, color: item.textColor }}
             >
               <div className="nav-card-label">{item.label}</div>
               <div className="nav-card-links">
                 {item.links?.map((lnk, i) => (
                   <a 
                     key={`${lnk.label}-${i}`} 
-                    className="nav-card-link text-white hover:text-primary transition-colors" 
+                    className="nav-card-link" 
                     href={lnk.href}
                     onClick={(e) => handleNavClick(e, lnk.href)}
                   >
