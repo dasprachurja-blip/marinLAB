@@ -51,14 +51,14 @@
 }
 
 .logo-container .logo {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   object-fit: contain;
 }
 
 .logo-container .logo-text {
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 21px;
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--color-text-primary);
@@ -190,6 +190,50 @@
 .nav-card-link:hover .nav-card-link-icon {
   opacity: 0.6;
   transform: translateX(2px);
+}
+
+/* ═══════════════════════════════════════════
+   BACK / FORWARD NAV BUTTONS
+   ═══════════════════════════════════════════ */
+
+.nav-history-buttons {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 4px;
+}
+
+.nav-history-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-history-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--color-text-primary);
+}
+
+.nav-history-btn--disabled {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* Active link indicator */
+.nav-card-link--active {
+  color: var(--color-accent) !important;
+}
+
+.nav-card-link--active .nav-card-link-icon {
+  opacity: 0.5;
 }
 
 /* ═══════════════════════════════════════════

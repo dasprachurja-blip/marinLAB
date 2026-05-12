@@ -4,16 +4,19 @@ import { useNavigate } from 'react-router-dom'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Hero3DSection from '@/components/sections/Hero3D/Hero3DSection'
-import StatsStrip from '@/components/sections/StatsStrip'
+
 import HorizontalScroll from '@/components/sections/HorizontalScroll'
 import HowItWorks from '@/components/sections/HowItWorks'
 import PortfolioSection from '@/components/sections/PortfolioSection'
 import FAQSection from '@/components/sections/FAQSection'
 import Button from '@/components/atoms/Button'
 import TargetCursor from '@/components/ui/TargetCursor'
+import AmbientOrbs from '@/components/ui/AmbientOrbs'
 import { easing, viewportOnce, pageVariants } from '@/animations/motionPresets'
 
 /* ── About Teaser — cinematic split section ── */
+const MARQUEE_ITEMS = ['50+ Projects', '3–7 Day Delivery', '100% Client Retention', 'Est. 2024', 'Available for Projects', 'Dhaka → Global']
+
 function AboutTeaser() {
   const navigate = useNavigate()
   return (
@@ -40,24 +43,20 @@ function AboutTeaser() {
             </Button>
           </motion.div>
 
+          {/* Marquee credibility strip — replaces stats grid */}
           <motion.div
-            className="relative"
+            className="relative overflow-hidden rounded-2xl border border-white/[0.04] bg-surface/50 py-6"
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={viewportOnce}
             transition={{ duration: 0.8, ease: easing.expoOut, delay: 0.15 }}
           >
-            <div className="grid grid-cols-2 gap-4">
-              {[
-                { value: '50+', label: 'Projects Shipped' },
-                { value: '100%', label: 'Client Retention' },
-                { value: '3-7', label: 'Day Delivery' },
-                { value: '24/7', label: 'Active Support' },
-              ].map((stat, i) => (
-                <div key={stat.label} className="glass-card p-6 text-center hover:border-accent/15 transition-colors duration-400">
-                  <div className="text-2xl md:text-3xl font-display font-semibold text-text-primary mb-1 tracking-tight">{stat.value}</div>
-                  <p className="text-[10px] uppercase tracking-label text-text-tertiary font-medium">{stat.label}</p>
-                </div>
+            <div className="flex gap-12 animate-marquee">
+              {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
+                <span key={i} className="text-[11px] text-text-tertiary font-medium uppercase tracking-[0.2em] whitespace-nowrap flex items-center gap-4">
+                  {item}
+                  <span className="w-1 h-1 rounded-full bg-accent/30" />
+                </span>
               ))}
             </div>
           </motion.div>
@@ -67,14 +66,14 @@ function AboutTeaser() {
   )
 }
 
-/* ── Services Teaser — editorial with links to services page ── */
+/* ── Services Teaser — editorial accordion with deep links ── */
 function ServicesTeaser() {
   const navigate = useNavigate()
   const services = [
-    { num: '01', title: 'UI/UX Design' },
-    { num: '02', title: 'Frontend Engineering' },
-    { num: '03', title: 'Full-Stack Development' },
-    { num: '04', title: 'SEO & Growth' },
+    { num: '01', title: 'UI/UX Design', slug: 'ui-ux', desc: 'Research-driven interfaces engineered for conversion and engagement.', tags: ['Design Systems', 'Figma', 'Prototyping'] },
+    { num: '02', title: 'Frontend Engineering', slug: 'frontend', desc: 'Pixel-perfect, buttery-smooth interfaces built with React and modern tooling.', tags: ['React', 'Next.js', 'Animation'] },
+    { num: '03', title: 'Full-Stack Development', slug: 'fullstack', desc: 'Robust architectures pairing scalable backends with dynamic frontends.', tags: ['Node.js', 'Databases', 'APIs'] },
+    { num: '04', title: 'SEO & Growth', slug: 'seo', desc: 'Technical SEO, content strategy, and analytics that put you on page one.', tags: ['Analytics', 'Performance', 'Strategy'] },
   ]
 
   return (
@@ -103,18 +102,31 @@ function ServicesTeaser() {
           {services.map((s, i) => (
             <motion.div
               key={s.num}
-              className="group flex items-center gap-6 py-8 border-b border-white/[0.04] cursor-pointer hover:border-accent/15 transition-colors duration-400"
-              onClick={() => navigate('/services')}
+              className="group border-b border-white/[0.04] cursor-pointer hover:border-accent/15 transition-all duration-400"
+              onClick={() => navigate(`/services#${s.slug}`)}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={viewportOnce}
               transition={{ duration: 0.5, ease: easing.expoOut, delay: i * 0.06 }}
             >
-              <span className="text-xs text-accent/40 font-display tracking-label w-8">{s.num}</span>
-              <h3 className="text-xl md:text-3xl font-display font-semibold text-text-secondary group-hover:text-text-primary transition-colors duration-400 tracking-tight flex-1">
-                {s.title}
-              </h3>
-              <ArrowRight className="w-5 h-5 text-text-tertiary group-hover:text-accent group-hover:translate-x-1 transition-all duration-300 shrink-0" />
+              <div className="flex items-center gap-6 py-8">
+                <span className="text-xs text-accent/40 font-display tracking-label w-8">{s.num}</span>
+                <h3 className="text-xl md:text-3xl font-display font-semibold text-text-secondary group-hover:text-text-primary transition-colors duration-400 tracking-tight flex-1">
+                  {s.title}
+                </h3>
+                <ArrowRight className="w-5 h-5 text-text-tertiary group-hover:text-accent group-hover:translate-x-2 transition-all duration-400 shrink-0" />
+              </div>
+              {/* Accordion expand on hover */}
+              <div className="max-h-0 overflow-hidden group-hover:max-h-24 transition-all duration-500 ease-cinema">
+                <div className="pb-6 pl-14 flex flex-col md:flex-row md:items-center gap-3">
+                  <p className="text-sm text-text-secondary/50 max-w-md">{s.desc}</p>
+                  <div className="flex gap-2 flex-wrap">
+                    {s.tags.map(tag => (
+                      <span key={tag} className="text-[10px] px-2.5 py-1 rounded-full border border-white/[0.06] text-text-tertiary font-medium tracking-wide">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -128,7 +140,7 @@ function PremiumCTA() {
   const navigate = useNavigate()
   return (
     <section className="py-32 md:py-48 bg-void relative overflow-hidden">
-      <div className="hero-glow z-0" />
+      <AmbientOrbs />
       <div className="noise-overlay" />
       <div className="section-container relative z-10 text-center">
         <motion.div
@@ -177,7 +189,6 @@ export default function Home() {
       <Navbar />
 
       <Hero3DSection />
-      <StatsStrip />
       <AboutTeaser />
       <HorizontalScroll />
       <ServicesTeaser />

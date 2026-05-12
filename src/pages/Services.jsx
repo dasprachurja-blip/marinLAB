@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { motion } from 'motion/react'
-import { Palette, Terminal, TrendingUp, Layers, ShoppingCart, MapPin, Settings, ArrowRight } from 'lucide-react'
+import { Palette, Terminal, TrendingUp, Layers, ShoppingCart, MapPin, Settings, ArrowRight, ArrowLeft } from 'lucide-react'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import PageHero from '@/components/sections/PageHero'
@@ -10,12 +10,12 @@ import { easing, viewportOnce, pageVariants } from '@/animations/motionPresets'
 import { useNavigate } from 'react-router-dom'
 
 const services = [
-  { icon: Palette, title: 'UI/UX Design', desc: 'Research-driven interfaces engineered for conversion. We map every interaction to maximize engagement and revenue.', tag: '01' },
-  { icon: Terminal, title: 'Frontend Engineering', desc: 'Pixel-perfect, buttery-smooth interfaces built with React, Next.js, and modern animation libraries.', tag: '02' },
-  { icon: Layers, title: 'Full-Stack Development', desc: 'Robust architectures pairing scalable backends with dynamic, data-driven frontends.', tag: '03' },
-  { icon: TrendingUp, title: 'SEO & Growth', desc: 'Technical SEO, content strategy, and analytics pipelines that put you on page one and keep you there.', tag: '04' },
-  { icon: ShoppingCart, title: 'E-Commerce', desc: 'High-performance online stores with optimized checkout flows, inventory systems, and payment integration.', tag: '05' },
-  { icon: Settings, title: 'Ongoing Maintenance', desc: 'Security patches, performance monitoring, content updates — everything running flawlessly, always.', tag: '06' },
+  { icon: Palette, title: 'UI/UX Design', desc: 'Research-driven interfaces engineered for conversion. We map every interaction to maximize engagement and revenue.', tag: '01', slug: 'ui-ux' },
+  { icon: Terminal, title: 'Frontend Engineering', desc: 'Pixel-perfect, buttery-smooth interfaces built with React, Next.js, and modern animation libraries.', tag: '02', slug: 'frontend' },
+  { icon: Layers, title: 'Full-Stack Development', desc: 'Robust architectures pairing scalable backends with dynamic, data-driven frontends.', tag: '03', slug: 'fullstack' },
+  { icon: TrendingUp, title: 'SEO & Growth', desc: 'Technical SEO, content strategy, and analytics pipelines that put you on page one and keep you there.', tag: '04', slug: 'seo' },
+  { icon: ShoppingCart, title: 'E-Commerce', desc: 'High-performance online stores with optimized checkout flows, inventory systems, and payment integration.', tag: '05', slug: 'ecommerce' },
+  { icon: Settings, title: 'Ongoing Maintenance', desc: 'Security patches, performance monitoring, content updates — everything running flawlessly, always.', tag: '06', slug: 'maintenance' },
 ]
 
 const processSteps = [
@@ -29,7 +29,8 @@ const processSteps = [
 function ServiceCard({ service, index }) {
   return (
     <motion.div
-      className="group relative border-b border-white/[0.04] py-10 md:py-14"
+      id={service.slug}
+      className="group relative border-b border-white/[0.04] py-10 md:py-14 scroll-mt-32"
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={viewportOnce}
@@ -79,6 +80,19 @@ export default function Services() {
 
   useEffect(() => { window.scrollTo(0, 0) }, [])
 
+  // Hash-based scroll to specific service
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      setTimeout(() => {
+        const el = document.getElementById(hash);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 600);
+    }
+  }, []);
+
   return (
     <motion.main
       className="bg-abyss overflow-x-hidden"
@@ -94,7 +108,16 @@ export default function Services() {
         label="SERVICES"
         title={<>What we<br /><span className="text-text-tertiary">build.</span></>}
         subtitle="End-to-end digital product design and engineering. From strategy through launch and beyond."
-      />
+      >
+        <div className="flex items-center gap-4 mt-4">
+          <Button variant="ghost" size="sm" onClick={() => navigate('/about')}>
+            <ArrowLeft className="w-3.5 h-3.5" /> About
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => navigate('/work')}>
+            Work <ArrowRight className="w-3.5 h-3.5" />
+          </Button>
+        </div>
+      </PageHero>
 
       {/* Services List */}
       <section className="py-24 md:py-32 bg-abyss">

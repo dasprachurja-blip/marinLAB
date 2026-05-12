@@ -1,11 +1,13 @@
 import { useEffect, useRef } from 'react'
 import { motion } from 'motion/react'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowUpRight, ArrowRight, ArrowLeft } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import PageHero from '@/components/sections/PageHero'
 import Button from '@/components/atoms/Button'
 import TargetCursor from '@/components/ui/TargetCursor'
+import AmbientOrbs from '@/components/ui/AmbientOrbs'
 import { easing, viewportOnce, pageVariants } from '@/animations/motionPresets'
 
 const projects = [
@@ -18,6 +20,7 @@ const projects = [
     alt: 'Minimalist fintech dashboard with dark theme and data visualizations',
     color: '#4D9EFF',
     featured: true,
+    desc: 'A comprehensive financial analytics dashboard designed for institutional traders. Dark-mode-first with real-time data visualization.',
   },
   {
     id: 'lumina',
@@ -28,6 +31,7 @@ const projects = [
     alt: 'Modern SaaS platform with architectural aesthetic',
     color: '#8B5CF6',
     featured: true,
+    desc: 'Cloud infrastructure management platform with a clean, architectural UI. Built for scale with real-time monitoring.',
   },
   {
     id: 'nexus',
@@ -38,6 +42,7 @@ const projects = [
     alt: 'Healthcare platform with clean clinical design',
     color: '#10B981',
     featured: false,
+    desc: 'A patient-centered healthcare platform bridging clinical efficiency with compassionate design.',
   },
   {
     id: 'meridian',
@@ -48,6 +53,7 @@ const projects = [
     alt: 'Creative agency portfolio with cinematic visuals',
     color: '#F59E0B',
     featured: false,
+    desc: 'An award-worthy portfolio for a creative agency, featuring immersive scroll animations and editorial typography.',
   },
 ]
 
@@ -108,9 +114,10 @@ function FeaturedCard({ project, index }) {
       <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 z-10">
         <div className="translate-y-3 group-hover:translate-y-0 transition-transform duration-600 ease-expo">
           <p className="text-[10px] font-medium tracking-label uppercase text-accent/60 mb-3">{project.tag}</p>
-          <h3 className="font-display font-semibold text-text-primary tracking-tight" style={{ fontSize: 'clamp(24px, 3vw, 48px)' }}>
+          <h3 className="font-display font-semibold text-text-primary tracking-tight mb-2" style={{ fontSize: 'clamp(24px, 3vw, 48px)' }}>
             {project.title}
           </h3>
+          <p className="text-sm text-text-secondary/40 max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">{project.desc}</p>
         </div>
       </div>
 
@@ -145,13 +152,15 @@ function CompactCard({ project, index }) {
 
       <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
         <p className="text-[9px] font-medium tracking-label uppercase text-accent/50 mb-2">{project.tag}</p>
-        <h3 className="text-lg md:text-xl font-display font-semibold text-text-primary tracking-tight">{project.title}</h3>
+        <h3 className="text-lg md:text-xl font-display font-semibold text-text-primary tracking-tight mb-1">{project.title}</h3>
+        <p className="text-xs text-text-secondary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-400">{project.desc}</p>
       </div>
     </motion.div>
   )
 }
 
 export default function Work() {
+  const navigate = useNavigate()
   useEffect(() => { window.scrollTo(0, 0) }, [])
 
   const featured = projects.filter(p => p.featured)
@@ -172,11 +181,21 @@ export default function Work() {
         label="SELECTED WORK"
         title={<>Crafted with<br /><span className="text-text-tertiary">obsession.</span></>}
         subtitle="A curated selection of projects where strategy, design, and engineering converge into exceptional digital products."
-      />
+      >
+        {/* Page navigation buttons */}
+        <div className="flex items-center gap-4 mt-4">
+          <Button variant="ghost" size="sm" onClick={() => navigate('/services')}>
+            <ArrowLeft className="w-3.5 h-3.5" /> Services
+          </Button>
+          <Button variant="ghost" size="sm" onClick={() => navigate('/contact')}>
+            Contact <ArrowRight className="w-3.5 h-3.5" />
+          </Button>
+        </div>
+      </PageHero>
 
       {/* Featured Projects — Large Cinematic Cards */}
-      <section className="py-16 md:py-24 bg-abyss">
-        <div className="section-container space-y-8">
+      <section className="py-20 md:py-32 bg-abyss">
+        <div className="section-container space-y-10">
           {featured.map((project, i) => (
             <FeaturedCard key={project.id} project={project} index={i} />
           ))}
@@ -196,10 +215,10 @@ export default function Work() {
       </div>
 
       {/* More Projects — Compact Grid */}
-      <section className="py-16 md:py-24 bg-abyss">
+      <section className="py-20 md:py-32 bg-abyss">
         <div className="section-container">
           <motion.div
-            className="mb-12"
+            className="mb-16"
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewportOnce}
@@ -208,7 +227,7 @@ export default function Work() {
             <span className="section-label">MORE PROJECTS</span>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {rest.map((project, i) => (
               <CompactCard key={project.id} project={project} index={i} />
             ))}
@@ -217,8 +236,8 @@ export default function Work() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 md:py-40 bg-surface relative overflow-hidden">
-        <div className="hero-glow z-0" />
+      <section className="py-32 md:py-48 bg-surface relative overflow-hidden">
+        <AmbientOrbs />
         <div className="noise-overlay" />
         <div className="section-container relative z-10 text-center">
           <motion.div
@@ -226,16 +245,22 @@ export default function Work() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={viewportOnce}
             transition={{ duration: 0.7, ease: easing.expoOut }}
+            className="space-y-8"
           >
-            <h2 className="font-display font-semibold tracking-super-tight text-text-primary mb-6" style={{ fontSize: 'clamp(32px, 5vw, 72px)' }}>
+            <h2 className="font-display font-semibold tracking-super-tight text-text-primary leading-ultra-tight" style={{ fontSize: 'clamp(36px, 6vw, 88px)' }}>
               Your project<br /><span className="text-text-tertiary">could be next.</span>
             </h2>
-            <p className="text-text-secondary max-w-lg mx-auto mb-10 text-lg">
+            <p className="text-text-secondary max-w-lg mx-auto text-lg">
               Let's create something that makes your competitors nervous.
             </p>
-            <Button variant="primary" size="lg" onClick={() => window.location.href = '/contact'}>
-              Start a Project <ArrowUpRight className="w-4 h-4" />
-            </Button>
+            <div className="flex flex-wrap justify-center gap-4 pt-4">
+              <Button variant="primary" size="lg" onClick={() => navigate('/contact')}>
+                Start a Project <ArrowRight className="w-4 h-4" />
+              </Button>
+              <Button variant="ghost" size="lg" onClick={() => navigate('/')}>
+                Back to Home
+              </Button>
+            </div>
           </motion.div>
         </div>
       </section>

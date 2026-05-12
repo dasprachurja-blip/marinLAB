@@ -1,7 +1,7 @@
 import { useLayoutEffect, useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import { ArrowUpRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getLenis } from '@/hooks/useLenis';
 import { cn } from '@/utils/cn';
 import './Navbar.css';
@@ -32,14 +32,49 @@ const navItems = [
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   
   const navRef = useRef(null);
+  const containerRef = useRef(null);
   const cardsRef = useRef([]);
   const tlRef = useRef(null);
   const lastScrollY = useRef(0);
+
+  // Click-outside-to-close
+  useEffect(() => {
+    if (!isExpanded) return;
+
+    const handleClickOutside = (e) => {
+      if (containerRef.current && !containerRef.current.contains(e.target)) {
+        toggleMenu();
+      }
+    };
+
+    // Delay to avoid capturing the click that opened the menu
+    const timer = setTimeout(() => {
+      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('touchstart', handleClickOutside);
+    }, 50);
+
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isExpanded]);
+
+  // Close menu on Escape key
+  useEffect(() => {
+    if (!isExpanded) return;
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') toggleMenu();
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isExpanded]);
 
   // Cinematic Scroll Behavior
   useEffect(() => {
@@ -212,22 +247,52 @@ export default function Navbar() {
     if (el) cardsRef.current[i] = el;
   };
 
+  // Back/Forward navigation
+  const canGoBack = location.pathname !== '/';
+
   return (
-    <div className={cn(
-      "card-nav-container",
-      !isVisible && "nav-hidden"
-    )}>
+    <div
+      ref={containerRef}
+      className={cn(
+        "card-nav-container",
+        !isVisible && "nav-hidden"
+      )}
+    >
       <nav ref={navRef} className={cn('card-nav', isExpanded ? 'open' : '')}>
         <div className="card-nav-top">
-          <div
-            className={cn('hamburger-menu', isHamburgerOpen ? 'open' : '')}
-            onClick={toggleMenu}
-            role="button"
-            aria-label={isExpanded ? 'Close menu' : 'Open menu'}
-            tabIndex={0}
-          >
-            <div className="hamburger-line" />
-            <div className="hamburger-line" />
+          {/* Left cluster: hamburger + back/forward */}
+          <div className="flex items-center gap-3">
+            <div
+              className={cn('hamburger-menu', isHamburgerOpen ? 'open' : '')}
+              onClick={toggleMenu}
+              role="button"
+              aria-label={isExpanded ? 'Close menu' : 'Open menu'}
+              tabIndex={0}
+            >
+              <div className="hamburger-line" />
+              <div className="hamburger-line" />
+            </div>
+
+            {/* Back / Forward nav buttons */}
+            <div className="nav-history-buttons">
+              <button
+                type="button"
+                className={cn("nav-history-btn", !canGoBack && "nav-history-btn--disabled")}
+                onClick={() => canGoBack && navigate(-1)}
+                aria-label="Go back"
+                disabled={!canGoBack}
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+              </button>
+              <button
+                type="button"
+                className="nav-history-btn"
+                onClick={() => navigate(1)}
+                aria-label="Go forward"
+              >
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
 
           <a href="/" onClick={(e) => handleNavClick(e, '/')} className="logo-container group">
@@ -238,7 +303,7 @@ export default function Navbar() {
           <button
             type="button"
             className="card-nav-cta-button"
-            onClick={(e) => handleNavClick(e, '/#contact')}
+            onClick={(e) => handleNavClick(e, '/contact')}
           >
             Start Project
           </button>
@@ -256,7 +321,7 @@ export default function Navbar() {
                 {item.links?.map((lnk, i) => (
                   <a 
                     key={`${lnk.label}-${i}`} 
-                    className="nav-card-link" 
+                    className={cn("nav-card-link", location.pathname === lnk.href && "nav-card-link--active")}
                     href={lnk.href}
                     onClick={(e) => handleNavClick(e, lnk.href)}
                   >

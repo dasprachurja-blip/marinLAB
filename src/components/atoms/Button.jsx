@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { cn } from '@/utils/cn'
 import { useMagneticHover } from '@/hooks/useMagneticHover'
 
@@ -12,7 +12,8 @@ export default function Button({
   ...props
 }) {
   const ref = useRef(null)
-  useMagneticHover(ref)
+  const [isPressed, setIsPressed] = useState(false)
+  useMagneticHover(ref, 0.3)
 
   const base = 'relative overflow-hidden rounded-full font-medium inline-flex items-center justify-center gap-2 transition-all duration-300 ease-expo cursor-pointer'
 
@@ -29,19 +30,52 @@ export default function Button({
     lg: 'px-9 py-4 text-[15px] tracking-wide',
   }
 
-  const classes = cn(base, variants[variant], sizes[size], className)
+  const classes = cn(
+    base,
+    variants[variant],
+    sizes[size],
+    isPressed && 'scale-[0.96]',
+    className
+  )
+
+  const shimmer = variant === 'primary' ? (
+    <span
+      className="absolute inset-0 pointer-events-none z-0"
+      style={{
+        background: 'linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%)',
+        backgroundSize: '200% 100%',
+        animation: 'btnShimmer 3s ease-in-out infinite',
+      }}
+    />
+  ) : null
+
+  const handleMouseDown = () => setIsPressed(true)
+  const handleMouseUp = () => setIsPressed(false)
+  const handleMouseLeave = () => setIsPressed(false)
+
+  const commonProps = {
+    ref,
+    className: classes,
+    onMouseDown: handleMouseDown,
+    onMouseUp: handleMouseUp,
+    onMouseLeave: handleMouseLeave,
+    ...props,
+  }
 
   if (href) {
     return (
-      <a ref={ref} href={href} className={classes} {...props}>
+      <a href={href} {...commonProps}>
+        {shimmer}
         <span className="relative z-10 flex items-center gap-2">{children}</span>
       </a>
     )
   }
 
   return (
-    <button ref={ref} className={classes} onClick={onClick} {...props}>
+    <button onClick={onClick} {...commonProps}>
+      {shimmer}
       <span className="relative z-10 flex items-center gap-2">{children}</span>
     </button>
   )
 }
+

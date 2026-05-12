@@ -31,9 +31,9 @@ export default {
         ghost: '#4A4F60',
       },
       fontFamily: {
-        display: ['"Clash Display"', 'Inter', '-apple-system', 'sans-serif'],
+        display: ['"Syne"', '"Clash Display"', 'Inter', '-apple-system', 'sans-serif'],
         sans: ['"DM Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-        heading: ['"Clash Display"', '-apple-system', 'sans-serif'],
+        heading: ['"Syne"', '"Clash Display"', '-apple-system', 'sans-serif'],
       },
       lineHeight: {
         'ultra-tight': '0.88',
