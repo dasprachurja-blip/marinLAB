@@ -7,72 +7,157 @@ export default function ShowcaseCard() {
     <div className="hz-card-showcase flex items-center" data-card="3">
       <GlassCard className="w-full h-full flex flex-col md:flex-row overflow-hidden">
         {/* Left — Content */}
-        <div className="flex-1 flex flex-col p-10 md:p-14 justify-between">
+        <div className="showcase-content">
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.25em] text-white/25">
+            <span className="showcase-eyebrow">
               Featured Work
             </span>
-            <h3
-              className="font-heading font-bold text-white mt-5 tracking-super-tight leading-super-tight"
-              style={{ fontSize: 'clamp(36px, 3.5vw, 60px)' }}
-            >
+            <h3 className="showcase-headline">
               Responsive
               <br />
-              <span className="text-white/25">by default.</span>
+              <span className="showcase-headline-dim">by default.</span>
             </h3>
-            <p className="text-sm md:text-base text-white/30 mt-5 max-w-sm tracking-tight leading-relaxed">
+            <p className="showcase-description">
               Every project is crafted to perform flawlessly across all devices and screen sizes.
             </p>
           </div>
 
           {/* Project tags */}
-          <div className="flex flex-wrap gap-2 mt-8">
+          <div className="showcase-tags">
             {projectTags.map((tag) => (
-              <span
-                key={tag}
-                className="px-4 py-2 rounded-full text-[11px] font-medium text-white/30 border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.05] hover:text-white/50 transition-all duration-300"
-              >
+              <span key={tag} className="showcase-tag">
                 {tag}
               </span>
             ))}
           </div>
         </div>
 
-        {/* Right — CSS Wavy Visual Panel */}
-        <div className="flex-1 min-h-[300px] relative">
-          <div className="wave-panel">
-            <div className="wave-ridges" />
-            
-            {/* Browser mockup floating on top */}
-            <div className="absolute inset-0 flex items-center justify-center z-10 p-8">
-              <div className="mockup-browser w-full max-w-sm parallax-element" data-parallax-speed="slow">
-                <div className="mockup-browser-bar">
-                  <div className="mockup-dot" />
-                  <div className="mockup-dot" />
-                  <div className="mockup-dot" />
-                  <div className="flex-1 mx-4">
-                    <div className="h-4 bg-white/[0.04] rounded-full flex items-center px-3">
-                      <span className="text-[9px] text-white/15">arctiqflow.com</span>
+        {/* Right — Cinematic Device Scene */}
+        <div className="showcase-device-scene" aria-hidden="true">
+          {/* Ambient glow orbs */}
+          <div className="showcase-orb showcase-orb--1" />
+          <div className="showcase-orb showcase-orb--2" />
+          <div className="showcase-orb showcase-orb--3" />
+
+          {/* ── Laptop ── */}
+          <div className="showcase-laptop">
+            {/* Screen */}
+            <div className="showcase-laptop-screen">
+              {/* Browser chrome */}
+              <div className="showcase-laptop-chrome">
+                <div className="showcase-chrome-dots">
+                  <span className="showcase-dot showcase-dot--red" />
+                  <span className="showcase-dot showcase-dot--yellow" />
+                  <span className="showcase-dot showcase-dot--green" />
+                </div>
+                <div className="showcase-chrome-url">
+                  <span>arctiqflow.com</span>
+                </div>
+              </div>
+
+              {/* Inner scrolling mini-website */}
+              <div className="showcase-laptop-viewport">
+                <div className="showcase-minisite">
+                  {/* Hero section */}
+                  <div className="minisite-hero">
+                    <div className="minisite-hero-badge">Creative Studio</div>
+                    <div className="minisite-hero-heading" />
+                    <div className="minisite-hero-sub" />
+                    <div className="minisite-hero-cta" />
+                  </div>
+
+                  {/* Grid cards */}
+                  <div className="minisite-grid">
+                    <div className="minisite-card minisite-card--wide">
+                      <div className="minisite-card-img" />
+                      <div className="minisite-card-text" />
+                      <div className="minisite-card-text minisite-card-text--short" />
+                    </div>
+                    <div className="minisite-card">
+                      <div className="minisite-card-img minisite-card-img--alt" />
+                      <div className="minisite-card-text" />
+                    </div>
+                    <div className="minisite-card">
+                      <div className="minisite-card-img minisite-card-img--alt2" />
+                      <div className="minisite-card-text" />
+                    </div>
+                  </div>
+
+                  {/* Stats row */}
+                  <div className="minisite-stats">
+                    <div className="minisite-stat">
+                      <div className="minisite-stat-num" />
+                      <div className="minisite-stat-label" />
+                    </div>
+                    <div className="minisite-stat">
+                      <div className="minisite-stat-num" />
+                      <div className="minisite-stat-label" />
+                    </div>
+                    <div className="minisite-stat">
+                      <div className="minisite-stat-num" />
+                      <div className="minisite-stat-label" />
+                    </div>
+                  </div>
+
+                  {/* Feature section */}
+                  <div className="minisite-feature">
+                    <div className="minisite-feature-heading" />
+                    <div className="minisite-feature-row">
+                      <div className="minisite-feature-box" />
+                      <div className="minisite-feature-box" />
                     </div>
                   </div>
                 </div>
-                <div className="relative overflow-hidden" style={{ aspectRatio: '16/10' }}>
-                  <img
-                    src="/previews/restaurant.png"
-                    alt="Website showcase — desktop view"
-                    className="w-full h-full object-cover object-top"
-                    loading="lazy"
-                  />
-                  <div
-                    className="absolute inset-0 pointer-events-none"
-                    style={{
-                      background: 'linear-gradient(180deg, transparent 50%, rgba(12,13,17,0.9) 100%)',
-                    }}
-                  />
+              </div>
+            </div>
+
+            {/* Laptop hinge */}
+            <div className="showcase-laptop-hinge" />
+
+            {/* Laptop base */}
+            <div className="showcase-laptop-base">
+              <div className="showcase-laptop-trackpad" />
+            </div>
+          </div>
+
+          {/* ── Phone ── */}
+          <div className="showcase-phone">
+            <div className="showcase-phone-notch" />
+            <div className="showcase-phone-screen">
+              <div className="showcase-phone-minisite">
+                {/* Phone hero */}
+                <div className="phone-hero">
+                  <div className="phone-hero-heading" />
+                  <div className="phone-hero-sub" />
+                  <div className="phone-hero-cta" />
+                </div>
+                {/* Phone cards */}
+                <div className="phone-card">
+                  <div className="phone-card-img" />
+                  <div className="phone-card-text" />
+                  <div className="phone-card-text phone-card-text--short" />
+                </div>
+                <div className="phone-card">
+                  <div className="phone-card-img phone-card-img--alt" />
+                  <div className="phone-card-text" />
+                </div>
+                {/* Phone nav bar */}
+                <div className="phone-nav">
+                  <div className="phone-nav-icon" />
+                  <div className="phone-nav-icon" />
+                  <div className="phone-nav-icon phone-nav-icon--active" />
+                  <div className="phone-nav-icon" />
                 </div>
               </div>
             </div>
+            {/* Home indicator */}
+            <div className="showcase-phone-homebar" />
           </div>
+
+          {/* Floating connection lines */}
+          <svg className="showcase-connectors" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <line x1="65" y1="50" x2="82" y2="35" className="showcase-connector-line" />
+          </svg>
         </div>
       </GlassCard>
     </div>

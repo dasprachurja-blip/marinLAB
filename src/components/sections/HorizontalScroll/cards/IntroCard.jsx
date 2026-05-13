@@ -1,34 +1,110 @@
+import { useRef, useEffect, useState } from 'react'
+import Hls from 'hls.js'
 import GlassCard from '../atoms/GlassCard'
 
+const HLS_SRC = 'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8'
 const SERVICES = ['Web Design', 'Development', 'Brand Identity', 'Motion Design', 'SEO', 'Performance']
 
 export default function IntroCard() {
+  const videoRef = useRef(null)
+  const containerRef = useRef(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const [videoLoaded, setVideoLoaded] = useState(false)
+
+  // Lazy visibility detection — don't load video until card is near viewport
+  useEffect(() => {
+    const el = containerRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect() } },
+      { rootMargin: '200px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  // HLS setup — only when visible
+  useEffect(() => {
+    if (!isVisible) return
+    const video = videoRef.current
+    if (!video) return
+
+    let hls
+
+    if (Hls.isSupported()) {
+      hls = new Hls({
+        enableWorker: true,
+        lowLatencyMode: false,
+        maxBufferLength: 10,
+        maxMaxBufferLength: 30,
+        startLevel: -1,          // auto quality
+      })
+      hls.loadSource(HLS_SRC)
+      hls.attachMedia(video)
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch(() => {})
+        setVideoLoaded(true)
+      })
+      hls.on(Hls.Events.ERROR, (_, data) => {
+        if (data.fatal) {
+          if (data.type === Hls.ErrorTypes.NETWORK_ERROR) hls.startLoad()
+          else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) hls.recoverMediaError()
+        }
+      })
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      // Safari native HLS
+      video.src = HLS_SRC
+      video.addEventListener('loadedmetadata', () => {
+        video.play().catch(() => {})
+        setVideoLoaded(true)
+      })
+    }
+
+    return () => {
+      if (hls) { hls.destroy() }
+    }
+  }, [isVisible])
+
   return (
-    <div className="hz-card-intro flex items-center" data-card="1">
+    <div ref={containerRef} className="hz-card-intro flex items-center" data-card="1">
       <GlassCard className="w-full h-full flex flex-col relative overflow-hidden">
 
-        {/* ═══ AURORA BOREALIS BACKGROUND ═══ */}
-        <div className="aurora">
-          {/* Primary blue band */}
-          <div className="aurora__band aurora__band--1" />
-          {/* Purple accent band */}
-          <div className="aurora__band aurora__band--2" />
-          {/* Teal/green whisper */}
-          <div className="aurora__band aurora__band--3" />
-          {/* White highlight shimmer */}
-          <div className="aurora__band aurora__band--4" />
-          {/* Deep blue ambient fill */}
-          <div className="aurora__band aurora__band--5" />
-          {/* Noise grain overlay */}
-          <div className="aurora__noise" />
-          {/* Bottom fade for text readability */}
-          <div className="aurora__fade" />
+        {/* ═══ VIDEO BACKGROUND ═══ */}
+        <div className="intro-video-wrap" aria-hidden="true">
+          {/* Static fallback color — shows before video loads */}
+          <div className="intro-video-fallback" />
+
+          {isVisible && (
+            <video
+              ref={videoRef}
+              className={`intro-video-el ${videoLoaded ? 'intro-video-el--ready' : ''}`}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-hidden="true"
+              tabIndex={-1}
+            />
+          )}
+
+          {/* Cinematic vignette for text readability */}
+          <div className="intro-video-vignette" />
+
+          {/* Film grain texture */}
+          <div className="intro-video-grain" />
         </div>
 
         {/* Top bar */}
         <div className="flex items-center justify-between relative z-10 p-10 md:p-14 pb-0">
           <div className="flex items-center gap-3">
-            <img src="/logo.png" alt="ArctiqFlow" className="w-8 h-8 object-contain" />
+            <img
+              src="/logo.png"
+              alt="ArctiqFlow"
+              className="w-8 h-8 object-contain"
+              width={32}
+              height={32}
+            />
             <span className="text-white/30 text-[10px] font-semibold uppercase tracking-[0.2em]">ArctiqFlow</span>
           </div>
           <div className="flex items-center gap-2">
