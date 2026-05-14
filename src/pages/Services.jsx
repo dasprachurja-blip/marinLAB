@@ -5,7 +5,6 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import PageHero from '@/components/sections/PageHero'
 import Button from '@/components/atoms/Button'
-import TargetCursor from '@/components/ui/TargetCursor'
 import { easing, viewportOnce, pageVariants } from '@/animations/motionPresets'
 import { useNavigate } from 'react-router-dom'
 
@@ -44,7 +43,7 @@ function ServiceCard({ service, index }) {
           </div>
           <h3 className="text-xl md:text-2xl font-display font-semibold text-text-primary tracking-tight">{service.title}</h3>
         </div>
-        <p className="text-text-secondary/60 text-base leading-relaxed max-w-xl md:pt-1">{service.desc}</p>
+        <p className="text-text-secondary/70 text-base leading-relaxed max-w-xl md:pt-1">{service.desc}</p>
       </div>
     </motion.div>
   )
@@ -69,7 +68,7 @@ function ProcessStep({ step, index }) {
       </div>
       <div className="pb-14 md:pb-20">
         <h4 className="text-2xl md:text-3xl font-display font-semibold text-text-primary tracking-tight mb-3">{step.title}</h4>
-        <p className="text-text-secondary/60 text-base leading-relaxed max-w-lg">{step.desc}</p>
+        <p className="text-text-secondary/70 text-base leading-relaxed max-w-lg">{step.desc}</p>
       </div>
     </motion.div>
   )
@@ -101,7 +100,6 @@ export default function Services() {
       animate="animate"
       exit="exit"
     >
-      <TargetCursor targetSelector="button, a, .cursor-target" spinDuration={2} hideDefaultCursor={true} parallaxOn={true} />
       <Navbar />
 
       <PageHero

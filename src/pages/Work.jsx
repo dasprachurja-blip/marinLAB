@@ -6,7 +6,6 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import PageHero from '@/components/sections/PageHero'
 import Button from '@/components/atoms/Button'
-import TargetCursor from '@/components/ui/TargetCursor'
 import AmbientOrbs from '@/components/ui/AmbientOrbs'
 import { easing, viewportOnce, pageVariants } from '@/animations/motionPresets'
 
@@ -102,7 +101,7 @@ function FeaturedCard({ project, index }) {
 
       {/* Year badge */}
       <div className="absolute top-6 right-6 z-10">
-        <span className="text-[11px] text-text-tertiary/50 font-display tracking-wide">{project.year}</span>
+        <span className="text-[11px] text-text-tertiary/70 font-display tracking-wide">{project.year}</span>
       </div>
 
       {/* Arrow indicator */}
@@ -113,11 +112,11 @@ function FeaturedCard({ project, index }) {
       {/* Content */}
       <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 z-10">
         <div className="translate-y-3 group-hover:translate-y-0 transition-transform duration-600 ease-expo">
-          <p className="text-[10px] font-medium tracking-label uppercase text-accent/60 mb-3">{project.tag}</p>
+          <p className="text-[10px] font-medium tracking-label uppercase text-accent/80 mb-3">{project.tag}</p>
           <h3 className="font-display font-semibold text-text-primary tracking-tight mb-2" style={{ fontSize: 'clamp(24px, 3vw, 48px)' }}>
             {project.title}
           </h3>
-          <p className="text-sm text-text-secondary/40 max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">{project.desc}</p>
+          <p className="text-sm text-text-secondary/60 max-w-md opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">{project.desc}</p>
         </div>
       </div>
 
@@ -147,13 +146,13 @@ function CompactCard({ project, index }) {
       <div className="absolute inset-0 bg-gradient-to-t from-void via-void/20 to-transparent opacity-85 group-hover:opacity-90 transition-opacity duration-500" />
 
       <div className="absolute top-5 right-5 z-10">
-        <span className="text-[10px] text-text-tertiary/40 font-display tracking-wide">{project.year}</span>
+        <span className="text-[10px] text-text-tertiary/60 font-display tracking-wide">{project.year}</span>
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-        <p className="text-[9px] font-medium tracking-label uppercase text-accent/50 mb-2">{project.tag}</p>
+        <p className="text-[9px] font-medium tracking-label uppercase text-accent/70 mb-2">{project.tag}</p>
         <h3 className="text-lg md:text-xl font-display font-semibold text-text-primary tracking-tight mb-1">{project.title}</h3>
-        <p className="text-xs text-text-secondary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-400">{project.desc}</p>
+        <p className="text-xs text-text-secondary/50 opacity-0 group-hover:opacity-100 transition-opacity duration-400">{project.desc}</p>
       </div>
     </motion.div>
   )
@@ -174,7 +173,6 @@ export default function Work() {
       animate="animate"
       exit="exit"
     >
-      <TargetCursor targetSelector="button, a, .cursor-target" spinDuration={2} hideDefaultCursor={true} parallaxOn={true} />
       <Navbar />
 
       <PageHero

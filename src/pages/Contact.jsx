@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import Button from '@/components/atoms/Button'
-import TargetCursor from '@/components/ui/TargetCursor'
 import AmbientOrbs from '@/components/ui/AmbientOrbs'
 import { sendViaEmailJS } from '@/lib/emailjs'
 import { sendViaFormspree } from '@/lib/formspree'
@@ -57,7 +56,6 @@ export default function Contact() {
       animate="animate"
       exit="exit"
     >
-      <TargetCursor targetSelector="button, a, .cursor-target" spinDuration={2} hideDefaultCursor={true} parallaxOn={true} />
       <Navbar />
 
       {/* Hero — Expanded for breathing room */}
@@ -192,7 +190,7 @@ export default function Contact() {
               <div className="glass-card p-10 md:p-14">
                 <div className="mb-8">
                   <h2 className="text-2xl md:text-3xl font-display font-semibold text-text-primary tracking-tight mb-2">Start your project</h2>
-                  <p className="text-sm text-text-secondary/50">Fill in the details below and we'll respond within 1 hour.</p>
+                  <p className="text-sm text-text-secondary/70">Fill in the details below and we'll respond within 1 hour.</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-7">

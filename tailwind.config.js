@@ -12,8 +12,8 @@ export default {
         'arctic-border': '#1E2028',
         /* ── Text Hierarchy ── */
         'text-primary': '#F0F2F5',
-        'text-secondary': '#8B90A0',
-        'text-tertiary': '#4A4F60',
+        'text-secondary': '#A0A5B8',
+        'text-tertiary': '#5D6278',
         /* ── Accent — Arctic Blue ── */
         accent: {
           DEFAULT: '#4D9EFF',
@@ -27,8 +27,8 @@ export default {
           dark: '#050507',
           light: '#0F1117',
         },
-        muted: '#8B90A0',
-        ghost: '#4A4F60',
+        muted: '#A0A5B8',
+        ghost: '#5D6278',
       },
       fontFamily: {
         display: ['"Syne"', '"Clash Display"', 'Inter', '-apple-system', 'sans-serif'],

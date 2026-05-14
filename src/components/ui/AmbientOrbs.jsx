@@ -4,9 +4,12 @@ import { useEffect, useRef } from 'react'
  * AmbientOrbs — Floating color orbs with mouse parallax
  * Inspired by Stripe/Resn ambient background treatments
  */
-export default function AmbientOrbs({ className = '' }) {
+export default function AmbientOrbs({ className = '', intensity = 'normal' }) {
   const containerRef = useRef(null)
   const mouseRef = useRef({ x: 0.5, y: 0.5 })
+
+  // Intensity multiplier for different contexts
+  const mult = intensity === 'high' ? 2.5 : intensity === 'low' ? 0.5 : 1
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -58,35 +61,35 @@ export default function AmbientOrbs({ className = '' }) {
         .ambient-orb {
           position: absolute;
           border-radius: 50%;
-          filter: blur(120px);
+          filter: blur(${100 + mult * 20}px);
           will-change: transform;
           transform: translate(var(--px, 0px), var(--py, 0px));
         }
 
         .ambient-orb--blue {
-          width: 600px;
-          height: 600px;
+          width: ${500 + mult * 100}px;
+          height: ${500 + mult * 100}px;
           top: -15%;
           left: 20%;
-          background: radial-gradient(circle, rgba(77, 158, 255, 0.08) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(77, 158, 255, ${0.06 * mult}) 0%, transparent 70%);
           animation: orbDrift1 18s ease-in-out infinite;
         }
 
         .ambient-orb--indigo {
-          width: 500px;
-          height: 500px;
+          width: ${400 + mult * 100}px;
+          height: ${400 + mult * 100}px;
           top: 30%;
           right: 10%;
-          background: radial-gradient(circle, rgba(124, 92, 252, 0.06) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(124, 92, 252, ${0.05 * mult}) 0%, transparent 70%);
           animation: orbDrift2 22s ease-in-out infinite;
         }
 
         .ambient-orb--teal {
-          width: 400px;
-          height: 400px;
+          width: ${350 + mult * 50}px;
+          height: ${350 + mult * 50}px;
           bottom: -10%;
           left: 40%;
-          background: radial-gradient(circle, rgba(26, 255, 213, 0.03) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(26, 255, 213, ${0.03 * mult}) 0%, transparent 70%);
           animation: orbDrift3 25s ease-in-out infinite;
         }
 

@@ -6,7 +6,7 @@ import { scrollState } from './scrollState'
 import MagicRings from './MagicRings'
 import { ArrowRight } from 'lucide-react'
 import Button from '@/components/atoms/Button'
-import { getLenis } from '@/hooks/useLenis'
+import { useNavigate } from 'react-router-dom'
 import { easing, wordReveal, staggerContainer } from '@/animations/motionPresets'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -52,6 +52,7 @@ function WordReveal({ text, className, delay = 0 }) {
 }
 
 export default function Hero3DSection() {
+  const navigate = useNavigate()
   const wrapperRef = useRef(null)
   const pinRef = useRef(null)
   const uiRef = useRef(null)
@@ -120,13 +121,7 @@ export default function Hero3DSection() {
     }
   }, [])
 
-  const scrollTo = (id) => {
-    const el = document.querySelector(id)
-    if (!el) return
-    const lenis = getLenis()
-    if (lenis) lenis.scrollTo(el, { offset: -80 })
-    else el.scrollIntoView({ behavior: 'smooth' })
-  }
+  const goTo = (path) => navigate(path)
 
   return (
     <div ref={wrapperRef} id="hero" className="relative">
@@ -172,7 +167,7 @@ export default function Hero3DSection() {
           {/* Ambient readability backdrop */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-void/70 rounded-full blur-[100px] pointer-events-none" />
 
-          <div className="relative z-10 text-center space-y-8 px-6 max-w-7xl mx-auto pointer-events-none">
+          <div className="relative z-10 text-center space-y-8 px-6 max-w-7xl mx-auto">
             {/* Studio badge */}
             <motion.div
               className="flex justify-center"
@@ -217,10 +212,10 @@ export default function Hero3DSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: easing.expoOut, delay: 1.2 }}
             >
-              <Button variant="primary" size="lg" onClick={() => scrollTo('#contact')}>
+              <Button variant="primary" size="lg" onClick={() => goTo('/contact')}>
                 Start a Project <ArrowRight className="w-4 h-4" />
               </Button>
-              <Button variant="ghost" size="lg" onClick={() => scrollTo('#portfolio')}>
+              <Button variant="ghost" size="lg" onClick={() => goTo('/work')}>
                 View Work
               </Button>
             </motion.div>

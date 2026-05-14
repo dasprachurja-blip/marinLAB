@@ -1,199 +1,109 @@
 import { useLayoutEffect, useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
-import { ArrowUpRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { getLenis } from '@/hooks/useLenis';
 import { cn } from '@/utils/cn';
 import './Navbar.css';
 
 const navItems = [
-  {
-    label: "Studio",
-    links: [
-      { label: "Home", href: "/" },
-      { label: "About", href: "/about" }
-    ]
-  },
-  {
-    label: "Expertise", 
-    links: [
-      { label: "Services", href: "/services" },
-      { label: "Pricing", href: "/pricing" }
-    ]
-  },
-  {
-    label: "Connect",
-    links: [
-      { label: "Work", href: "/work" },
-      { label: "Contact", href: "/contact" }
-    ]
-  }
+  { label: 'Home', href: '/' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Work', href: '/work' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isHamburgerOpen, setIsHamburgerOpen] = useState(false);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
-  
+
   const navRef = useRef(null);
   const containerRef = useRef(null);
-  const cardsRef = useRef([]);
+  const linkRefs = useRef([]);
+  const menuContentRef = useRef(null);
   const tlRef = useRef(null);
   const lastScrollY = useRef(0);
 
   // Click-outside-to-close
   useEffect(() => {
-    if (!isExpanded) return;
-
+    if (!isMenuOpen) return;
     const handleClickOutside = (e) => {
       if (containerRef.current && !containerRef.current.contains(e.target)) {
-        toggleMenu();
+        closeMenu();
       }
     };
-
-    // Delay to avoid capturing the click that opened the menu
     const timer = setTimeout(() => {
       document.addEventListener('mousedown', handleClickOutside);
       document.addEventListener('touchstart', handleClickOutside);
     }, 50);
-
     return () => {
       clearTimeout(timer);
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('touchstart', handleClickOutside);
     };
-  }, [isExpanded]);
+  }, [isMenuOpen]);
 
-  // Close menu on Escape key
+  // Close on Escape
   useEffect(() => {
-    if (!isExpanded) return;
+    if (!isMenuOpen) return;
     const handleEscape = (e) => {
-      if (e.key === 'Escape') toggleMenu();
+      if (e.key === 'Escape') closeMenu();
     };
     document.addEventListener('keydown', handleEscape);
     return () => document.removeEventListener('keydown', handleEscape);
-  }, [isExpanded]);
+  }, [isMenuOpen]);
 
-  // Cinematic Scroll Behavior
+  // Auto-close on route change
+  useEffect(() => {
+    if (isMenuOpen) closeMenu();
+  }, [location.pathname]);
+
+  // Scroll behavior — hide on down, show on up
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      
       if (currentScrollY < 50) {
         setIsVisible(true);
-      } 
-      else if (currentScrollY > lastScrollY.current) {
+      } else if (currentScrollY > lastScrollY.current) {
         setIsVisible(false);
-        if (isExpanded) toggleMenu();
-      } 
-      else if (lastScrollY.current - currentScrollY > 15) {
+        if (isMenuOpen) closeMenu();
+      } else if (lastScrollY.current - currentScrollY > 15) {
         setIsVisible(true);
       }
-
       lastScrollY.current = currentScrollY;
     };
-
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isExpanded]);
+  }, [isMenuOpen]);
 
-  // Smooth scroll logic
-  const handleNavClick = (e, href) => {
-    e.preventDefault();
-    if (isExpanded) toggleMenu();
-
-    if (href.startsWith('/')) {
-      navigate(href);
-      if (href.includes('#')) {
-        setTimeout(() => {
-          const id = href.split('#')[1];
-          const el = document.getElementById(id);
-          if (el) {
-            const lenis = getLenis();
-            if (lenis) {
-              lenis.scrollTo(el, { offset: -80 });
-            } else {
-              el.scrollIntoView({ behavior: 'smooth' });
-            }
-          }
-        }, 100);
-      } else {
-        window.scrollTo(0, 0);
-      }
-    } else if (href === '#') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    } else {
-      const el = document.querySelector(href);
-      if (el) {
-        const lenis = getLenis();
-        if (lenis) {
-          lenis.scrollTo(el, { offset: -80 });
-        } else {
-          el.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
-    }
-  };
-
-  const calculateHeight = () => {
+  // GSAP timeline for menu open/close
+  useLayoutEffect(() => {
     const navEl = navRef.current;
-    if (!navEl) return 260;
-
-    const isMobile = window.matchMedia('(max-width: 768px)').matches;
-    if (isMobile) {
-      const contentEl = navEl.querySelector('.card-nav-content');
-      if (contentEl) {
-        const wasVisible = contentEl.style.visibility;
-        const wasPointerEvents = contentEl.style.pointerEvents;
-        const wasPosition = contentEl.style.position;
-        const wasHeight = contentEl.style.height;
-
-        contentEl.style.visibility = 'visible';
-        contentEl.style.pointerEvents = 'auto';
-        contentEl.style.position = 'static';
-        contentEl.style.height = 'auto';
-
-        contentEl.offsetHeight;
-
-        const topBar = 60;
-        const padding = 16;
-        const contentHeight = contentEl.scrollHeight;
-
-        contentEl.style.visibility = wasVisible;
-        contentEl.style.pointerEvents = wasPointerEvents;
-        contentEl.style.position = wasPosition;
-        contentEl.style.height = wasHeight;
-
-        return topBar + contentHeight + padding;
-      }
-    }
-    return 260;
-  };
-
-  const createTimeline = () => {
-    const navEl = navRef.current;
-    if (!navEl) return null;
+    if (!navEl) return;
 
     gsap.set(navEl, { height: 60, overflow: 'hidden' });
-    gsap.set(cardsRef.current, { y: 50, opacity: 0 });
+    linkRefs.current.forEach(el => {
+      if (el) gsap.set(el, { y: 20, opacity: 0 });
+    });
 
     const tl = gsap.timeline({ paused: true });
 
     tl.to(navEl, {
-      height: calculateHeight,
+      height: 'auto',
       duration: 0.5,
-      ease: 'expo.inOut'
+      ease: 'expo.inOut',
     });
 
-    tl.to(cardsRef.current, { y: 0, opacity: 1, duration: 0.4, ease: 'power3.out', stagger: 0.05 }, '-=0.2');
+    tl.to(linkRefs.current.filter(Boolean), {
+      y: 0,
+      opacity: 1,
+      duration: 0.4,
+      ease: 'power3.out',
+      stagger: 0.04,
+    }, '-=0.2');
 
-    return tl;
-  };
-
-  useLayoutEffect(() => {
-    const tl = createTimeline();
     tlRef.current = tl;
 
     return () => {
@@ -202,136 +112,108 @@ export default function Navbar() {
     };
   }, []);
 
-  useLayoutEffect(() => {
-    const handleResize = () => {
-      if (!tlRef.current) return;
+  const openMenu = () => {
+    setIsMenuOpen(true);
+    tlRef.current?.play(0);
+  };
 
-      if (isExpanded) {
-        const newHeight = calculateHeight();
-        gsap.set(navRef.current, { height: newHeight });
-
-        tlRef.current.kill();
-        const newTl = createTimeline();
-        if (newTl) {
-          newTl.progress(1);
-          tlRef.current = newTl;
-        }
-      } else {
-        tlRef.current.kill();
-        const newTl = createTimeline();
-        if (newTl) {
-          tlRef.current = newTl;
-        }
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [isExpanded]);
-
-  const toggleMenu = () => {
+  const closeMenu = () => {
     const tl = tlRef.current;
     if (!tl) return;
-    if (!isExpanded) {
-      setIsHamburgerOpen(true);
-      setIsExpanded(true);
-      tl.play(0);
-    } else {
-      setIsHamburgerOpen(false);
-      tl.eventCallback('onReverseComplete', () => setIsExpanded(false));
-      tl.reverse();
-    }
+    tl.eventCallback('onReverseComplete', () => setIsMenuOpen(false));
+    tl.reverse();
   };
 
-  const setCardRef = i => el => {
-    if (el) cardsRef.current[i] = el;
+  const toggleMenu = () => {
+    if (isMenuOpen) closeMenu();
+    else openMenu();
   };
 
-  // Back/Forward navigation
-  const canGoBack = location.pathname !== '/';
+  const handleNavClick = (e, href) => {
+    e.preventDefault();
+    if (isMenuOpen) closeMenu();
+    navigate(href);
+    window.scrollTo(0, 0);
+  };
+
+  const setLinkRef = (i) => (el) => {
+    if (el) linkRefs.current[i] = el;
+  };
 
   return (
     <div
       ref={containerRef}
-      className={cn(
-        "card-nav-container",
-        !isVisible && "nav-hidden"
-      )}
+      className={cn('card-nav-container', !isVisible && 'nav-hidden')}
     >
-      <nav ref={navRef} className={cn('card-nav', isExpanded ? 'open' : '')}>
+      <nav ref={navRef} className={cn('card-nav', isMenuOpen ? 'open' : '')}>
+        {/* Top bar */}
         <div className="card-nav-top">
-          {/* Left cluster: hamburger + back/forward */}
-          <div className="flex items-center gap-3">
-            <div
-              className={cn('hamburger-menu', isHamburgerOpen ? 'open' : '')}
-              onClick={toggleMenu}
-              role="button"
-              aria-label={isExpanded ? 'Close menu' : 'Open menu'}
-              tabIndex={0}
-            >
-              <div className="hamburger-line" />
-              <div className="hamburger-line" />
-            </div>
-
-            {/* Back / Forward nav buttons */}
-            <div className="nav-history-buttons">
-              <button
-                type="button"
-                className={cn("nav-history-btn", !canGoBack && "nav-history-btn--disabled")}
-                onClick={() => canGoBack && navigate(-1)}
-                aria-label="Go back"
-                disabled={!canGoBack}
-              >
-                <ChevronLeft className="w-3.5 h-3.5" />
-              </button>
-              <button
-                type="button"
-                className="nav-history-btn"
-                onClick={() => navigate(1)}
-                aria-label="Go forward"
-              >
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
+          {/* Hamburger */}
+          <div
+            className={cn('hamburger-menu', isMenuOpen ? 'open' : '')}
+            onClick={toggleMenu}
+            role="button"
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+            tabIndex={0}
+          >
+            <div className="hamburger-line" />
+            <div className="hamburger-line" />
           </div>
 
+          {/* Logo */}
           <a href="/" onClick={(e) => handleNavClick(e, '/')} className="logo-container group">
             <img src="/logo.png" alt="ArcticFlow Logo" className="logo transition-transform duration-500 ease-expo group-hover:scale-105" />
             <span className="logo-text">ArcticFlow</span>
           </a>
 
+          {/* CTA — Solid accent pill */}
           <button
             type="button"
             className="card-nav-cta-button"
             onClick={(e) => handleNavClick(e, '/contact')}
           >
-            Start Project
+            Let's Talk
           </button>
         </div>
 
-        <div className="card-nav-content" aria-hidden={!isExpanded}>
-          {navItems.map((item, idx) => (
-            <div
-              key={`${item.label}-${idx}`}
-              className="nav-card"
-              ref={setCardRef(idx)}
-            >
-              <div className="nav-card-label">{item.label}</div>
-              <div className="nav-card-links">
-                {item.links?.map((lnk, i) => (
-                  <a 
-                    key={`${lnk.label}-${i}`} 
-                    className={cn("nav-card-link", location.pathname === lnk.href && "nav-card-link--active")}
-                    href={lnk.href}
-                    onClick={(e) => handleNavClick(e, lnk.href)}
-                  >
-                    <ArrowUpRight className="nav-card-link-icon" aria-hidden="true" />
-                    {lnk.label}
-                  </a>
-                ))}
-              </div>
-            </div>
-          ))}
+        {/* Expanded menu content */}
+        <div
+          ref={menuContentRef}
+          className="card-nav-content"
+          aria-hidden={!isMenuOpen}
+        >
+          {/* Navigation links — clean, minimal, large */}
+          <div className="nav-links-grid">
+            {navItems.map((item, idx) => (
+              <a
+                key={item.label}
+                ref={setLinkRef(idx)}
+                className={cn(
+                  'nav-link-item',
+                  location.pathname === item.href && 'nav-link-item--active'
+                )}
+                href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
+              >
+                <span className="nav-link-num">
+                  {String(idx + 1).padStart(2, '0')}
+                </span>
+                <span className="nav-link-label">{item.label}</span>
+                {location.pathname === item.href && (
+                  <span className="nav-link-active-dot" />
+                )}
+              </a>
+            ))}
+          </div>
+
+          {/* Bottom info strip */}
+          <div className="nav-bottom-strip">
+            <span className="nav-bottom-item">
+              <span className="nav-status-dot" />
+              Available for projects
+            </span>
+            <span className="nav-bottom-item">Dhaka, Bangladesh</span>
+          </div>
         </div>
       </nav>
     </div>

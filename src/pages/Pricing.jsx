@@ -6,7 +6,6 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import PageHero from '@/components/sections/PageHero'
 import Button from '@/components/atoms/Button'
-import TargetCursor from '@/components/ui/TargetCursor'
 import { easing, viewportOnce, pageVariants } from '@/animations/motionPresets'
 import { cn } from '@/utils/cn'
 
@@ -70,12 +69,12 @@ function PricingCard({ plan, index }) {
 
         <h4 className="text-xs font-medium uppercase tracking-label text-text-tertiary mb-4">{plan.label}</h4>
         <div className="text-4xl md:text-5xl font-display font-semibold text-text-primary mb-4 tracking-tight">{plan.price}</div>
-        <p className="text-sm text-text-secondary/50 leading-relaxed mb-8">{plan.desc}</p>
+        <p className="text-sm text-text-secondary/70 leading-relaxed mb-8">{plan.desc}</p>
 
         <ul className="space-y-3.5 mb-10 flex-grow">
           {plan.features.map((f) => (
-            <li key={f} className="flex items-center gap-3 text-text-secondary/60 text-sm">
-              <CheckCircle className="w-4 h-4 text-accent/40 shrink-0" />
+            <li key={f} className="flex items-center gap-3 text-text-secondary/80 text-sm">
+              <CheckCircle className="w-4 h-4 text-accent/60 shrink-0" />
               <span>{f}</span>
             </li>
           ))}
@@ -101,7 +100,6 @@ export default function Pricing() {
       animate="animate"
       exit="exit"
     >
-      <TargetCursor targetSelector="button, a, .cursor-target" spinDuration={2} hideDefaultCursor={true} parallaxOn={true} />
       <Navbar />
 
       <PageHero
@@ -128,7 +126,7 @@ export default function Pricing() {
                 </div>
                 <div>
                   <h4 className="text-base font-display font-semibold text-text-primary mb-1.5">{prop.title}</h4>
-                  <p className="text-sm text-text-secondary/50 leading-relaxed">{prop.desc}</p>
+                  <p className="text-sm text-text-secondary/70 leading-relaxed">{prop.desc}</p>
                 </div>
               </motion.div>
             ))}
@@ -164,7 +162,7 @@ export default function Pricing() {
               <h3 className="font-display font-semibold tracking-super-tight text-text-primary mb-4" style={{ fontSize: 'clamp(24px, 3vw, 40px)' }}>
                 Need something unique?
               </h3>
-              <p className="text-text-secondary/60 text-base leading-relaxed max-w-lg">
+              <p className="text-text-secondary/80 text-base leading-relaxed max-w-lg">
                 Enterprise applications, complex integrations, and custom solutions. Let's scope it together — no obligation.
               </p>
             </div>
