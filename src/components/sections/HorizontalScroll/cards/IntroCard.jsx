@@ -1,72 +1,21 @@
-import { useRef, useEffect, useState } from 'react'
-import Hls from 'hls.js'
+import { useState } from 'react'
 import GlassCard from '../atoms/GlassCard'
 
-const HLS_SRC = 'https://stream.mux.com/Aa02T7oM1wH5Mk5EEVDYhbZ1ChcdhRsS2m1NYyx4Ua1g.m3u8'
+const INTRO_VIDEO_WEBM = '/media/intro-loop.webm'
+const INTRO_VIDEO_MP4 = '/media/intro-loop.mp4'
+const INTRO_VIDEO_POSTER = '/media/intro-poster.jpg'
 const SERVICES = ['Web Design', 'Development', 'Brand Identity', 'Motion Design', 'SEO', 'Performance']
 
 export default function IntroCard() {
-  const videoRef = useRef(null)
-  const containerRef = useRef(null)
-  const [isVisible, setIsVisible] = useState(false)
-  const [videoLoaded, setVideoLoaded] = useState(false)
+  const [videoReady, setVideoReady] = useState(false)
 
-  // Lazy visibility detection — don't load video until card is near viewport
-  useEffect(() => {
-    const el = containerRef.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.disconnect() } },
-      { rootMargin: '200px' }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  // HLS setup — only when visible
-  useEffect(() => {
-    if (!isVisible) return
-    const video = videoRef.current
-    if (!video) return
-
-    let hls
-
-    if (Hls.isSupported()) {
-      hls = new Hls({
-        enableWorker: true,
-        lowLatencyMode: false,
-        maxBufferLength: 10,
-        maxMaxBufferLength: 30,
-        startLevel: -1,          // auto quality
-      })
-      hls.loadSource(HLS_SRC)
-      hls.attachMedia(video)
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.play().catch(() => {})
-        setVideoLoaded(true)
-      })
-      hls.on(Hls.Events.ERROR, (_, data) => {
-        if (data.fatal) {
-          if (data.type === Hls.ErrorTypes.NETWORK_ERROR) hls.startLoad()
-          else if (data.type === Hls.ErrorTypes.MEDIA_ERROR) hls.recoverMediaError()
-        }
-      })
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      // Safari native HLS
-      video.src = HLS_SRC
-      video.addEventListener('loadedmetadata', () => {
-        video.play().catch(() => {})
-        setVideoLoaded(true)
-      })
-    }
-
-    return () => {
-      if (hls) { hls.destroy() }
-    }
-  }, [isVisible])
+  const handleVideoReady = (event) => {
+    setVideoReady(true)
+    event.currentTarget.play().catch(() => {})
+  }
 
   return (
-    <div ref={containerRef} className="hz-card-intro flex items-center" data-card="1">
+    <div className="hz-card-intro flex items-center" data-card="1">
       <GlassCard className="w-full h-full flex flex-col relative overflow-hidden">
 
         {/* ═══ VIDEO BACKGROUND ═══ */}
@@ -74,19 +23,22 @@ export default function IntroCard() {
           {/* Static fallback color — shows before video loads */}
           <div className="intro-video-fallback" />
 
-          {isVisible && (
-            <video
-              ref={videoRef}
-              className={`intro-video-el ${videoLoaded ? 'intro-video-el--ready' : ''}`}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              aria-hidden="true"
-              tabIndex={-1}
-            />
-          )}
+          <video
+            className={`intro-video-el ${videoReady ? 'intro-video-el--ready' : ''}`}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={INTRO_VIDEO_POSTER}
+            onLoadedData={handleVideoReady}
+            onCanPlay={handleVideoReady}
+            aria-hidden="true"
+            tabIndex={-1}
+          >
+            <source src={INTRO_VIDEO_WEBM} type="video/webm" />
+            <source src={INTRO_VIDEO_MP4} type="video/mp4" />
+          </video>
 
           {/* Cinematic vignette for text readability */}
           <div className="intro-video-vignette" />
